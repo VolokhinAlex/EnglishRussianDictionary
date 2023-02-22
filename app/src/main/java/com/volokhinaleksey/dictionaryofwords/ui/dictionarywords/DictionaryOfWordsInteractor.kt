@@ -6,7 +6,7 @@ import com.volokhinaleksey.dictionaryofwords.repository.Repository
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import io.reactivex.rxjava3.core.Observable
 
-class MainInteractor(
+class DictionaryOfWordsInteractor(
     private val remoteRepository: Repository<List<WordData>>,
     private val localRepository: Repository<List<WordData>>
 ) : Interactor<WordsState> {

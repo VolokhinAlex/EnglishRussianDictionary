@@ -27,7 +27,7 @@ class DictionaryOfWordsFragment : BaseFragment() {
 
     private val dictionaryOfWordsPresenter by lazy {
         DictionaryOfWordsPresenter(
-            mainInteractor = MainInteractor(
+            mainInteractor = DictionaryOfWordsInteractor(
                 remoteRepository = DictionaryOfWordsRepository(
                     DictionaryApiHolder
                 ), localRepository = DictionaryOfWordsRepository(DictionaryApiHolder)
