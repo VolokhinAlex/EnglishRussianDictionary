@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProfDev</string>
+    <string name="app_name">EnRuDictionary</string>
 
     <string name="error_textview_stub">Error</string>
     <string name="reload_button">Reload</string>

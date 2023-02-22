@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import com.volokhinaleksey.dictionaryofwords.presenter.Presenter
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 
-abstract class BaseFragment<T : WordsState> : Fragment(), BaseView {
+abstract class BaseFragment : Fragment(), BaseView {
 
-    protected var presenter: Presenter<T, BaseView>? = null
+    protected var presenter: Presenter<WordsState, BaseView>? = null
 
-    protected abstract fun createPresenter(): Presenter<T, BaseView>
+    protected abstract fun createPresenter(): Presenter<WordsState, BaseView>
 
     abstract override fun renderData(wordsState: WordsState)
 

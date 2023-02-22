@@ -18,7 +18,7 @@ import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.CoilImageLoader
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
-class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
+class DictionaryOfWordsFragment : BaseFragment() {
 
     private var _binding: FragmentDictionaryOfWordsBinding? = null
     private val binding: FragmentDictionaryOfWordsBinding get() = _binding!!
