@@ -2,30 +2,31 @@ package com.volokhinaleksey.dictionaryofwords.ui.base
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.volokhinaleksey.dictionaryofwords.presenter.Presenter
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
+import com.volokhinaleksey.dictionaryofwords.utils.AndroidNetworkStatus
+import com.volokhinaleksey.dictionaryofwords.utils.NetworkStatus
+import com.volokhinaleksey.dictionaryofwords.viewmodel.BaseViewModel
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-abstract class BaseFragment : Fragment(), BaseView {
+abstract class BaseFragment<T : WordsState> : Fragment() {
+    abstract val viewModel: BaseViewModel<T>
+    abstract fun renderData(wordsState: WordsState)
+    protected var isNetworkAvailable: Boolean = false
+    private var networkStatus: NetworkStatus? = null
 
-    protected var presenter: Presenter<WordsState, BaseView>? = null
-
-    protected abstract fun createPresenter(): Presenter<WordsState, BaseView>
-
-    abstract override fun renderData(wordsState: WordsState)
+    protected val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = createPresenter()
+        //isNetworkAvailable = isNetworkAvailable(requireContext())
+        networkStatus = AndroidNetworkStatus(requireContext())
+        networkStatus?.isNetworkAvailable()?.subscribe {
+            isNetworkAvailable = it
+        }?.let { compositeDisposable.add(it) }
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter?.viewAttach(this)
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
     }
-
-    override fun onStop() {
-        super.onStop()
-        presenter?.viewDestroy(this)
-    }
-
 }

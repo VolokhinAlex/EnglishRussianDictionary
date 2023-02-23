@@ -1,4 +1,4 @@
-package com.volokhinaleksey.dictionaryofwords.presenter
+package com.volokhinaleksey.dictionaryofwords.interactor
 
 import io.reactivex.rxjava3.core.Observable
 

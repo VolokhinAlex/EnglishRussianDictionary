@@ -5,6 +5,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface Repository<T : Any> {
 
-    fun getWordsData(word: String): Observable<T>
+    fun getWordsData(word: String, isRemoteSource: Boolean): Observable<T>
 
 }
