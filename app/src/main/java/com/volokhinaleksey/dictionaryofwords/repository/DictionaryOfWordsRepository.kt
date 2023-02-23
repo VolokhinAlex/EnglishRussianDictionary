@@ -1,20 +1,24 @@
 package com.volokhinaleksey.dictionaryofwords.repository
 
+import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
+import com.volokhinaleksey.dictionaryofwords.di.LOCAL_SOURCE
+import com.volokhinaleksey.dictionaryofwords.di.REMOTE_SOURCE
 import com.volokhinaleksey.dictionaryofwords.model.WordData
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
+import javax.inject.Named
 
 
 class DictionaryOfWordsRepository @Inject constructor(
-    private val apiHolder: ApiHolder
+    @Named(REMOTE_SOURCE) private val remoteDataSource: DictionaryDataSource,
+    @Named(LOCAL_SOURCE) private val localDataSource: DictionaryDataSource
 ) : Repository<List<@JvmSuppressWildcards WordData>> {
 
     override fun getWordsData(word: String, isRemoteSource: Boolean): Observable<List<WordData>> {
         return if (isRemoteSource) {
-            apiHolder.apiService.getWordsBySearch(wordToSearch = word)
+            remoteDataSource.getWordsData(word = word)
         } else {
-            // Local Source
-            apiHolder.apiService.getWordsBySearch(wordToSearch = word)
+            localDataSource.getWordsData(word = word)
         }
     }
 
