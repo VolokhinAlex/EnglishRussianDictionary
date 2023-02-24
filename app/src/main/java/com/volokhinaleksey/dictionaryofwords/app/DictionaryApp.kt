@@ -1,26 +1,19 @@
 package com.volokhinaleksey.dictionaryofwords.app
 
 import android.app.Application
-import com.volokhinaleksey.dictionaryofwords.di.component.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import com.volokhinaleksey.dictionaryofwords.di.dictionaryOfWordsScreen
+import com.volokhinaleksey.dictionaryofwords.di.networkModule
+import com.volokhinaleksey.dictionaryofwords.di.repositoryModule
+import org.koin.core.context.startKoin
 
-class DictionaryApp : Application(), HasAndroidInjector {
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+class DictionaryApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder()
-            .application(this)
-            .build()
-            .inject(this)
+        startKoin {
+            modules(listOf(repositoryModule, networkModule, dictionaryOfWordsScreen))
+        }
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
 
 }

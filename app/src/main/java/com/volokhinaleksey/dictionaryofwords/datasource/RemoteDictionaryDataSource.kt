@@ -2,14 +2,12 @@ package com.volokhinaleksey.dictionaryofwords.datasource
 
 import com.volokhinaleksey.dictionaryofwords.model.WordData
 import com.volokhinaleksey.dictionaryofwords.repository.ApiHolder
-import io.reactivex.rxjava3.core.Observable
-import javax.inject.Inject
 
-class RemoteDictionaryDataSource @Inject constructor(
+class RemoteDictionaryDataSource (
     private val apiHolder: ApiHolder
 ) : DictionaryDataSource {
 
-    override fun getWordsData(word: String): Observable<List<WordData>> {
+    override suspend fun getWordsData(word: String): List<WordData> {
         return apiHolder.apiService.getWordsBySearch(wordToSearch = word)
     }
 
