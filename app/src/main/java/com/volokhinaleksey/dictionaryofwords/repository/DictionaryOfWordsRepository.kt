@@ -4,7 +4,7 @@ import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
 import com.volokhinaleksey.dictionaryofwords.model.WordData
 
 
-class DictionaryOfWordsRepository (
+class DictionaryOfWordsRepository(
     private val remoteDataSource: DictionaryDataSource,
     private val localDataSource: DictionaryDataSource
 ) : Repository<List<@JvmSuppressWildcards WordData>> {

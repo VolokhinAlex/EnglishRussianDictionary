@@ -25,7 +25,7 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     private var schedulers: SchedulersProvider = SchedulersProviderImpl()
 
-    private val imageLoader:ImageLoader<ImageView> by inject()
+    private val imageLoader: ImageLoader<ImageView> by inject()
 
     private val dictionaryOfWordsAdapter: DictionaryOfWordsAdapter by lazy {
         DictionaryOfWordsAdapter(imageLoader = imageLoader)

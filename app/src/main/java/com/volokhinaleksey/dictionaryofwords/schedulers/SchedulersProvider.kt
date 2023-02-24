@@ -12,7 +12,7 @@ interface SchedulersProvider {
 
 }
 
-class SchedulersProviderImpl  : SchedulersProvider {
+class SchedulersProviderImpl : SchedulersProvider {
 
     override fun mainThread(): Scheduler = AndroidSchedulers.mainThread()
 

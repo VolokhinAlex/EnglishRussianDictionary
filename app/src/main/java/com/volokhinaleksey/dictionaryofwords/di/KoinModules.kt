@@ -17,10 +17,10 @@ import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 val repositoryModule = module {
@@ -56,8 +56,7 @@ val networkModule = module {
 
     single<ApiService> {
         Retrofit.Builder()
-            .baseUrl("https://dictionary.skyeng.ru/api/public/v1/" )
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .baseUrl("https://dictionary.skyeng.ru/api/public/v1/")
             .addConverterFactory(GsonConverterFactory.create(get()))
             .client(get())
             .build()
@@ -66,9 +65,7 @@ val networkModule = module {
 }
 
 val dictionaryOfWordsScreen = module {
-    factory<Interactor<WordsState>> {
-        DictionaryOfWordsInteractor(get())
-    }
-    factory { DictionaryOfWordsViewModel(get()) }
+    factory<Interactor<WordsState>> { DictionaryOfWordsInteractor(get()) }
+    viewModel { DictionaryOfWordsViewModel(get()) }
     factory<ImageLoader<ImageView>> { CoilImageLoader() }
 }

@@ -4,7 +4,7 @@ import com.volokhinaleksey.dictionaryofwords.model.WordData
 import com.volokhinaleksey.dictionaryofwords.repository.Repository
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 
-class DictionaryOfWordsInteractor (
+class DictionaryOfWordsInteractor(
     private val repository: Repository<List<WordData>>
 ) : Interactor<WordsState> {
 

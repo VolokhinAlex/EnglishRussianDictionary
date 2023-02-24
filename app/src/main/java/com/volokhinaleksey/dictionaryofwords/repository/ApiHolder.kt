@@ -12,4 +12,4 @@ interface ApiHolder {
  * Implementation of an interface for working with a remote API using Retrofit.
  */
 
-class DictionaryApiHolder (override val apiService: ApiService) : ApiHolder
+class DictionaryApiHolder(override val apiService: ApiService) : ApiHolder
