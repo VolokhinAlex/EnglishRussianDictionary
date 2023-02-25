@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/dictionaryOfWordsFragment"
         android:enabled="true"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
 
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/favoriteWordsFragment"
         android:enabled="true"
         android:icon="@drawable/baseline_favorite_24"
         android:title="@string/favorite" />
 
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/historySearchFragment"
         android:enabled="true"
         android:icon="@drawable/baseline_history_24"
         android:title="@string/history" />

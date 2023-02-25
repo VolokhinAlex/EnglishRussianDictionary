@@ -10,7 +10,11 @@ import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
 import com.volokhinaleksey.dictionaryofwords.model.WordData
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 
-class DictionaryOfWordsAdapter(private val imageLoader: ImageLoader<ImageView>) :
+class DictionaryOfWordsAdapter(
+    private val imageLoader: ImageLoader<ImageView>,
+    private val onSoundClickListener: (String) -> Unit,
+    private val onItemClickListener: (WordData) -> Unit
+) :
     ListAdapter<WordData, DictionaryOfWordsAdapter.ViewHolder>(DictionaryOfWordsCallback) {
 
     inner class ViewHolder(private val binding: ItemWordBinding) :
@@ -27,12 +31,25 @@ class DictionaryOfWordsAdapter(private val imageLoader: ImageLoader<ImageView>) 
                     target = binding.imageView
                 )
             }
+            binding.testButton.setOnClickListener {
+                onSoundClickListener(wordData.text.orEmpty())
+            }
         }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemWordBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        ViewHolder(
+            ItemWordBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        ).apply {
+            itemView.setOnClickListener {
+                onItemClickListener(currentList[layoutPosition])
+            }
+        }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])

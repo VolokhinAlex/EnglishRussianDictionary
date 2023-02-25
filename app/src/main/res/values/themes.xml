@@ -45,4 +45,13 @@
         <item name="android:background">@drawable/bottom_sheet_dialog_background</item>
     </style>
 
+    <style name="Theme.DictionaryOfWords.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.DictionaryOfWords.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.DictionaryOfWords.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

@@ -15,13 +15,15 @@
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_search">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_edit_text"
             style="@style/BaseEditTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
