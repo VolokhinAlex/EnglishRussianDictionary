@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.viewmodel
 
-import com.volokhinaleksey.dictionaryofwords.interactor.Interactor
+import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
  */
 
 class DictionaryOfWordsViewModel(
-    private val interactor: Interactor<WordsState>
+    private val interactor: SearchWordsInteractor<WordsState>
 ) : BaseViewModel<WordsState>() {
 
     /**

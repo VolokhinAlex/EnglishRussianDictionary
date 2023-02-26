@@ -13,7 +13,7 @@ import kotlinx.coroutines.cancel
  * The base class for all ViewModels, which includes the initial configuration to work with different methods.
  */
 
-abstract class BaseViewModel<T : WordsState> : ViewModel() {
+abstract class BaseViewModel<T : Any> : ViewModel() {
 
     protected val viewModelScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     protected val currentMutableData: MutableLiveData<T> = MutableLiveData()

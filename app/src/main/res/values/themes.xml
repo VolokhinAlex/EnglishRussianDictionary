@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.DictionaryOfWords" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.DictionaryOfWords" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -54,4 +54,11 @@
 
     <style name="Theme.DictionaryOfWords.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="SearchInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">30dp</item>
+        <item name="boxCornerRadiusTopEnd">30dp</item>
+        <item name="boxCornerRadiusBottomStart">30dp</item>
+        <item name="boxCornerRadiusTopStart">30dp</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
+    </style>
 </resources>

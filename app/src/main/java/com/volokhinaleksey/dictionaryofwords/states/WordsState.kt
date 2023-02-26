@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.states
 
-import com.volokhinaleksey.dictionaryofwords.model.WordData
+import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
 import com.volokhinaleksey.dictionaryofwords.states.WordsState.*
 
 /**
@@ -11,7 +11,7 @@ import com.volokhinaleksey.dictionaryofwords.states.WordsState.*
  */
 
 sealed class WordsState {
-    data class Success(val wordData: List<WordData>) : WordsState()
+    data class Success(val wordData: List<WordDTO>) : WordsState()
     data class Error(val error: Throwable) : WordsState()
     object Loading : WordsState()
 }
