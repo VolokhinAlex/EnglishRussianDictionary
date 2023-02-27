@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.SearchView.OnQueryTextListener
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jakewharton.rxbinding4.widget.textChanges
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentDictionaryOfWordsBinding
 import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProvider
 import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProviderImpl
@@ -17,14 +17,11 @@ import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     private var _binding: FragmentDictionaryOfWordsBinding? = null
     private val binding: FragmentDictionaryOfWordsBinding get() = _binding!!
-
-    private var schedulers: SchedulersProvider = SchedulersProviderImpl()
 
     private val imageLoader: ImageLoader<ImageView> by inject()
 
@@ -46,21 +43,15 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         binding.wordsList.layoutManager = LinearLayoutManager(requireContext())
         binding.wordsList.adapter = dictionaryOfWordsAdapter
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(it) }
-        compositeDisposable.add(
-            binding.searchEditText
-                .textChanges()
-                .subscribeOn(schedulers.io())
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .observeOn(schedulers.mainThread())
-                .subscribe {
-                    if (it.isNotEmpty()) {
-                        viewModel.getWordMeanings(
-                            word = it.toString(),
-                            isOnline = isNetworkAvailable
-                        )
-                    }
-                }
-        )
+
+        binding.searchEditText.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { viewModel.searching(it, isNetworkAvailable) }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = true
+        })
         return binding.root
     }
 

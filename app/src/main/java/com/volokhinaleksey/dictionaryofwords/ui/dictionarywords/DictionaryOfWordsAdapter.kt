@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
 import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
+import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
 
 class DictionaryOfWordsAdapter(
     private val imageLoader: ImageLoader<ImageView>,
@@ -21,8 +22,7 @@ class DictionaryOfWordsAdapter(
 
         fun bind(wordData: WordDTO) {
             binding.word.text = wordData.text
-            binding.descriptionWord.text =
-                wordData.meanings?.firstOrNull()?.translation?.translation
+            binding.descriptionWord.text = wordData.meanings?.let { convertMeaningsToString(it) }
             val imageUrl = wordData.meanings?.firstOrNull()?.imageUrl
             if (imageUrl != null && imageUrl.isNotEmpty()) {
                 imageLoader.loadImage(
