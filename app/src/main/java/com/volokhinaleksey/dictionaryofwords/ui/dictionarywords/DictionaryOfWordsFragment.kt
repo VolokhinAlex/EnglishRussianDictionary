@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.SearchView.OnQueryTextListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentDictionaryOfWordsBinding
-import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProvider
-import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProviderImpl
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
+import com.volokhinaleksey.dictionaryofwords.ui.textChanges
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,6 +37,7 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     override val viewModel: DictionaryOfWordsViewModel by viewModel()
 
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,15 +46,19 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         binding.wordsList.layoutManager = LinearLayoutManager(requireContext())
         binding.wordsList.adapter = dictionaryOfWordsAdapter
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(it) }
-
-        binding.searchEditText.setOnQueryTextListener(object : OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { viewModel.searching(it, isNetworkAvailable) }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean = true
-        })
+        binding.searchEditText
+            .textChanges()
+            .filterNot { it.isNullOrBlank() }
+            .debounce(500)
+            .distinctUntilChanged()
+            .onEach {
+                networkStatus?.isNetworkAvailable()?.collect {
+                    viewModel.getWordMeanings(
+                        word = it.toString(),
+                        isOnline = it
+                    )
+                }
+            }.launchIn(lifecycleScope)
         return binding.root
     }
 

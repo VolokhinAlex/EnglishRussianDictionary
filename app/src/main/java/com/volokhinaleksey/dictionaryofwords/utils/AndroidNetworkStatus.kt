@@ -5,34 +5,36 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import androidx.core.content.getSystemService
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class AndroidNetworkStatus(context: Context) : NetworkStatus {
-    private val statusSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
-    init {
-        statusSubject.onNext(false)
+    private val connectivityManager = context.getSystemService<ConnectivityManager>()
 
-        val connectivityManager = context.getSystemService<ConnectivityManager>()
+    override fun isNetworkAvailable(): Flow<Boolean> = callbackFlow {
         val request = NetworkRequest.Builder().build()
-        connectivityManager?.registerNetworkCallback(
-            request,
-            object : ConnectivityManager.NetworkCallback() {
-                override fun onAvailable(network: Network) {
-                    statusSubject.onNext(true)
-                }
+        val callback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                launch { send(true) }
+            }
 
-                override fun onUnavailable() {
-                    statusSubject.onNext(false)
-                }
+            override fun onUnavailable() {
+                launch { send(false) }
+            }
 
-                override fun onLost(network: Network) {
-                    statusSubject.onNext(false)
-                }
-            })
-    }
+            override fun onLost(network: Network) {
+                launch { send(false) }
+            }
+        }
 
-    override fun isNetworkAvailable(): Observable<Boolean> = statusSubject
+        connectivityManager?.registerNetworkCallback(request, callback)
+        awaitClose {
+            connectivityManager?.unregisterNetworkCallback(callback)
+        }
+    }.distinctUntilChanged()
 
 }

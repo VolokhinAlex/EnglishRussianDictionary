@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.utils
 
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Interface for getting information about the network
@@ -10,6 +10,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface NetworkStatus {
 
-    fun isNetworkAvailable() : Observable<Boolean>
+    fun isNetworkAvailable(): Flow<Boolean>
 
 }
