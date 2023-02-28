@@ -26,7 +26,16 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * A module for implementing dependencies for repositories and their data sources.
+ */
+
 val repositoryModule = module {
+
+    /**
+     * Dependency injection for SearchWordsRepositoryImpl()
+     */
+
     single<SearchWordsRepository> {
         SearchWordsRepositoryImpl(
             get(named(REMOTE_SOURCE)),
@@ -34,12 +43,25 @@ val repositoryModule = module {
         )
     }
 
+    /**
+     * Dependency injection for RemoteDictionaryDataSource()
+     */
+
     single<DictionaryDataSource>(named(REMOTE_SOURCE)) {
         RemoteDictionaryDataSource(get())
     }
+
+    /**
+     * Dependency injection for LocalDictionaryDataSource()
+     */
+
     single<DictionaryDataSource>(named(LOCAL_SOURCE)) {
         LocalDictionaryDataSource()
     }
+
+    /**
+     * Dependency injection for MeaningsRepository()
+     */
 
     single<MeaningsRepository> {
         MeaningsRepositoryImpl(
@@ -48,6 +70,10 @@ val repositoryModule = module {
         )
     }
 }
+
+/**
+ * Module for implementing dependencies for working with the network
+ */
 
 val networkModule = module {
     single<ApiHolder> { DictionaryApiHolder(get()) }
@@ -74,11 +100,19 @@ val networkModule = module {
     }
 }
 
+/**
+ * Module for embedding dependencies in the word search screen
+ */
+
 val dictionaryOfWordsScreen = module {
     factory<SearchWordsInteractor<WordsState>> { SearchWordsInteractorImpl(get()) }
     viewModel { DictionaryOfWordsViewModel(get()) }
     factory<ImageLoader<ImageView>> { CoilImageLoader() }
 }
+
+/**
+ * Module for embedding dependencies in the word details screen
+ */
 
 val wordDescriptionScreen = module {
     factory<WordDescriptionInteractor<MeaningsState>> {

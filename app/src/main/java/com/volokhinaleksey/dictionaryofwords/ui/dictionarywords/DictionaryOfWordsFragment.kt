@@ -16,7 +16,11 @@ import com.volokhinaleksey.dictionaryofwords.ui.textChanges
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -62,6 +66,10 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         return binding.root
     }
 
+    /**
+     * Method of processing states of the [WordsState] class coming from outside
+     */
+
     override fun renderData(state: WordsState) {
         when (state) {
             is WordsState.Error -> showViewOnError(error = state.error.localizedMessage.orEmpty())
@@ -74,12 +82,20 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         }
     }
 
+    /**
+     * Method for showing the loading status
+     */
+
     override fun showViewOnLoading() {
         binding.baseView.errorMessage.visibility = View.GONE
         binding.wordsList.visibility = View.GONE
         binding.baseView.reloadButton.visibility = View.GONE
         binding.baseView.progressBar.visibility = View.VISIBLE
     }
+
+    /**
+     * Method for showing the error status
+     */
 
     override fun showViewOnError(error: String) {
         binding.wordsList.visibility = View.GONE
@@ -88,6 +104,10 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         binding.baseView.reloadButton.visibility = View.VISIBLE
         binding.baseView.errorMessage.text = error
     }
+
+    /**
+     * Method for showing the success status
+     */
 
     override fun showViewOnSuccess() {
         binding.wordsList.visibility = View.VISIBLE

@@ -11,8 +11,16 @@ import com.volokhinaleksey.dictionaryofwords.model.remote.ExampleDTO
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseAdapter
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseViewHolder
 
+/**
+ * Adapter class for a list of examples of the use of a word in the text
+ */
+
 class WordExamplesAdapter :
     BaseAdapter<ExampleDTO, ItemExampleBinding, WordExamplesAdapter.ViewHolder>() {
+
+    /**
+     * ViewHolder for filling elements with data
+     */
 
     inner class ViewHolder(private val binding: ItemExampleBinding) :
         BaseViewHolder<ExampleDTO, ItemExampleBinding>(binding) {
@@ -33,6 +41,10 @@ class WordExamplesAdapter :
         }
 
     }
+
+    /**
+     * Method for creating a ViewHolder
+     */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

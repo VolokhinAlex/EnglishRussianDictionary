@@ -5,6 +5,7 @@ import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,8 +14,9 @@ import com.volokhinaleksey.dictionaryofwords.databinding.FragmentWordDescription
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
+import java.util.Locale
 
 class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnInitListener {
 
@@ -39,13 +41,21 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         textToSpeech = TextToSpeech(requireContext(), this)
         binding.backArrow.setOnClickListener { requireView().findNavController().popBackStack() }
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(state = it) }
-        viewModel.getMeanings(
-            meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
-            isOnline = isNetworkAvailable
-        )
+        viewModel.viewModelScope.launch {
+            networkStatus?.isNetworkAvailable()?.collect {
+                viewModel.getMeanings(
+                    meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
+                    isOnline = it
+                )
+            }
+        }
         initLists()
         return binding.root
     }
+
+    /**
+     * Method for initializing the list.
+     */
 
     private fun initLists() {
         binding.examplesList.adapter = wordExamplesAdapter
@@ -54,6 +64,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.similarTranslation.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
     }
+
+    /**
+     * A method for initializing a Text To Speech object in which initial parameters are set during creation
+     */
 
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
@@ -66,6 +80,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
             error("Some mistake has occurred")
         }
     }
+
+    /**
+     * Method of processing states of the [MeaningsState] class coming from outside
+     */
 
     override fun renderData(state: MeaningsState) {
         when (state) {
@@ -91,6 +109,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         }
     }
 
+    /**
+     * Method for showing the loading status
+     */
+
     override fun showViewOnLoading() {
         binding.baseView.errorMessage.visibility = View.GONE
         binding.appBar.visibility = View.GONE
@@ -98,6 +120,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.baseView.reloadButton.visibility = View.GONE
         binding.baseView.progressBar.visibility = View.VISIBLE
     }
+
+    /**
+     * Method for showing the error status
+     */
 
     override fun showViewOnError(error: String) {
         binding.appBar.visibility = View.GONE
@@ -107,6 +133,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.baseView.reloadButton.visibility = View.VISIBLE
         binding.baseView.errorMessage.text = error
     }
+
+    /**
+     * Method for showing the success status
+     */
 
     override fun showViewOnSuccess() {
         binding.appBar.visibility = View.VISIBLE

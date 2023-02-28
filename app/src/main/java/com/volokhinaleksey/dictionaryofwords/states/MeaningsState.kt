@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.states
 
-import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningsDataDTO
+import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState.*
 
 /**
@@ -11,7 +11,7 @@ import com.volokhinaleksey.dictionaryofwords.states.MeaningsState.*
  */
 
 sealed class MeaningsState {
-    data class Success(val wordData: List<MeaningsDataDTO>) : MeaningsState()
+    data class Success(val wordData: List<MeaningDTO>) : MeaningsState()
     data class Error(val error: Throwable) : MeaningsState()
     object Loading : MeaningsState()
 }

@@ -20,6 +20,10 @@ abstract class BaseViewModel<T : Any> : ViewModel() {
 
     val currentData: LiveData<T> = currentMutableData.asLiveData()
 
+    /**
+     * This method will be called when this ViewModel is no longer used and will be destroyed.
+     */
+
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()

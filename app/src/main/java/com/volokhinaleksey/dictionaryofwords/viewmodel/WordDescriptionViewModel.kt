@@ -5,9 +5,19 @@ import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for more information about the word for the details screen
+ */
+
 class WordDescriptionViewModel(
     private val interactor: WordDescriptionInteractor<MeaningsState>
 ) : BaseViewModel<MeaningsState>() {
+
+    /**
+     * Method for getting a list of word meanings
+     * @param meaningId - Id of the word meaning
+     * @param isOnline - Boolean value for determining network availability
+     */
 
     fun getMeanings(meaningId: Long, isOnline: Boolean) {
         viewModelScope.launch {

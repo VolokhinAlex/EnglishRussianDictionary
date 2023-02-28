@@ -11,11 +11,18 @@ import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
 
+/**
+ * Adapter class for creating a list of words obtained.
+ */
+
 class DictionaryOfWordsAdapter(
     private val imageLoader: ImageLoader<ImageView>,
     private val onItemClickListener: (WordDTO) -> Unit
-) :
-    ListAdapter<WordDTO, DictionaryOfWordsAdapter.ViewHolder>(DictionaryOfWordsCallback) {
+) : ListAdapter<WordDTO, DictionaryOfWordsAdapter.ViewHolder>(DictionaryOfWordsCallback) {
+
+    /**
+     * ViewHolder for filling elements with data
+     */
 
     inner class ViewHolder(private val binding: ItemWordBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -24,7 +31,7 @@ class DictionaryOfWordsAdapter(
             binding.word.text = wordData.text
             binding.descriptionWord.text = wordData.meanings?.let { convertMeaningsToString(it) }
             val imageUrl = wordData.meanings?.firstOrNull()?.imageUrl
-            if (imageUrl != null && imageUrl.isNotEmpty()) {
+            if (!imageUrl.isNullOrEmpty()) {
                 imageLoader.loadImage(
                     url = imageUrl.substring(imageUrl.indexOf("https")),
                     target = binding.imageView
@@ -33,6 +40,10 @@ class DictionaryOfWordsAdapter(
         }
 
     }
+
+    /**
+     * Method for creating a ViewHolder
+     */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -47,11 +58,20 @@ class DictionaryOfWordsAdapter(
             }
         }
 
+    /**
+     * This method should determine the contents of the Recycler View.ViewHolder View
+     * to display the element in the specified position.
+     */
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
 }
+
+/**
+ * Object for defining Diffutils Callback for comparison conditions list.
+ */
 
 object DictionaryOfWordsCallback : DiffUtil.ItemCallback<WordDTO>() {
 
