@@ -14,7 +14,7 @@ private const val FAVORITE_WORD = 1
 interface FavoriteDao {
 
     @Query("SELECT * FROM favorite_table WHERE word_id = :wordId")
-    suspend fun getFavoriteWord(wordId: Long): FavoriteEntity
+    suspend fun getFavoriteWord(wordId: Long): FavoriteEntity?
 
     @Query("SELECT * FROM favorite_table WHERE favorite = $FAVORITE_WORD")
     suspend fun getFavoriteWords(): List<FavoriteEntity>

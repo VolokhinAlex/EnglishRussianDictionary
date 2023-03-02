@@ -1,6 +1,5 @@
 package com.volokhinaleksey.dictionaryofwords.datasource.description
 
-import com.volokhinaleksey.dictionaryofwords.model.local.FavoriteEntity
 import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 import com.volokhinaleksey.dictionaryofwords.room.database.DictionaryDatabase
@@ -18,6 +17,20 @@ class LocalDescriptionDataSourceImpl(
 
     override suspend fun saveFavoriteWord(favoriteWord: FavoriteWord) {
         database.favoriteDao().insert(mapFavoriteWordToFavoriteEntity(favoriteWord))
+    }
+
+    override suspend fun getFavoriteWordFlag(wordId: Long): FavoriteWord? {
+        val favoriteWord = database.favoriteDao().getFavoriteWord(wordId = wordId)
+        return favoriteWord?.let {
+            FavoriteWord(
+                wordId = favoriteWord.wordId,
+                word = favoriteWord.word,
+                isFavorite = favoriteWord.isFavorite,
+                meanings = mapMeaningsEntityToMeaningsList(
+                    database.meaningDao().getWordMeaningByWordId(wordId = favoriteWord.wordId)
+                )
+            )
+        }
     }
 
     /**

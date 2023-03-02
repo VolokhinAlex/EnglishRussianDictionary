@@ -173,7 +173,7 @@ val dictionaryOfWordsScreen = module {
  */
 
 val wordDescriptionScreen = module {
-    factory<WordDescriptionInteractor<MeaningsState>> {
+    factory<WordDescriptionInteractor> {
         WordDescriptionInteractorImpl(get())
     }
     viewModel { WordDescriptionViewModel(get()) }

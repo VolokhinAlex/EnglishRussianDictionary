@@ -18,4 +18,6 @@ interface MeaningsRepository {
     suspend fun getMeaningsData(meaningId: Long, isRemoteSource: Boolean): List<MeaningDTO>
 
     suspend fun saveFavoriteWord(word: FavoriteWord)
+
+    suspend fun getFavoriteWordFlag(wordId: Long): FavoriteWord?
 }

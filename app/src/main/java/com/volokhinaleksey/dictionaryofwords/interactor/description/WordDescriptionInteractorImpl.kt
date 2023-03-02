@@ -2,6 +2,7 @@ package com.volokhinaleksey.dictionaryofwords.interactor.description
 
 import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepository
+import com.volokhinaleksey.dictionaryofwords.states.FavoriteState
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 
 /**
@@ -11,7 +12,7 @@ import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 
 class WordDescriptionInteractorImpl(
     private val repository: MeaningsRepository
-) : WordDescriptionInteractor<MeaningsState> {
+) : WordDescriptionInteractor {
 
     /**
      * A method for getting the meanings of a word from some source
@@ -30,6 +31,15 @@ class WordDescriptionInteractorImpl(
 
     override suspend fun saveFavoriteWord(word: FavoriteWord) {
         repository.saveFavoriteWord(word = word)
+    }
+
+    override suspend fun getFavoriteWord(wordId: Long): FavoriteState {
+        val favoriteData = repository.getFavoriteWordFlag(wordId = wordId)
+        return if (favoriteData == null) {
+            FavoriteState.Success(emptyList())
+        } else {
+            FavoriteState.Success(listOf(favoriteData))
+        }
     }
 
 }

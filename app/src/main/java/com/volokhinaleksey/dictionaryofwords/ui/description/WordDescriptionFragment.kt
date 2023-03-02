@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentWordDescriptionBinding
 import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
+import com.volokhinaleksey.dictionaryofwords.states.FavoriteState
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
@@ -42,6 +43,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         textToSpeech = TextToSpeech(requireContext(), this)
         binding.backArrow.setOnClickListener { requireView().findNavController().popBackStack() }
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(state = it) }
+        viewModel.getFavoriteWord(wordId = wordData.wordData.id ?: 0)
+        viewModel.favoriteData.observe(viewLifecycleOwner) {
+            renderFavoriteData(state = it)
+        }
         binding.addFavorite.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveFavoriteWord(
                 word = FavoriteWord(
@@ -60,6 +65,29 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         }
         initLists()
         return binding.root
+    }
+
+    private fun renderFavoriteData(state: FavoriteState) {
+        when (state) {
+            is FavoriteState.Error -> showViewOnError(error = state.error.localizedMessage.orEmpty())
+            FavoriteState.Loading -> showViewOnLoading()
+            is FavoriteState.Success -> {
+                val data = state.favoriteWord
+                showViewOnSuccess()
+                if (data.isEmpty()) {
+                    viewModel.saveFavoriteWord(
+                        FavoriteWord(
+                            wordId = wordData.wordData.id ?: 0,
+                            word = wordData.wordData.text.orEmpty(),
+                            isFavorite = false,
+                            meanings = emptyList()
+                        )
+                    )
+                } else {
+                    binding.addFavorite.isChecked = data[0].isFavorite
+                }
+            }
+        }
     }
 
     /**

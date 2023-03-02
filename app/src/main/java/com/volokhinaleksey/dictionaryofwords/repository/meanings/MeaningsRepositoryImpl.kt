@@ -37,4 +37,8 @@ class MeaningsRepositoryImpl(
         localDataSource.saveFavoriteWord(favoriteWord = word)
     }
 
+    override suspend fun getFavoriteWordFlag(wordId: Long): FavoriteWord? {
+        return localDataSource.getFavoriteWordFlag(wordId = wordId)
+    }
+
 }
