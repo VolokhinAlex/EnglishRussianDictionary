@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.interactor.search
 
-import com.volokhinaleksey.dictionaryofwords.repository.SearchWordsRepository
+import com.volokhinaleksey.dictionaryofwords.repository.search.SearchWordsRepository
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 
 /**
@@ -19,14 +19,12 @@ class SearchWordsInteractorImpl(
      */
 
     override suspend fun getWordsData(word: String, isRemoteSource: Boolean): WordsState {
-        val wordsState = WordsState.Success(
+        return WordsState.Success(
             repository.getWordsData(
                 word = word,
                 isRemoteSource = isRemoteSource
             )
         )
-        repository.saveToDB(wordsState)
-        return wordsState
     }
 
 }

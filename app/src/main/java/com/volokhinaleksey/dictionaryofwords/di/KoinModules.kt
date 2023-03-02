@@ -5,9 +5,10 @@ import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.LocalDictionaryDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.RemoteDictionaryDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.description.DescriptionDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSourceImpl
+import com.volokhinaleksey.dictionaryofwords.datasource.description.RemoteDescriptionDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.history.HistoryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.history.LocalHistoryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSource
@@ -23,12 +24,12 @@ import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsIntera
 import com.volokhinaleksey.dictionaryofwords.repository.ApiHolder
 import com.volokhinaleksey.dictionaryofwords.repository.ApiService
 import com.volokhinaleksey.dictionaryofwords.repository.DictionaryApiHolder
-import com.volokhinaleksey.dictionaryofwords.repository.HistoryRepository
-import com.volokhinaleksey.dictionaryofwords.repository.HistoryRepositoryImpl
-import com.volokhinaleksey.dictionaryofwords.repository.MeaningsRepository
-import com.volokhinaleksey.dictionaryofwords.repository.MeaningsRepositoryImpl
-import com.volokhinaleksey.dictionaryofwords.repository.SearchWordsRepository
-import com.volokhinaleksey.dictionaryofwords.repository.SearchWordsRepositoryImpl
+import com.volokhinaleksey.dictionaryofwords.repository.history.HistoryRepository
+import com.volokhinaleksey.dictionaryofwords.repository.history.HistoryRepositoryImpl
+import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepository
+import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepositoryImpl
+import com.volokhinaleksey.dictionaryofwords.repository.search.SearchWordsRepository
+import com.volokhinaleksey.dictionaryofwords.repository.search.SearchWordsRepositoryImpl
 import com.volokhinaleksey.dictionaryofwords.room.database.DictionaryDatabase
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
@@ -40,7 +41,6 @@ import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -61,15 +61,6 @@ val databaseModule = module {
 
 val repositoryModule = module {
 
-    single<SearchDataSource> {
-        RemoteSearchDataSource(get())
-    }
-
-
-    single<LocalSearchDataSource> {
-        LocalSearchDataSourceImpl(get())
-    }
-
     /**
      * Dependency injection for SearchWordsRepositoryImpl()
      */
@@ -79,19 +70,27 @@ val repositoryModule = module {
     }
 
     /**
-     * Dependency injection for RemoteDictionaryDataSource()
+     * Dependency injection for RemoteSearchDataSource()
      */
 
-    single<DictionaryDataSource>(named(REMOTE_SOURCE)) {
-        RemoteDictionaryDataSource(get())
+    single<SearchDataSource> {
+        RemoteSearchDataSource(get())
     }
 
     /**
      * Dependency injection for LocalDictionaryDataSource()
      */
 
-    single<DictionaryDataSource>(named(LOCAL_SOURCE)) {
-        LocalDictionaryDataSource()
+    single<LocalSearchDataSource> {
+        LocalSearchDataSourceImpl(get())
+    }
+
+    single<LocalDescriptionDataSource> {
+        LocalDescriptionDataSourceImpl(get())
+    }
+
+    single<DescriptionDataSource> {
+        RemoteDescriptionDataSource(get())
     }
 
     /**
@@ -99,10 +98,7 @@ val repositoryModule = module {
      */
 
     single<MeaningsRepository> {
-        MeaningsRepositoryImpl(
-            get(named(REMOTE_SOURCE)),
-            get(named(LOCAL_SOURCE))
-        )
+        MeaningsRepositoryImpl(get(), get())
     }
 
     single<HistoryDataSource> {

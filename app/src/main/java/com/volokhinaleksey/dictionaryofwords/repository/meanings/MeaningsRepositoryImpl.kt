@@ -1,6 +1,7 @@
-package com.volokhinaleksey.dictionaryofwords.repository
+package com.volokhinaleksey.dictionaryofwords.repository.meanings
 
-import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.description.DescriptionDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSource
 import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 
 /**
@@ -8,8 +9,8 @@ import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
  */
 
 class MeaningsRepositoryImpl(
-    private val remoteDataSource: DictionaryDataSource,
-    private val localDataSource: DictionaryDataSource
+    private val remoteDataSource: DescriptionDataSource,
+    private val localDataSource: LocalDescriptionDataSource
 ) : MeaningsRepository {
 
     /**
@@ -23,7 +24,9 @@ class MeaningsRepositoryImpl(
         isRemoteSource: Boolean
     ): List<MeaningDTO> {
         return if (isRemoteSource) {
-            remoteDataSource.getMeaningsData(meaningId = meaningId)
+            val meaningsData = remoteDataSource.getMeaningsData(meaningId = meaningId)
+            localDataSource.saveWordToDB(meaningDTO = meaningsData)
+            meaningsData
         } else {
             localDataSource.getMeaningsData(meaningId = meaningId)
         }

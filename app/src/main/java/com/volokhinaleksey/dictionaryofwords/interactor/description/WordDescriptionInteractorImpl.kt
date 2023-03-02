@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.interactor.description
 
-import com.volokhinaleksey.dictionaryofwords.repository.MeaningsRepository
+import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepository
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 
 /**
@@ -19,12 +19,13 @@ class WordDescriptionInteractorImpl(
      */
 
     override suspend fun getMeaningsData(meaningId: Long, isRemoteSource: Boolean): MeaningsState {
-        return MeaningsState.Success(
+        val meaningsState = MeaningsState.Success(
             repository.getMeaningsData(
                 meaningId = meaningId,
                 isRemoteSource = isRemoteSource
             )
         )
+        return meaningsState
     }
 
 }

@@ -1,4 +1,4 @@
-package com.volokhinaleksey.dictionaryofwords.repository
+package com.volokhinaleksey.dictionaryofwords.repository.search
 
 import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.search.SearchDataSource
@@ -22,14 +22,12 @@ class SearchWordsRepositoryImpl(
 
     override suspend fun getWordsData(word: String, isRemoteSource: Boolean): List<WordDTO> {
         return if (isRemoteSource) {
-            remoteDataSource.getWordsData(word = word)
+            val wordsList = remoteDataSource.getWordsData(word = word)
+            localDataSource.saveWordToDB(wordsState = WordsState.Success(wordsList))
+            wordsList
         } else {
             localDataSource.getWordsData(word = word)
         }
-    }
-
-    override suspend fun saveToDB(wordState: WordsState) {
-        localDataSource.saveWordToDB(wordsState = wordState)
     }
 
 }

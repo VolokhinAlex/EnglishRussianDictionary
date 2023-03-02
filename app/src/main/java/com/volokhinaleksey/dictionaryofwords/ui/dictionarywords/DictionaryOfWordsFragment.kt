@@ -13,7 +13,6 @@ import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.ui.textChanges
-import com.volokhinaleksey.dictionaryofwords.utils.NetworkStatus
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -57,10 +56,7 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
             .onEach {
                 viewModel.getWordMeanings(
                     word = it.toString(),
-                    isOnline =  when (isNetworkAvailable) {
-                        NetworkStatus.Status.Available -> true
-                        else -> false
-                    }
+                    isOnline = isNetworkAvailable
                 )
             }.launchIn(lifecycleScope)
         return binding.root

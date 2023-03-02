@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.interactor.history
 
-import com.volokhinaleksey.dictionaryofwords.repository.HistoryRepository
+import com.volokhinaleksey.dictionaryofwords.repository.history.HistoryRepository
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 
 class HistoryInteractorImpl(

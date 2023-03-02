@@ -1,4 +1,4 @@
-package com.volokhinaleksey.dictionaryofwords.repository
+package com.volokhinaleksey.dictionaryofwords.repository.meanings
 
 import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 

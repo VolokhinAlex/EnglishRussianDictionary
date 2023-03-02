@@ -2,7 +2,6 @@ package com.volokhinaleksey.dictionaryofwords.ui.description
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentWordDescriptionBinding
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
-import com.volokhinaleksey.dictionaryofwords.utils.NetworkStatus
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,15 +42,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.backArrow.setOnClickListener { requireView().findNavController().popBackStack() }
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(state = it) }
         lifecycleScope.launch {
-            networkStatus.observe().collect {
-                viewModel.getMeanings(
-                    meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
-                    isOnline = when (it) {
-                        NetworkStatus.Status.Available -> true
-                        else -> false
-                    }
-                )
-            }
+            viewModel.getMeanings(
+                meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
+                isOnline = isNetworkAvailable
+            )
         }
         initLists()
         return binding.root
@@ -105,7 +98,8 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
                         "textToSpeech"
                     )
                 }
-                binding.word.text = meaningsData.text
+                binding.word.text =
+                    if (meaningsData.text.isNullOrBlank()) wordData.wordData.text else meaningsData.text
                 binding.transcription.text = meaningsData.transcription
                 binding.translation.text = meaningsData.translation?.translation
                 meaningsData.examples?.let { wordExamplesAdapter.submitList(it) }

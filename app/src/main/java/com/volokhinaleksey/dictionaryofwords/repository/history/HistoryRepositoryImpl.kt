@@ -1,4 +1,4 @@
-package com.volokhinaleksey.dictionaryofwords.repository
+package com.volokhinaleksey.dictionaryofwords.repository.history
 
 import com.volokhinaleksey.dictionaryofwords.datasource.history.HistoryDataSource
 import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
