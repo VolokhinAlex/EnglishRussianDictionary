@@ -2,6 +2,7 @@ package com.volokhinaleksey.dictionaryofwords.ui.description
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,13 +44,15 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.backArrow.setOnClickListener { requireView().findNavController().popBackStack() }
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(state = it) }
         lifecycleScope.launch {
-            viewModel.getMeanings(
-                meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
-                isOnline = when (isNetworkAvailable) {
-                    NetworkStatus.Status.Available -> true
-                    else -> false
-                }
-            )
+            networkStatus.observe().collect {
+                viewModel.getMeanings(
+                    meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
+                    isOnline = when (it) {
+                        NetworkStatus.Status.Available -> true
+                        else -> false
+                    }
+                )
+            }
         }
         initLists()
         return binding.root

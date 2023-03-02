@@ -1,6 +1,5 @@
 package com.volokhinaleksey.dictionaryofwords.ui.base
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.volokhinaleksey.dictionaryofwords.utils.AndroidNetworkStatus
@@ -27,7 +26,7 @@ abstract class BaseFragment<T : Any> : Fragment() {
     abstract fun renderData(state: T)
 
     protected var isNetworkAvailable: NetworkStatus.Status = NetworkStatus.Status.Unavailable
-    private val networkStatus: NetworkStatus by lazy {
+    protected val networkStatus: NetworkStatus by lazy {
         AndroidNetworkStatus(requireContext())
     }
 
@@ -49,8 +48,8 @@ abstract class BaseFragment<T : Any> : Fragment() {
 
     abstract fun showViewOnSuccess()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         lifecycleScope.launch {
             networkStatus.observe().collect {
                 isNetworkAvailable = it

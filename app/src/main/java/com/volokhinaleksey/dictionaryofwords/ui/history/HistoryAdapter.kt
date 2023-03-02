@@ -1,0 +1,49 @@
+package com.volokhinaleksey.dictionaryofwords.ui.history
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.ImageView
+import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
+import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
+import com.volokhinaleksey.dictionaryofwords.ui.base.BaseAdapter
+import com.volokhinaleksey.dictionaryofwords.ui.base.BaseViewHolder
+import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
+import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
+
+class HistoryAdapter(
+    private val imageLoader: ImageLoader<ImageView>,
+    private val onItemClickListener: (WordDTO) -> Unit
+) : BaseAdapter<WordDTO, ItemWordBinding, HistoryAdapter.ViewHolder>() {
+
+    inner class ViewHolder(private val binding: ItemWordBinding) :
+        BaseViewHolder<WordDTO, ItemWordBinding>(binding) {
+
+        override fun bind(data: WordDTO) {
+            binding.word.text = data.text
+            binding.descriptionWord.text = data.meanings?.let { convertMeaningsToString(it) }
+            val imageUrl = data.meanings?.firstOrNull()?.imageUrl
+            if (!imageUrl.isNullOrEmpty()) {
+                imageLoader.loadImage(
+                    url = imageUrl.substring(imageUrl.indexOf("https")),
+                    target = binding.imageView
+                )
+            }
+        }
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            ItemWordBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        ).apply {
+            itemView.setOnClickListener {
+                onItemClickListener(currentList[layoutPosition])
+            }
+        }
+    }
+
+}

@@ -1,15 +1,17 @@
 package com.volokhinaleksey.dictionaryofwords.repository
 
-import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.search.SearchDataSource
 import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
+import com.volokhinaleksey.dictionaryofwords.states.WordsState
 
 /**
  * Implementation of an interface for storing values obtained from some data source
  */
 
 class SearchWordsRepositoryImpl(
-    private val remoteDataSource: DictionaryDataSource,
-    private val localDataSource: DictionaryDataSource
+    private val remoteDataSource: SearchDataSource,
+    private val localDataSource: LocalSearchDataSource
 ) : SearchWordsRepository {
 
     /**
@@ -24,6 +26,10 @@ class SearchWordsRepositoryImpl(
         } else {
             localDataSource.getWordsData(word = word)
         }
+    }
+
+    override suspend fun saveToDB(wordState: WordsState) {
+        localDataSource.saveWordToDB(wordsState = wordState)
     }
 
 }

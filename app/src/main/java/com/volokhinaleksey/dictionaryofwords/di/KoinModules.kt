@@ -1,22 +1,41 @@
 package com.volokhinaleksey.dictionaryofwords.di
 
 import android.widget.ImageView
+import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.LocalDictionaryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.RemoteDictionaryDataSource
-import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractorImpl
+import com.volokhinaleksey.dictionaryofwords.datasource.history.HistoryDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.history.LocalHistoryDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSourceImpl
+import com.volokhinaleksey.dictionaryofwords.datasource.search.RemoteSearchDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.search.SearchDataSource
 import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractor
 import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractorImpl
-import com.volokhinaleksey.dictionaryofwords.repository.*
+import com.volokhinaleksey.dictionaryofwords.interactor.history.HistoryInteractor
+import com.volokhinaleksey.dictionaryofwords.interactor.history.HistoryInteractorImpl
+import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
+import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractorImpl
+import com.volokhinaleksey.dictionaryofwords.repository.ApiHolder
+import com.volokhinaleksey.dictionaryofwords.repository.ApiService
+import com.volokhinaleksey.dictionaryofwords.repository.DictionaryApiHolder
+import com.volokhinaleksey.dictionaryofwords.repository.HistoryRepository
+import com.volokhinaleksey.dictionaryofwords.repository.HistoryRepositoryImpl
+import com.volokhinaleksey.dictionaryofwords.repository.MeaningsRepository
+import com.volokhinaleksey.dictionaryofwords.repository.MeaningsRepositoryImpl
+import com.volokhinaleksey.dictionaryofwords.repository.SearchWordsRepository
+import com.volokhinaleksey.dictionaryofwords.repository.SearchWordsRepositoryImpl
+import com.volokhinaleksey.dictionaryofwords.room.database.DictionaryDatabase
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.CoilImageLoader
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
+import com.volokhinaleksey.dictionaryofwords.viewmodel.HistoryViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,21 +45,37 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+private const val DICTIONARY_DATABASE_NAME = "dictionary.db"
+
+val databaseModule = module {
+    single {
+        Room
+            .databaseBuilder(get(), DictionaryDatabase::class.java, DICTIONARY_DATABASE_NAME)
+            .build()
+    }
+}
+
 /**
  * A module for implementing dependencies for repositories and their data sources.
  */
 
 val repositoryModule = module {
 
+    single<SearchDataSource> {
+        RemoteSearchDataSource(get())
+    }
+
+
+    single<LocalSearchDataSource> {
+        LocalSearchDataSourceImpl(get())
+    }
+
     /**
      * Dependency injection for SearchWordsRepositoryImpl()
      */
 
     single<SearchWordsRepository> {
-        SearchWordsRepositoryImpl(
-            get(named(REMOTE_SOURCE)),
-            get(named(LOCAL_SOURCE))
-        )
+        SearchWordsRepositoryImpl(get(), get())
     }
 
     /**
@@ -68,6 +103,14 @@ val repositoryModule = module {
             get(named(REMOTE_SOURCE)),
             get(named(LOCAL_SOURCE))
         )
+    }
+
+    single<HistoryDataSource> {
+        LocalHistoryDataSource(get())
+    }
+
+    single<HistoryRepository> {
+        HistoryRepositoryImpl(get())
     }
 }
 
@@ -119,4 +162,12 @@ val wordDescriptionScreen = module {
         WordDescriptionInteractorImpl(get())
     }
     viewModel { WordDescriptionViewModel(get()) }
+}
+
+
+val historyScreen = module {
+    factory<HistoryInteractor<WordsState>> {
+        HistoryInteractorImpl(get())
+    }
+    viewModel { HistoryViewModel(get()) }
 }

@@ -8,9 +8,32 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#FF6750A4</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+<!-- Primary -  #FF6750A4
+     OnPrimary - #FFFFFFFF
+     OnSecondary - #FFE8DEF8
+     background - #FFFFFBFE
+     Secondary - #FF958DA5
+     Tertiary - #FFB58392
+     Surface - #FFFFFBFE
+     OnSurface - #FF1C1B1F
+     SecondaryContainer - #FFDCCCF7
+
+     Dark
+
+    Primary -  #FFD0BCFF
+     OnPrimary - #FF381E72
+     OnSecondary - #FF332D41
+     background - #FF1C1B1F
+     Secondary - #FFCCC2DC
+     Tertiary - #FFEFB8C8
+     Surface - #FFE6E1E5
+     OnSurface - #FFE6E1E5
+
+  -->
 
     <color name="color_error">#bf1e19</color>
     <color name="color_text_main">#66000014</color>

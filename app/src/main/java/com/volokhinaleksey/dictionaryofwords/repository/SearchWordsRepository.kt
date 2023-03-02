@@ -1,6 +1,7 @@
 package com.volokhinaleksey.dictionaryofwords.repository
 
 import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
+import com.volokhinaleksey.dictionaryofwords.states.WordsState
 
 /**
  * Interface for a repository of values obtained from some data source
@@ -16,4 +17,5 @@ interface SearchWordsRepository {
 
     suspend fun getWordsData(word: String, isRemoteSource: Boolean): List<WordDTO>
 
+    suspend fun saveToDB(wordState: WordsState)
 }

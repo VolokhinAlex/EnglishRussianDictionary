@@ -19,12 +19,14 @@ class SearchWordsInteractorImpl(
      */
 
     override suspend fun getWordsData(word: String, isRemoteSource: Boolean): WordsState {
-        return WordsState.Success(
+        val wordsState = WordsState.Success(
             repository.getWordsData(
                 word = word,
                 isRemoteSource = isRemoteSource
             )
         )
+        repository.saveToDB(wordsState)
+        return wordsState
     }
 
 }

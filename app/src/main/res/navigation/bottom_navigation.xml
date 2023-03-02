@@ -9,7 +9,11 @@
         android:id="@+id/historySearchFragment"
         android:name="com.volokhinaleksey.dictionaryofwords.ui.history.HistorySearchFragment"
         android:label="History"
-        tools:layout="@layout/fragment_history_search"/>
+        tools:layout="@layout/fragment_history_search">
+        <action
+            android:id="@+id/action_historySearchFragment_to_wordDescriptionFragment"
+            app:destination="@id/wordDescriptionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoriteWordsFragment"
