@@ -10,4 +10,8 @@ class FavoriteRepositoryImpl(
         return favoriteDataSource.getFavorites()
     }
 
+    override suspend fun deleteFavoriteWord(word: FavoriteWord) {
+        favoriteDataSource.deleteFavoriteWord(word = word)
+    }
+
 }

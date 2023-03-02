@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentFavoriteWordsBinding
+import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
 import com.volokhinaleksey.dictionaryofwords.states.FavoriteState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
@@ -87,9 +90,22 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
             is FavoriteState.Error -> showViewOnError(error = state.error.localizedMessage.orEmpty())
             FavoriteState.Loading -> showViewOnLoading()
             is FavoriteState.Success -> {
-                val words = state.favoriteWord
-                favoriteAdapter.submitList(words)
+                val favoriteWords = state.favoriteWord
+                favoriteAdapter.submitList(favoriteWords)
+                swipeToDeleteFavoriteWord(favoriteWords)
             }
         }
+    }
+
+    private fun swipeToDeleteFavoriteWord(favoriteWord: List<FavoriteWord>) {
+        val swipeToDirections = object : SwipeToDeleteCallback() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                viewModel.deleteFavoriteWord(FavoriteState.Success(listOf(favoriteWord[position])))
+                favoriteAdapter.removeItem(position)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeToDirections)
+        itemTouchHelper.attachToRecyclerView(binding.favoriteWordsList)
     }
 }

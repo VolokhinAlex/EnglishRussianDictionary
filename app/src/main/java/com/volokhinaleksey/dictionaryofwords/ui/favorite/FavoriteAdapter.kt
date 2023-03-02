@@ -2,6 +2,8 @@ package com.volokhinaleksey.dictionaryofwords.ui.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
 import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseAdapter
@@ -22,6 +24,11 @@ class FavoriteAdapter(
 
     }
 
+    fun removeItem(position: Int) {
+        currentList.removeAt(index = position)
+        notifyItemRemoved(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemWordBinding.inflate(
@@ -34,6 +41,26 @@ class FavoriteAdapter(
                 onItemClickListener(currentList[layoutPosition])
             }
         }
+    }
+
+}
+
+
+abstract class SwipeToDeleteCallback : ItemTouchHelper.Callback() {
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
+        val swipeFlag = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        return makeMovementFlags(0, swipeFlag)
+    }
+
+    override fun onMove(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
+        return false
     }
 
 }

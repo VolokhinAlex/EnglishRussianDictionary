@@ -16,7 +16,7 @@ abstract class BaseAdapter<T, V : ViewBinding, VH : BaseViewHolder<T, V>> :
      * List of list items
      */
 
-    protected var currentList: List<T> = emptyList()
+    protected var currentList: MutableList<T> = mutableListOf()
         private set
 
     /**
@@ -26,7 +26,7 @@ abstract class BaseAdapter<T, V : ViewBinding, VH : BaseViewHolder<T, V>> :
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(list: List<T>) {
-        currentList = list
+        currentList = list.toMutableList()
         notifyDataSetChanged()
     }
 

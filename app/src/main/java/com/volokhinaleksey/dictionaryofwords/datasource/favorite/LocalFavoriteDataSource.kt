@@ -1,5 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.datasource.favorite
 
+import com.volokhinaleksey.dictionaryofwords.model.local.FavoriteEntity
 import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.room.database.DictionaryDatabase
 import com.volokhinaleksey.dictionaryofwords.utils.mapMeaningsEntityToMeaningsList
@@ -20,4 +21,14 @@ class LocalFavoriteDataSource(
         }
     }
 
+    override suspend fun deleteFavoriteWord(word: FavoriteWord) {
+        database.favoriteDao().delete(mapFavoriteWordToFavoriteEntity(favoriteWord = word))
+    }
+
 }
+
+fun mapFavoriteWordToFavoriteEntity(favoriteWord: FavoriteWord): FavoriteEntity = FavoriteEntity(
+    wordId = favoriteWord.wordId,
+    isFavorite = favoriteWord.isFavorite,
+    word = favoriteWord.word
+)

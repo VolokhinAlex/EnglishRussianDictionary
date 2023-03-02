@@ -24,4 +24,10 @@ class FavoriteViewModel(
         }
     }
 
+    fun deleteFavoriteWord(favoriteState: FavoriteState) {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoriteInteractor.deleteFavoriteWord(state = favoriteState)
+        }
+    }
+
 }

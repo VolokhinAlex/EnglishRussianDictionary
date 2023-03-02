@@ -10,4 +10,14 @@ class FavoriteInteractorImpl(
         return FavoriteState.Success(favoriteRepository.getFavoritesData())
     }
 
+    override suspend fun deleteFavoriteWord(state: FavoriteState) {
+        when (state) {
+            is FavoriteState.Success -> {
+                favoriteRepository.deleteFavoriteWord(word = state.favoriteWord[0])
+            }
+
+            else -> Unit
+        }
+    }
+
 }

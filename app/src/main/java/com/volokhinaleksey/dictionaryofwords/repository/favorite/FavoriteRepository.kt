@@ -6,4 +6,6 @@ interface FavoriteRepository {
 
     suspend fun getFavoritesData(): List<FavoriteWord>
 
+    suspend fun deleteFavoriteWord(word: FavoriteWord)
+
 }
