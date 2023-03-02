@@ -2,6 +2,7 @@ package com.volokhinaleksey.dictionaryofwords.repository.meanings
 
 import com.volokhinaleksey.dictionaryofwords.datasource.description.DescriptionDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSource
+import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 
 /**
@@ -30,6 +31,10 @@ class MeaningsRepositoryImpl(
         } else {
             localDataSource.getMeaningsData(meaningId = meaningId)
         }
+    }
+
+    override suspend fun saveFavoriteWord(word: FavoriteWord) {
+        localDataSource.saveFavoriteWord(favoriteWord = word)
     }
 
 }

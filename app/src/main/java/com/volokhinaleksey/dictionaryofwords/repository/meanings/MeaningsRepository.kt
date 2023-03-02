@@ -1,5 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.repository.meanings
 
+import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 
 /**
@@ -16,4 +17,5 @@ interface MeaningsRepository {
 
     suspend fun getMeaningsData(meaningId: Long, isRemoteSource: Boolean): List<MeaningDTO>
 
+    suspend fun saveFavoriteWord(word: FavoriteWord)
 }

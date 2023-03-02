@@ -3,6 +3,7 @@ package com.volokhinaleksey.dictionaryofwords.app
 import android.app.Application
 import com.volokhinaleksey.dictionaryofwords.di.databaseModule
 import com.volokhinaleksey.dictionaryofwords.di.dictionaryOfWordsScreen
+import com.volokhinaleksey.dictionaryofwords.di.favoriteScreen
 import com.volokhinaleksey.dictionaryofwords.di.historyScreen
 import com.volokhinaleksey.dictionaryofwords.di.networkModule
 import com.volokhinaleksey.dictionaryofwords.di.repositoryModule
@@ -23,7 +24,8 @@ class DictionaryApp : Application() {
                     networkModule,
                     dictionaryOfWordsScreen,
                     wordDescriptionScreen,
-                    historyScreen
+                    historyScreen,
+                    favoriteScreen
                 )
             )
         }

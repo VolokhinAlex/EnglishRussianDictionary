@@ -1,5 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.interactor.description
 
+import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepository
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 
@@ -19,13 +20,16 @@ class WordDescriptionInteractorImpl(
      */
 
     override suspend fun getMeaningsData(meaningId: Long, isRemoteSource: Boolean): MeaningsState {
-        val meaningsState = MeaningsState.Success(
+        return MeaningsState.Success(
             repository.getMeaningsData(
                 meaningId = meaningId,
                 isRemoteSource = isRemoteSource
             )
         )
-        return meaningsState
+    }
+
+    override suspend fun saveFavoriteWord(word: FavoriteWord) {
+        repository.saveFavoriteWord(word = word)
     }
 
 }

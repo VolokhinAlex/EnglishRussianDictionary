@@ -19,7 +19,11 @@
         android:id="@+id/favoriteWordsFragment"
         android:name="com.volokhinaleksey.dictionaryofwords.ui.favorite.FavoriteWordsFragment"
         android:label="Favorite"
-        tools:layout="@layout/fragment_favorite_words"/>
+        tools:layout="@layout/fragment_favorite_words">
+        <action
+            android:id="@+id/action_favoriteWordsFragment_to_wordDescriptionFragment"
+            app:destination="@id/wordDescriptionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/dictionaryOfWordsFragment"

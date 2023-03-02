@@ -1,13 +1,14 @@
 package com.volokhinaleksey.dictionaryofwords.utils
 
+import com.volokhinaleksey.dictionaryofwords.model.local.FavoriteEntity
 import com.volokhinaleksey.dictionaryofwords.model.local.HistoryEntity
 import com.volokhinaleksey.dictionaryofwords.model.local.MeaningEntity
 import com.volokhinaleksey.dictionaryofwords.model.local.WordEntity
 import com.volokhinaleksey.dictionaryofwords.model.remote.DefinitionDTO
+import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 import com.volokhinaleksey.dictionaryofwords.model.remote.TranslationDTO
 import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
-import com.volokhinaleksey.dictionaryofwords.states.WordsState
 
 fun mapListWordDTOToListWordEntity(wordDTO: List<WordDTO>): List<WordEntity> = wordDTO.map {
     WordEntity(
@@ -65,3 +66,9 @@ fun mapListWordDTOToMeaningEntityList(
             definition = it.definition?.text.toString()
         )
     }
+
+fun mapFavoriteWordToFavoriteEntity(favoriteWord: FavoriteWord): FavoriteEntity = FavoriteEntity(
+    wordId = favoriteWord.wordId,
+    isFavorite = favoriteWord.isFavorite,
+    word = favoriteWord.word
+)

@@ -1,6 +1,7 @@
 package com.volokhinaleksey.dictionaryofwords.viewmodel
 
 import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractor
+import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +32,12 @@ class WordDescriptionViewModel(
                     currentMutableData.emit(MeaningsState.Error(exception))
                 }
             }
+        }
+    }
+
+    fun saveFavoriteWord(word: FavoriteWord) {
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.saveFavoriteWord(word = word)
         }
     }
 

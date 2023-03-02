@@ -9,6 +9,8 @@ import com.volokhinaleksey.dictionaryofwords.datasource.description.DescriptionD
 import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSourceImpl
 import com.volokhinaleksey.dictionaryofwords.datasource.description.RemoteDescriptionDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.favorite.FavoriteDataSource
+import com.volokhinaleksey.dictionaryofwords.datasource.favorite.LocalFavoriteDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.history.HistoryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.history.LocalHistoryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSource
@@ -17,6 +19,8 @@ import com.volokhinaleksey.dictionaryofwords.datasource.search.RemoteSearchDataS
 import com.volokhinaleksey.dictionaryofwords.datasource.search.SearchDataSource
 import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractor
 import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractorImpl
+import com.volokhinaleksey.dictionaryofwords.interactor.favorite.FavoriteInteractor
+import com.volokhinaleksey.dictionaryofwords.interactor.favorite.FavoriteInteractorImpl
 import com.volokhinaleksey.dictionaryofwords.interactor.history.HistoryInteractor
 import com.volokhinaleksey.dictionaryofwords.interactor.history.HistoryInteractorImpl
 import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
@@ -24,6 +28,8 @@ import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsIntera
 import com.volokhinaleksey.dictionaryofwords.repository.ApiHolder
 import com.volokhinaleksey.dictionaryofwords.repository.ApiService
 import com.volokhinaleksey.dictionaryofwords.repository.DictionaryApiHolder
+import com.volokhinaleksey.dictionaryofwords.repository.favorite.FavoriteRepository
+import com.volokhinaleksey.dictionaryofwords.repository.favorite.FavoriteRepositoryImpl
 import com.volokhinaleksey.dictionaryofwords.repository.history.HistoryRepository
 import com.volokhinaleksey.dictionaryofwords.repository.history.HistoryRepositoryImpl
 import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepository
@@ -36,6 +42,7 @@ import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.CoilImageLoader
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
+import com.volokhinaleksey.dictionaryofwords.viewmodel.FavoriteViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.HistoryViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import okhttp3.OkHttpClient
@@ -108,6 +115,18 @@ val repositoryModule = module {
     single<HistoryRepository> {
         HistoryRepositoryImpl(get())
     }
+
+    /**
+     * Favorite Screen
+     */
+
+    single<FavoriteDataSource> {
+        LocalFavoriteDataSource(get())
+    }
+
+    single<FavoriteRepository> {
+        FavoriteRepositoryImpl(get())
+    }
 }
 
 /**
@@ -166,4 +185,11 @@ val historyScreen = module {
         HistoryInteractorImpl(get())
     }
     viewModel { HistoryViewModel(get()) }
+}
+
+val favoriteScreen = module {
+    factory<FavoriteInteractor> {
+        FavoriteInteractorImpl(get())
+    }
+    viewModel { FavoriteViewModel(get()) }
 }

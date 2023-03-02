@@ -1,7 +1,10 @@
 package com.volokhinaleksey.dictionaryofwords.datasource.description
 
+import com.volokhinaleksey.dictionaryofwords.model.local.FavoriteEntity
+import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
 import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
 import com.volokhinaleksey.dictionaryofwords.room.database.DictionaryDatabase
+import com.volokhinaleksey.dictionaryofwords.utils.mapFavoriteWordToFavoriteEntity
 import com.volokhinaleksey.dictionaryofwords.utils.mapMeaningsEntityToMeaningsList
 import com.volokhinaleksey.dictionaryofwords.utils.mapMeaningsListToMeaningsEntity
 
@@ -11,6 +14,10 @@ class LocalDescriptionDataSourceImpl(
 
     override suspend fun saveWordToDB(meaningDTO: List<MeaningDTO>) {
         database.meaningDao().insert(mapMeaningsListToMeaningsEntity(meaningDTO))
+    }
+
+    override suspend fun saveFavoriteWord(favoriteWord: FavoriteWord) {
+        database.favoriteDao().insert(mapFavoriteWordToFavoriteEntity(favoriteWord))
     }
 
     /**
