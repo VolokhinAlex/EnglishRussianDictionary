@@ -2,9 +2,11 @@ package com.volokhinaleksey.dictionaryofwords.ui.base
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.volokhinaleksey.dictionaryofwords.utils.AndroidNetworkStatus
 import com.volokhinaleksey.dictionaryofwords.utils.NetworkStatus
 import com.volokhinaleksey.dictionaryofwords.viewmodel.BaseViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Fragment base class for creating your fragments based on it
@@ -24,7 +26,10 @@ abstract class BaseFragment<T : Any> : Fragment() {
 
     abstract fun renderData(state: T)
 
-    protected var networkStatus: NetworkStatus? = null
+    protected var isNetworkAvailable: NetworkStatus.Status = NetworkStatus.Status.Unavailable
+    private val networkStatus: NetworkStatus by lazy {
+        AndroidNetworkStatus(requireContext())
+    }
 
     /**
      * Method for showing the loading status
@@ -46,6 +51,10 @@ abstract class BaseFragment<T : Any> : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        networkStatus = AndroidNetworkStatus(requireContext())
+        lifecycleScope.launch {
+            networkStatus.observe().collect {
+                isNetworkAvailable = it
+            }
+        }
     }
 }

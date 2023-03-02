@@ -5,7 +5,7 @@ import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentWordDescriptionBinding
 import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
+import com.volokhinaleksey.dictionaryofwords.utils.NetworkStatus
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,13 +42,14 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         textToSpeech = TextToSpeech(requireContext(), this)
         binding.backArrow.setOnClickListener { requireView().findNavController().popBackStack() }
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(state = it) }
-        viewModel.viewModelScope.launch {
-            networkStatus?.isNetworkAvailable()?.collect {
-                viewModel.getMeanings(
-                    meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
-                    isOnline = it
-                )
-            }
+        lifecycleScope.launch {
+            viewModel.getMeanings(
+                meaningId = wordData.wordData.meanings?.get(0)?.id ?: 0,
+                isOnline = when (isNetworkAvailable) {
+                    NetworkStatus.Status.Available -> true
+                    else -> false
+                }
+            )
         }
         initLists()
         return binding.root

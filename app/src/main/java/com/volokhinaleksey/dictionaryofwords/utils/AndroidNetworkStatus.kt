@@ -20,26 +20,35 @@ class AndroidNetworkStatus(context: Context) : NetworkStatus {
 
     private val connectivityManager = context.getSystemService<ConnectivityManager>()
 
-    override fun isNetworkAvailable(): Flow<Boolean> = callbackFlow {
-        val request = NetworkRequest.Builder().build()
-        val callback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                launch { send(true) }
+    override fun observe(): Flow<NetworkStatus.Status> {
+        return callbackFlow {
+            val callback = object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    super.onAvailable(network)
+                    launch { send(NetworkStatus.Status.Available) }
+                }
+
+                override fun onLosing(network: Network, maxMsToLive: Int) {
+                    super.onLosing(network, maxMsToLive)
+                    launch { send(NetworkStatus.Status.Losing) }
+                }
+
+                override fun onLost(network: Network) {
+                    super.onLost(network)
+                    launch { send(NetworkStatus.Status.Lost) }
+                }
+
+                override fun onUnavailable() {
+                    super.onUnavailable()
+                    launch { send(NetworkStatus.Status.Unavailable) }
+                }
             }
 
-            override fun onUnavailable() {
-                launch { send(false) }
+            connectivityManager?.registerDefaultNetworkCallback(callback)
+            awaitClose {
+                connectivityManager?.unregisterNetworkCallback(callback)
             }
-
-            override fun onLost(network: Network) {
-                launch { send(false) }
-            }
-        }
-
-        connectivityManager?.registerNetworkCallback(request, callback)
-        awaitClose {
-            connectivityManager?.unregisterNetworkCallback(callback)
-        }
-    }.distinctUntilChanged()
+        }.distinctUntilChanged()
+    }
 
 }

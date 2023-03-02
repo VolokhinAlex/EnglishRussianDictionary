@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface NetworkStatus {
 
-    fun isNetworkAvailable(): Flow<Boolean>
+    fun observe(): Flow<Status>
 
+    enum class Status {
+        Available, Unavailable, Losing, Lost
+    }
 }
