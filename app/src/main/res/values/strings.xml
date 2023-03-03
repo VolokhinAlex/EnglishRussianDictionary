@@ -10,4 +10,6 @@
     <string name="delete_description">X</string>
     <string name="search">Search</string>
     <string name="word_image">Word Image</string>
+    <string name="history">History</string>
+    <string name="favorite">Favorite</string>
 </resources>

@@ -5,45 +5,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentDictionaryOfWordsBinding
 import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProvider
+import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProviderImpl
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
-import dagger.android.support.AndroidSupportInjection
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     private var _binding: FragmentDictionaryOfWordsBinding? = null
     private val binding: FragmentDictionaryOfWordsBinding get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private var schedulers: SchedulersProvider = SchedulersProviderImpl()
 
-    @Inject
-    lateinit var schedulers: SchedulersProvider
-
-    @Inject
-    lateinit var imageLoader: ImageLoader<ImageView>
+    private val imageLoader: ImageLoader<ImageView> by inject()
 
     private val dictionaryOfWordsAdapter: DictionaryOfWordsAdapter by lazy {
         DictionaryOfWordsAdapter(imageLoader = imageLoader)
     }
 
-    override val viewModel: DictionaryOfWordsViewModel by lazy {
-        viewModelFactory.create(DictionaryOfWordsViewModel::class.java)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
-        super.onCreate(savedInstanceState)
-    }
+    override val viewModel: DictionaryOfWordsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

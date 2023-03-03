@@ -1,7 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.repository
 
 import com.volokhinaleksey.dictionaryofwords.model.WordData
-import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,6 +16,6 @@ interface ApiService {
      */
 
     @GET("words/search")
-    fun getWordsBySearch(@Query("search") wordToSearch: String): Observable<List<WordData>>
+    suspend fun getWordsBySearch(@Query("search") wordToSearch: String): List<WordData>
 
 }

@@ -4,17 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+
+/**
+ * The base class for all ViewModels, which includes the initial configuration to work with different methods.
+ */
 
 abstract class BaseViewModel<T : WordsState> : ViewModel() {
 
+    protected val viewModelScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     protected val currentMutableData: MutableLiveData<T> = MutableLiveData()
-    protected val compositeDisposable = CompositeDisposable()
 
     val currentData: LiveData<T> get() = currentMutableData
 
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.clear()
+        viewModelScope.cancel()
     }
 }

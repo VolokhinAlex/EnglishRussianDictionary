@@ -3,7 +3,6 @@ package com.volokhinaleksey.dictionaryofwords.schedulers
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
-import javax.inject.Inject
 
 interface SchedulersProvider {
 
@@ -13,7 +12,7 @@ interface SchedulersProvider {
 
 }
 
-class SchedulersProviderImpl @Inject constructor() : SchedulersProvider {
+class SchedulersProviderImpl : SchedulersProvider {
 
     override fun mainThread(): Scheduler = AndroidSchedulers.mainThread()
 
