@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentHistorySearchBinding
-import com.volokhinaleksey.dictionaryofwords.states.WordsState
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.HistoryViewModel
+import com.volokhinaleksey.models.states.WordsState
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class HistorySearchFragment : BaseFragment<WordsState>() {
 

@@ -3,12 +3,13 @@ package com.volokhinaleksey.dictionaryofwords.ui.history
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.volokhinaleksey.core.ui.base.BaseAdapter
+import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
-import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseAdapter
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseViewHolder
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
+import com.volokhinaleksey.models.remote.WordDTO
+
 
 class HistoryAdapter(
     private val imageLoader: ImageLoader<ImageView>,

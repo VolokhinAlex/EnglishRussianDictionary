@@ -9,8 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentDictionaryOfWordsBinding
-import com.volokhinaleksey.dictionaryofwords.states.WordsState
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
+import com.volokhinaleksey.models.states.WordsState
+import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.ui.textChanges
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel

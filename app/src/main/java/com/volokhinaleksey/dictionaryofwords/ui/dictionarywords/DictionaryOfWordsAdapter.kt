@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
-import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
+import com.volokhinaleksey.models.remote.WordDTO
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
 

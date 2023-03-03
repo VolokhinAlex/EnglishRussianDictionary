@@ -10,11 +10,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.volokhinaleksey.models.states.FavoriteState
+import com.volokhinaleksey.models.states.MeaningsState
+import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentWordDescriptionBinding
-import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
-import com.volokhinaleksey.dictionaryofwords.states.FavoriteState
-import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,7 +48,7 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         }
         binding.addFavorite.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveFavoriteWord(
-                word = FavoriteWord(
+                word = com.volokhinaleksey.models.remote.FavoriteWord(
                     wordId = wordData.wordData.id ?: 0,
                     word = wordData.wordData.text.orEmpty(),
                     isFavorite = isChecked,
@@ -76,7 +75,7 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
                 showViewOnSuccess()
                 if (data.isEmpty()) {
                     viewModel.saveFavoriteWord(
-                        FavoriteWord(
+                        com.volokhinaleksey.models.remote.FavoriteWord(
                             wordId = wordData.wordData.id ?: 0,
                             word = wordData.wordData.text.orEmpty(),
                             isFavorite = false,
@@ -113,8 +112,6 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
             ) {
                 error("This language is not supported")
             }
-        } else {
-            error("Some mistake has occurred")
         }
     }
 

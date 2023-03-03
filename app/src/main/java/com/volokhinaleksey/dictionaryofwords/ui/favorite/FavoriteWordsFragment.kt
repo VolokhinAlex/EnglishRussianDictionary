@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentFavoriteWordsBinding
-import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
-import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
-import com.volokhinaleksey.dictionaryofwords.states.FavoriteState
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
+import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.remote.WordDTO
+import com.volokhinaleksey.models.states.FavoriteState
+import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.viewmodel.FavoriteViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

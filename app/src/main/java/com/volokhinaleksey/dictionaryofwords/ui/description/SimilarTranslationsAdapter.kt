@@ -2,10 +2,10 @@ package com.volokhinaleksey.dictionaryofwords.ui.description
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.volokhinaleksey.core.ui.base.BaseAdapter
+import com.volokhinaleksey.models.remote.SimilarTranslationDTO
+import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemSimilarTranslationBinding
-import com.volokhinaleksey.dictionaryofwords.model.remote.SimilarTranslationDTO
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseAdapter
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseViewHolder
 
 /**
  * Adapter class for a list of similar translations of a word

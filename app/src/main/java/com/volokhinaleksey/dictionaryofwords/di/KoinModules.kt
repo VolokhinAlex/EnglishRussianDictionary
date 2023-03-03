@@ -5,46 +5,45 @@ import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.volokhinaleksey.dictionaryofwords.datasource.description.DescriptionDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.description.LocalDescriptionDataSourceImpl
-import com.volokhinaleksey.dictionaryofwords.datasource.description.RemoteDescriptionDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.favorite.FavoriteDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.favorite.LocalFavoriteDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.history.HistoryDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.history.LocalHistoryDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.search.LocalSearchDataSourceImpl
-import com.volokhinaleksey.dictionaryofwords.datasource.search.RemoteSearchDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.search.SearchDataSource
-import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractorImpl
-import com.volokhinaleksey.dictionaryofwords.interactor.favorite.FavoriteInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.favorite.FavoriteInteractorImpl
-import com.volokhinaleksey.dictionaryofwords.interactor.history.HistoryInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.history.HistoryInteractorImpl
-import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractorImpl
-import com.volokhinaleksey.dictionaryofwords.repository.ApiHolder
-import com.volokhinaleksey.dictionaryofwords.repository.ApiService
-import com.volokhinaleksey.dictionaryofwords.repository.DictionaryApiHolder
-import com.volokhinaleksey.dictionaryofwords.repository.favorite.FavoriteRepository
-import com.volokhinaleksey.dictionaryofwords.repository.favorite.FavoriteRepositoryImpl
-import com.volokhinaleksey.dictionaryofwords.repository.history.HistoryRepository
-import com.volokhinaleksey.dictionaryofwords.repository.history.HistoryRepositoryImpl
-import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepository
-import com.volokhinaleksey.dictionaryofwords.repository.meanings.MeaningsRepositoryImpl
-import com.volokhinaleksey.dictionaryofwords.repository.search.SearchWordsRepository
-import com.volokhinaleksey.dictionaryofwords.repository.search.SearchWordsRepositoryImpl
-import com.volokhinaleksey.dictionaryofwords.room.database.DictionaryDatabase
-import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
-import com.volokhinaleksey.dictionaryofwords.states.WordsState
+import com.volokhinaleksey.database.database.DictionaryDatabase
+import com.volokhinaleksey.datasource.ApiHolder
+import com.volokhinaleksey.datasource.ApiService
+import com.volokhinaleksey.datasource.DictionaryApiHolder
+import com.volokhinaleksey.datasource.description.DescriptionDataSource
+import com.volokhinaleksey.datasource.description.LocalDescriptionDataSource
+import com.volokhinaleksey.datasource.description.LocalDescriptionDataSourceImpl
+import com.volokhinaleksey.datasource.description.RemoteDescriptionDataSource
+import com.volokhinaleksey.datasource.favorite.FavoriteDataSource
+import com.volokhinaleksey.datasource.favorite.LocalFavoriteDataSource
+import com.volokhinaleksey.datasource.history.HistoryDataSource
+import com.volokhinaleksey.datasource.history.LocalHistoryDataSource
+import com.volokhinaleksey.datasource.search.LocalSearchDataSource
+import com.volokhinaleksey.datasource.search.LocalSearchDataSourceImpl
+import com.volokhinaleksey.datasource.search.RemoteSearchDataSource
+import com.volokhinaleksey.datasource.search.SearchDataSource
+import com.volokhinaleksey.models.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.CoilImageLoader
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.FavoriteViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.HistoryViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
+import com.volokhinaleksey.interactors.description.WordDescriptionInteractor
+import com.volokhinaleksey.interactors.description.WordDescriptionInteractorImpl
+import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
+import com.volokhinaleksey.interactors.favorite.FavoriteInteractorImpl
+import com.volokhinaleksey.interactors.history.HistoryInteractor
+import com.volokhinaleksey.interactors.history.HistoryInteractorImpl
+import com.volokhinaleksey.interactors.search.SearchWordsInteractor
+import com.volokhinaleksey.interactors.search.SearchWordsInteractorImpl
+import com.volokhinaleksey.repositories.favorite.FavoriteRepository
+import com.volokhinaleksey.repositories.favorite.FavoriteRepositoryImpl
+import com.volokhinaleksey.repositories.history.HistoryRepository
+import com.volokhinaleksey.repositories.history.HistoryRepositoryImpl
+import com.volokhinaleksey.repositories.meanings.MeaningsRepository
+import com.volokhinaleksey.repositories.meanings.MeaningsRepositoryImpl
+import com.volokhinaleksey.repositories.search.SearchWordsRepository
+import com.volokhinaleksey.repositories.search.SearchWordsRepositoryImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -163,7 +162,11 @@ val networkModule = module {
  */
 
 val dictionaryOfWordsScreen = module {
-    factory<SearchWordsInteractor<WordsState>> { SearchWordsInteractorImpl(get()) }
+    factory<SearchWordsInteractor<WordsState>> {
+        SearchWordsInteractorImpl(
+            get()
+        )
+    }
     viewModel { DictionaryOfWordsViewModel(get()) }
     factory<ImageLoader<ImageView>> { CoilImageLoader() }
 }

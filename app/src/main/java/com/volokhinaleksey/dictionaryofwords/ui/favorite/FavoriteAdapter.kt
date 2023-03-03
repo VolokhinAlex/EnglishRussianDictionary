@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
-import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseAdapter
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseViewHolder
+import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.core.ui.base.BaseAdapter
+import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
 
 class FavoriteAdapter(

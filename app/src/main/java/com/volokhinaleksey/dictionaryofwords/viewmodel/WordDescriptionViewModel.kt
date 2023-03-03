@@ -2,10 +2,10 @@ package com.volokhinaleksey.dictionaryofwords.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractor
-import com.volokhinaleksey.dictionaryofwords.model.remote.FavoriteWord
-import com.volokhinaleksey.dictionaryofwords.states.FavoriteState
-import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
+import com.volokhinaleksey.interactors.description.WordDescriptionInteractor
+import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.states.FavoriteState
+import com.volokhinaleksey.models.states.MeaningsState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class WordDescriptionViewModel(
     private val interactor: WordDescriptionInteractor
-) : BaseViewModel<MeaningsState>() {
+) : com.volokhinaleksey.core.viewmodel.BaseViewModel<MeaningsState>() {
 
     private val mutableFavoriteData: MutableLiveData<FavoriteState> = MutableLiveData()
     val favoriteData: LiveData<FavoriteState> = mutableFavoriteData

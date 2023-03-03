@@ -65,12 +65,18 @@ object Modules {
     const val app = ":app"
     const val repositories = ":repositories"
     const val core = ":core"
+    const val models = ":models"
+    const val database = ":database"
+    const val datasource = ":datasource"
     const val networkUtils = ":networkUtils"
+    const val mapperUtils = ":mapperUtils"
+    const val interactors = ":interactors"
 
     const val searchScreen = ":searchScreen"
-    const val descriptionScreen = ":descriptionScreen"
+    const val description = ":description"
     const val favoriteScreen = ":favoriteScreen"
-    const val historyScreen = ":historyScreen"
+    const val historyScreen = ":history"
+    const val navigation = ":navigation"
 }
 
 object RxJava {

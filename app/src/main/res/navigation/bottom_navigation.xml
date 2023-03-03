@@ -44,7 +44,7 @@
             app:destination="@id/dictionaryOfWordsFragment" />
         <argument
             android:name="wordData"
-            app:argType="com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO" />
+            app:argType="com.volokhinaleksey.models.remote.WordDTO" />
     </fragment>
 
 </navigation>

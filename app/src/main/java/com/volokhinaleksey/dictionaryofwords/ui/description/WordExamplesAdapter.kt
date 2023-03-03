@@ -6,10 +6,10 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.volokhinaleksey.models.remote.ExampleDTO
+import com.volokhinaleksey.core.ui.base.BaseAdapter
+import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemExampleBinding
-import com.volokhinaleksey.dictionaryofwords.model.remote.ExampleDTO
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseAdapter
-import com.volokhinaleksey.dictionaryofwords.ui.base.BaseViewHolder
 
 /**
  * Adapter class for a list of examples of the use of a word in the text

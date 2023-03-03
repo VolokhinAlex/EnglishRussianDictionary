@@ -1,6 +1,6 @@
 package com.volokhinaleksey.dictionaryofwords.utils
 
-import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningDTO
+import com.volokhinaleksey.models.remote.MeaningDTO
 
 /**
  * Mapper for convenient display of a list of word meanings in a string

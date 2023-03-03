@@ -12,8 +12,6 @@ android {
 
     defaultConfig {
         applicationId Config.applicationId
-        minSdk Config.minSdk
-        targetSdk Config.targetSdk
         versionCode Releases.versionCode
         versionName Releases.versionName
 
@@ -26,25 +24,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility Config.INSTANCE.javaVersion
-        targetCompatibility Config.INSTANCE.javaVersion
-    }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    buildFeatures {
-        viewBinding true
     }
 }
 
 dependencies {
+    implementation project(Modules.database)
+    implementation project(Modules.datasource)
+    implementation project(Modules.models)
+    implementation project(Modules.core)
+    implementation project(Modules.repositories)
+    implementation project(Modules.interactors)
+
     // RxJava
     implementation RxJava.rxJavaAndroid
     implementation RxJava.rxJavaCore
 
     // Room
-    implementation Room.roomRuntime
     kapt Room.roomCompiler
     implementation Room.roomKtx
 
