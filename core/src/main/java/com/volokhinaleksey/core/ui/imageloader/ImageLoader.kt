@@ -1,4 +1,4 @@
-package com.volokhinaleksey.dictionaryofwords.ui.imageloaders
+package com.volokhinaleksey.core.ui.imageloader
 
 /**
  * interface for downloading and inserting images into a container.

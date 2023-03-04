@@ -8,8 +8,6 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 27
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -24,19 +22,16 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":networkUtils")))
+    implementation(project(mapOf("path" to ":utils:networkUtils")))
     implementation(RxJava.rxJavaCore)
     implementation(RxJava.rxJavaAndroid)
+    implementation(Coil.coil)
     implementation(Lifecycle.livedata)
     implementation(Lifecycle.viewModel)
     implementation(Android.androidCore)

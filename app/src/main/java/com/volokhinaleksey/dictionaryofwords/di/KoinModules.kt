@@ -22,8 +22,8 @@ import com.volokhinaleksey.datasource.search.LocalSearchDataSourceImpl
 import com.volokhinaleksey.datasource.search.RemoteSearchDataSource
 import com.volokhinaleksey.datasource.search.SearchDataSource
 import com.volokhinaleksey.models.states.WordsState
-import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.CoilImageLoader
-import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
+import com.volokhinaleksey.core.ui.imageloader.CoilImageLoader
+import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.FavoriteViewModel
 import com.volokhinaleksey.dictionaryofwords.viewmodel.HistoryViewModel

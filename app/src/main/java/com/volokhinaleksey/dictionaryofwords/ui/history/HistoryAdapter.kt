@@ -5,9 +5,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.volokhinaleksey.core.ui.base.BaseAdapter
 import com.volokhinaleksey.core.ui.base.BaseViewHolder
+import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
-import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
-import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
 import com.volokhinaleksey.models.remote.WordDTO
 
 
@@ -21,7 +20,7 @@ class HistoryAdapter(
 
         override fun bind(data: WordDTO) {
             binding.word.text = data.text
-            binding.descriptionWord.text = data.meanings?.let { convertMeaningsToString(it) }
+            binding.descriptionWord.text = data.meanings?.joinToString { it.translation?.translation.orEmpty() }
             val imageUrl = data.meanings?.firstOrNull()?.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 imageLoader.loadImage(

@@ -6,10 +6,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
 import com.volokhinaleksey.models.remote.WordDTO
-import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
-import com.volokhinaleksey.dictionaryofwords.utils.convertMeaningsToString
 
 /**
  * Adapter class for creating a list of words obtained.
@@ -29,7 +28,7 @@ class DictionaryOfWordsAdapter(
 
         fun bind(wordData: WordDTO) {
             binding.word.text = wordData.text
-            binding.descriptionWord.text = wordData.meanings?.let { convertMeaningsToString(it) }
+            binding.descriptionWord.text = wordData.meanings?.joinToString { it.translation?.translation.orEmpty() }
             val imageUrl = wordData.meanings?.firstOrNull()?.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 imageLoader.loadImage(

@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation(project(mapOf("path" to ":models")))
     implementation(project(mapOf("path" to ":database")))
-    implementation(project(mapOf("path" to ":mapperUtils")))
+    implementation(project(mapOf("path" to ":utils:mapperUtils")))
     implementation(Room.roomRuntime)
     implementation(Retrofit.retrofit)
     implementation(Retrofit.converterGson)

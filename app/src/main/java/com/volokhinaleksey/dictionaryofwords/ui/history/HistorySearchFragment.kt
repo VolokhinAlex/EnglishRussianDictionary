@@ -9,7 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentHistorySearchBinding
-import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
+import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.HistoryViewModel
 import com.volokhinaleksey.models.states.WordsState
 import org.koin.android.ext.android.inject

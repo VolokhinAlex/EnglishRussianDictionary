@@ -1,4 +1,4 @@
-package com.volokhinaleksey.dictionaryofwords.ui.imageloaders
+package com.volokhinaleksey.core.ui.imageloader
 
 import android.widget.ImageView
 import coil.load

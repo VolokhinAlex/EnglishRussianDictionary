@@ -15,10 +15,10 @@ dependencyResolutionManagement {
 rootProject.name = "DictionaryOfWords"
 include ':app'
 include ':core'
-include ':networkUtils'
+include ':utils:networkUtils'
+include ':utils:mapperUtils'
 include ':repositories'
 include ':models'
 include ':datasource'
 include ':database'
-include ':mapperUtils'
 include ':interactors'
