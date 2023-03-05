@@ -72,11 +72,10 @@ object Modules {
     const val mapperUtils = ":mapperUtils"
     const val interactors = ":interactors"
 
-    const val searchScreen = ":searchScreen"
-    const val description = ":description"
-    const val favoriteScreen = ":favoriteScreen"
+    const val searchScreen = ":search"
+    const val descriptionScreen = ":description"
+    const val favoriteScreen = ":favorite"
     const val historyScreen = ":history"
-    const val navigation = ":navigation"
 }
 
 object RxJava {

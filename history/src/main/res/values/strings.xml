@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">EnRuDictionary</string>
+
+    <string name="error_textview_stub">Error</string>
+    <string name="reload_button">Reload</string>
+    <string name="undefined_error">Undefined error</string>
+    <string name="empty_server_response_on_success">Response from server is empty</string>
+    <string name="button_search">Search</string>
+    <string name="search_hint">Search for a word</string>
+    <string name="delete_description">X</string>
+    <string name="search">Search</string>
+    <string name="word_image">Word Image</string>
+    <string name="history">History</string>
+    <string name="favorite">Favorite</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_from_history_search_screen">Hello from History Search Screen</string>
+    <string name="hello_from_favorite_screen">Hello From Favorite Screen</string>
+    <string name="hello_from_description_fragment">Hello from description fragment</string>
+    <string name="add_to_favorite">Add To Favorite</string>
+    <string name="back">Back</string>
+    <string name="text_to_speech">Text To Speech</string>
+    <string name="examples">Examples</string>
+    <string name="similar_translation">Similar Translation</string>
+    <string name="part_of_speech">Part of speech - </string>
+</resources>

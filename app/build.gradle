@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -36,6 +35,10 @@ dependencies {
     implementation project(Modules.core)
     implementation project(Modules.repositories)
     implementation project(Modules.interactors)
+    implementation project(Modules.searchScreen)
+    implementation project(Modules.historyScreen)
+    implementation project(Modules.favoriteScreen)
+    implementation project(Modules.descriptionScreen)
 
     // RxJava
     implementation RxJava.rxJavaAndroid

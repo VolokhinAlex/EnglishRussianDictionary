@@ -16,9 +16,13 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/datasource" />
+            <option value="$PROJECT_DIR$/description" />
+            <option value="$PROJECT_DIR$/favorite" />
+            <option value="$PROJECT_DIR$/history" />
             <option value="$PROJECT_DIR$/interactors" />
             <option value="$PROJECT_DIR$/models" />
             <option value="$PROJECT_DIR$/repositories" />
+            <option value="$PROJECT_DIR$/search" />
             <option value="$PROJECT_DIR$/utils" />
             <option value="$PROJECT_DIR$/utils/mapperUtils" />
             <option value="$PROJECT_DIR$/utils/networkUtils" />

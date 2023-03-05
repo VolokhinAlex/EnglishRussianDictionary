@@ -24,10 +24,6 @@ import com.volokhinaleksey.datasource.search.SearchDataSource
 import com.volokhinaleksey.models.states.WordsState
 import com.volokhinaleksey.core.ui.imageloader.CoilImageLoader
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
-import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
-import com.volokhinaleksey.dictionaryofwords.viewmodel.FavoriteViewModel
-import com.volokhinaleksey.dictionaryofwords.viewmodel.HistoryViewModel
-import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import com.volokhinaleksey.interactors.description.WordDescriptionInteractor
 import com.volokhinaleksey.interactors.description.WordDescriptionInteractorImpl
 import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
@@ -167,7 +163,7 @@ val dictionaryOfWordsScreen = module {
             get()
         )
     }
-    viewModel { DictionaryOfWordsViewModel(get()) }
+    viewModel { com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel(get()) }
     factory<ImageLoader<ImageView>> { CoilImageLoader() }
 }
 
@@ -179,7 +175,7 @@ val wordDescriptionScreen = module {
     factory<WordDescriptionInteractor> {
         WordDescriptionInteractorImpl(get())
     }
-    viewModel { WordDescriptionViewModel(get()) }
+    viewModel { com.volokhinaleksey.description.viewmodel.WordDescriptionViewModel(get()) }
 }
 
 
@@ -187,12 +183,12 @@ val historyScreen = module {
     factory<HistoryInteractor<WordsState>> {
         HistoryInteractorImpl(get())
     }
-    viewModel { HistoryViewModel(get()) }
+    viewModel { com.volokhinaleksey.history.viewmodel.HistoryViewModel(get()) }
 }
 
 val favoriteScreen = module {
     factory<FavoriteInteractor> {
         FavoriteInteractorImpl(get())
     }
-    viewModel { FavoriteViewModel(get()) }
+    viewModel { com.volokhinaleksey.favorite.viewmodel.FavoriteViewModel(get()) }
 }
