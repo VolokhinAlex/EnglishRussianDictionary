@@ -12,16 +12,18 @@ import com.volokhinaleksey.core.ui.DATA_KEY
 import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.history.databinding.FragmentHistorySearchBinding
+import com.volokhinaleksey.history.viewmodel.HistoryViewModel
 import com.volokhinaleksey.models.states.WordsState
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import org.koin.android.scope.getOrCreateScope
 
 class HistorySearchFragment : BaseFragment<WordsState>() {
 
     private var _binding: FragmentHistorySearchBinding? = null
     private val binding get() = _binding!!
-    private val imageLoader: ImageLoader<ImageView> by inject()
+
+    private val scope = getOrCreateScope().value
+
+    private val imageLoader: ImageLoader<ImageView> = scope.get()
 
     private val historyAdapter: HistoryAdapter by lazy {
         HistoryAdapter(imageLoader = imageLoader) {
@@ -32,7 +34,7 @@ class HistorySearchFragment : BaseFragment<WordsState>() {
         }
     }
 
-    override val viewModel: com.volokhinaleksey.history.viewmodel.HistoryViewModel by viewModel()
+    override val viewModel: HistoryViewModel = scope.get()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,5 +95,11 @@ class HistorySearchFragment : BaseFragment<WordsState>() {
                 historyAdapter.submitList(words)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        scope.close()
     }
 }

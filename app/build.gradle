@@ -40,12 +40,7 @@ dependencies {
     implementation project(Modules.favoriteScreen)
     implementation project(Modules.descriptionScreen)
 
-    // RxJava
-    implementation RxJava.rxJavaAndroid
-    implementation RxJava.rxJavaCore
-
     // Room
-    kapt Room.roomCompiler
     implementation Room.roomKtx
 
     implementation Navigation.navigationFragment
@@ -60,22 +55,14 @@ dependencies {
     implementation Coroutines.coroutinesCore
     implementation Coroutines.coroutinesAndroid
 
-    // Lifecycle
-    implementation Lifecycle.livedata
-    implementation Lifecycle.viewModel
-
     // Retrofit
     implementation Retrofit.retrofit
     implementation Retrofit.converterGson
     implementation Retrofit.loggingOkHttp
 
-    // Coil
-    implementation Coil.coil
 
     implementation Android.androidCore
-    implementation Design.appcompat
-    implementation Design.material
-    implementation Design.constrainLayout
+
     testImplementation Tests.junit
     androidTestImplementation Tests.extJunit
     androidTestImplementation Tests.espressoCore

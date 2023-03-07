@@ -12,14 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.core.ui.DATA_KEY
 import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.favorite.databinding.FragmentFavoriteWordsBinding
+import com.volokhinaleksey.favorite.viewmodel.FavoriteViewModel
 import com.volokhinaleksey.models.remote.FavoriteWord
 import com.volokhinaleksey.models.states.FavoriteState
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.getOrCreateScope
 
 class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
 
     private var _binding: FragmentFavoriteWordsBinding? = null
     private val binding get() = _binding!!
+
+    private val scope = getOrCreateScope().value
 
     private val favoriteAdapter: FavoriteAdapter by lazy {
         FavoriteAdapter {
@@ -30,7 +33,7 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
         }
     }
 
-    override val viewModel: com.volokhinaleksey.favorite.viewmodel.FavoriteViewModel by viewModel()
+    override val viewModel: FavoriteViewModel = scope.get()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,5 +105,11 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDirections)
         itemTouchHelper.attachToRecyclerView(binding.favoriteWordsList)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        scope.close()
     }
 }

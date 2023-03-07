@@ -1,4 +1,4 @@
-package com.volokhinaleksey.search.ui
+package com.volokhinaleksey.search.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

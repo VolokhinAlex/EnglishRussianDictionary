@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.volokhinaleksey.core.ui.imageloader.CoilImageLoader
+import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.database.database.DictionaryDatabase
 import com.volokhinaleksey.datasource.ApiHolder
 import com.volokhinaleksey.datasource.ApiService
@@ -21,9 +23,12 @@ import com.volokhinaleksey.datasource.search.LocalSearchDataSource
 import com.volokhinaleksey.datasource.search.LocalSearchDataSourceImpl
 import com.volokhinaleksey.datasource.search.RemoteSearchDataSource
 import com.volokhinaleksey.datasource.search.SearchDataSource
-import com.volokhinaleksey.models.states.WordsState
-import com.volokhinaleksey.core.ui.imageloader.CoilImageLoader
-import com.volokhinaleksey.core.ui.imageloader.ImageLoader
+import com.volokhinaleksey.description.ui.WordDescriptionFragment
+import com.volokhinaleksey.description.viewmodel.WordDescriptionViewModel
+import com.volokhinaleksey.favorite.ui.FavoriteWordsFragment
+import com.volokhinaleksey.favorite.viewmodel.FavoriteViewModel
+import com.volokhinaleksey.history.ui.HistorySearchFragment
+import com.volokhinaleksey.history.viewmodel.HistoryViewModel
 import com.volokhinaleksey.interactors.description.WordDescriptionInteractor
 import com.volokhinaleksey.interactors.description.WordDescriptionInteractorImpl
 import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
@@ -32,6 +37,7 @@ import com.volokhinaleksey.interactors.history.HistoryInteractor
 import com.volokhinaleksey.interactors.history.HistoryInteractorImpl
 import com.volokhinaleksey.interactors.search.SearchWordsInteractor
 import com.volokhinaleksey.interactors.search.SearchWordsInteractorImpl
+import com.volokhinaleksey.models.states.WordsState
 import com.volokhinaleksey.repositories.favorite.FavoriteRepository
 import com.volokhinaleksey.repositories.favorite.FavoriteRepositoryImpl
 import com.volokhinaleksey.repositories.history.HistoryRepository
@@ -40,6 +46,8 @@ import com.volokhinaleksey.repositories.meanings.MeaningsRepository
 import com.volokhinaleksey.repositories.meanings.MeaningsRepositoryImpl
 import com.volokhinaleksey.repositories.search.SearchWordsRepository
 import com.volokhinaleksey.repositories.search.SearchWordsRepositoryImpl
+import com.volokhinaleksey.search.ui.DictionaryOfWordsFragment
+import com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -158,13 +166,15 @@ val networkModule = module {
  */
 
 val dictionaryOfWordsScreen = module {
-    factory<SearchWordsInteractor<WordsState>> {
-        SearchWordsInteractorImpl(
-            get()
-        )
+    scope<DictionaryOfWordsFragment> {
+        scoped<SearchWordsInteractor<WordsState>> {
+            SearchWordsInteractorImpl(
+                get()
+            )
+        }
+        viewModel { DictionaryOfWordsViewModel(get()) }
+        scoped<ImageLoader<ImageView>> { CoilImageLoader() }
     }
-    viewModel { com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel(get()) }
-    factory<ImageLoader<ImageView>> { CoilImageLoader() }
 }
 
 /**
@@ -172,23 +182,30 @@ val dictionaryOfWordsScreen = module {
  */
 
 val wordDescriptionScreen = module {
-    factory<WordDescriptionInteractor> {
-        WordDescriptionInteractorImpl(get())
+    scope<WordDescriptionFragment> {
+        scoped<WordDescriptionInteractor> {
+            WordDescriptionInteractorImpl(get())
+        }
+        viewModel { WordDescriptionViewModel(get()) }
     }
-    viewModel { com.volokhinaleksey.description.viewmodel.WordDescriptionViewModel(get()) }
 }
 
 
 val historyScreen = module {
-    factory<HistoryInteractor<WordsState>> {
-        HistoryInteractorImpl(get())
+    scope<HistorySearchFragment> {
+        scoped<HistoryInteractor<WordsState>> {
+            HistoryInteractorImpl(get())
+        }
+        scoped<ImageLoader<ImageView>> { CoilImageLoader() }
+        viewModel { HistoryViewModel(get()) }
     }
-    viewModel { com.volokhinaleksey.history.viewmodel.HistoryViewModel(get()) }
 }
 
 val favoriteScreen = module {
-    factory<FavoriteInteractor> {
-        FavoriteInteractorImpl(get())
+    scope<FavoriteWordsFragment> {
+        scoped<FavoriteInteractor> {
+            FavoriteInteractorImpl(get())
+        }
+        viewModel { FavoriteViewModel(get()) }
     }
-    viewModel { com.volokhinaleksey.favorite.viewmodel.FavoriteViewModel(get()) }
 }

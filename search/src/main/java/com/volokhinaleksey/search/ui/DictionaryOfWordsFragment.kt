@@ -9,37 +9,41 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.volokhinaleksey.core.R
 import com.volokhinaleksey.core.ui.DATA_KEY
 import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.models.states.WordsState
 import com.volokhinaleksey.search.databinding.FragmentDictionaryOfWordsBinding
+import com.volokhinaleksey.search.ui.adapter.DictionaryOfWordsAdapter
+import com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.getOrCreateScope
 
 class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     private var _binding: FragmentDictionaryOfWordsBinding? = null
     private val binding: FragmentDictionaryOfWordsBinding get() = _binding!!
 
-    private val imageLoader: ImageLoader<ImageView> by inject()
+    private val scope = getOrCreateScope().value
+
+    private val imageLoader: ImageLoader<ImageView> = scope.get()
 
     private val dictionaryOfWordsAdapter: DictionaryOfWordsAdapter by lazy {
         DictionaryOfWordsAdapter(imageLoader = imageLoader) {
             requireView().findNavController().navigate(
-                com.volokhinaleksey.core.R.id.description_nav_graph,
+                R.id.description_nav_graph,
                 bundleOf(DATA_KEY to it)
             )
         }
     }
 
-    override val viewModel: com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel by viewModel()
+    override val viewModel: DictionaryOfWordsViewModel = scope.get()
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     override fun onCreateView(
@@ -116,5 +120,6 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        scope.close()
     }
 }

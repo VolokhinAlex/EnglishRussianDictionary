@@ -17,17 +17,19 @@ import com.volokhinaleksey.models.remote.WordDTO
 import com.volokhinaleksey.models.states.FavoriteState
 import com.volokhinaleksey.models.states.MeaningsState
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
+import org.koin.android.scope.getOrCreateScope
+import java.util.Locale
 
 class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnInitListener {
 
     private var _binding: FragmentWordDescriptionBinding? = null
     private val binding get() = _binding!!
 
+    private val scope = getOrCreateScope().value
+
     private var textToSpeech: TextToSpeech? = null
 
-    override val viewModel: WordDescriptionViewModel by viewModel()
+    override val viewModel: WordDescriptionViewModel = scope.get()
 
     private val wordData: WordDTO? by lazy { arguments?.parcelable() }
 
@@ -186,6 +188,12 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         textToSpeech?.stop()
         textToSpeech?.shutdown()
         super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        scope.close()
     }
 
 }
