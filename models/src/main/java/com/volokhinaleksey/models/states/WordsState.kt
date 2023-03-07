@@ -1,7 +1,9 @@
 package com.volokhinaleksey.models.states
 
-import com.volokhinaleksey.models.remote.WordDTO
-import com.volokhinaleksey.models.states.WordsState.*
+import com.volokhinaleksey.models.states.WordsState.Error
+import com.volokhinaleksey.models.states.WordsState.Loading
+import com.volokhinaleksey.models.states.WordsState.Success
+import com.volokhinaleksey.models.ui.Word
 
 /**
  * States that come from the remote server. Total 3 states
@@ -11,7 +13,7 @@ import com.volokhinaleksey.models.states.WordsState.*
  */
 
 sealed class WordsState {
-    data class Success(val wordData: List<WordDTO>) : WordsState()
+    data class Success(val wordData: List<Word>) : WordsState()
     data class Error(val error: Throwable) : WordsState()
     object Loading : WordsState()
 }

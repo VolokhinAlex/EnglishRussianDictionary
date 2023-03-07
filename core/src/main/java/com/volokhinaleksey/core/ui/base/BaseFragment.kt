@@ -2,9 +2,13 @@ package com.volokhinaleksey.core.ui.base
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.networkutils.AndroidNetworkStatus
 import com.volokhinaleksey.networkutils.NetworkStatus
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 /**
  * Fragment base class for creating your fragments based on it
@@ -16,7 +20,7 @@ abstract class BaseFragment<T : Any> : Fragment() {
      * Some kind of ViewModel that inherits from the base ViewModel
      */
 
-    abstract val viewModel: com.volokhinaleksey.core.viewmodel.BaseViewModel<T>
+    abstract val viewModel: BaseViewModel<T>
 
     /**
      * A method for processing data coming from outside
@@ -27,7 +31,7 @@ abstract class BaseFragment<T : Any> : Fragment() {
     protected var isNetworkAvailable: Boolean = false
     private var networkStatus: NetworkStatus? = null
 
-    protected val compositeDisposable = CompositeDisposable()
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     /**
      * Method for showing the loading status
@@ -50,13 +54,15 @@ abstract class BaseFragment<T : Any> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         networkStatus = AndroidNetworkStatus(requireContext())
-        networkStatus?.isNetworkAvailable()?.subscribe {
-            isNetworkAvailable = it
-        }?.let { compositeDisposable.add(it) }
+        scope.launch {
+            networkStatus?.networkObserve()?.collect {
+                isNetworkAvailable = it
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable.clear()
+        scope.cancel()
     }
 }

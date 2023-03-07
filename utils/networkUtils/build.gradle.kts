@@ -31,8 +31,8 @@ android {
 }
 
 dependencies {
-    implementation(RxJava.rxJavaCore)
-    implementation(RxJava.rxJavaAndroid)
+    implementation(Coroutines.coroutinesCore)
+    implementation(Coroutines.coroutinesAndroid)
     implementation(Android.androidCore)
     testImplementation(Tests.junit)
     androidTestImplementation(Tests.extJunit)

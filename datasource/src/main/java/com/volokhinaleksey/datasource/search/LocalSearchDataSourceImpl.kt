@@ -1,13 +1,15 @@
 package com.volokhinaleksey.datasource.search
 
 import com.volokhinaleksey.database.database.DictionaryDatabase
+import com.volokhinaleksey.mapperutils.mapListWordDTOToListWordEntity
+import com.volokhinaleksey.mapperutils.mapListWordDTOToMeaningEntityList
+import com.volokhinaleksey.mapperutils.mapMeaningUIToMeaningDto
+import com.volokhinaleksey.mapperutils.mapMeaningsEntityToMeaningsList
+import com.volokhinaleksey.mapperutils.mapWordDTOToHistoryEntity
+import com.volokhinaleksey.mapperutils.mapWordUIToWordDTO
 import com.volokhinaleksey.models.local.HistoryEntity
 import com.volokhinaleksey.models.remote.WordDTO
 import com.volokhinaleksey.models.states.WordsState
-import com.volokhinaleksey.mapperutils.mapListWordDTOToListWordEntity
-import com.volokhinaleksey.mapperutils.mapListWordDTOToMeaningEntityList
-import com.volokhinaleksey.mapperutils.mapMeaningsEntityToMeaningsList
-import com.volokhinaleksey.mapperutils.mapWordDTOToHistoryEntity
 
 class LocalSearchDataSourceImpl(
     private val db: DictionaryDatabase
@@ -34,22 +36,29 @@ class LocalSearchDataSourceImpl(
         when (wordsState) {
             is WordsState.Success -> {
                 val searchResult = wordsState.wordData
-                if (searchResult.isEmpty() || searchResult[0].text.isNullOrEmpty()) {
+                if (searchResult.isEmpty() || searchResult[0].word.isEmpty()) {
                     error("Empty data")
                 } else {
-                    db.wordDao().insert(wordEntity = mapListWordDTOToListWordEntity(searchResult))
-                    db.historyDao().insert(mapWordDTOToHistoryEntity(wordDTO = searchResult[0]))
+                    db.wordDao().insert(
+                        wordEntity = mapListWordDTOToListWordEntity(
+                            searchResult.map {
+                                mapWordUIToWordDTO(it)
+                            }
+                        )
+                    )
+                    db.historyDao()
+                        .insert(mapWordDTOToHistoryEntity(wordDTO = mapWordUIToWordDTO(searchResult[0])))
                     searchResult.forEach { word ->
                         db.meaningDao().insert(
                             mapListWordDTOToMeaningEntityList(
-                                meaningDTO = word.meanings.orEmpty(),
-                                wordId = word.id ?: 0
+                                meaningDTO = word.meanings.map { mapMeaningUIToMeaningDto(it) },
+                                wordId = word.id
                             )
                         )
                     }
                     HistoryEntity(
-                        word = searchResult[0].text.orEmpty(),
-                        wordId = searchResult[0].id ?: 0
+                        word = searchResult[0].word,
+                        wordId = searchResult[0].id
                     )
                 }
             }

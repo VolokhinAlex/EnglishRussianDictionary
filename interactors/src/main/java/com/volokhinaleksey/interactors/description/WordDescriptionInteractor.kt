@@ -1,6 +1,6 @@
 package com.volokhinaleksey.interactors.description
 
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.ui.FavoriteWord
 import com.volokhinaleksey.models.states.FavoriteState
 import com.volokhinaleksey.models.states.MeaningsState
 

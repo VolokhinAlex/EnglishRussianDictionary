@@ -1,7 +1,9 @@
 package com.volokhinaleksey.models.states
 
-import com.volokhinaleksey.models.remote.MeaningDTO
-import com.volokhinaleksey.models.states.MeaningsState.*
+import com.volokhinaleksey.models.states.MeaningsState.Error
+import com.volokhinaleksey.models.states.MeaningsState.Loading
+import com.volokhinaleksey.models.states.MeaningsState.Success
+import com.volokhinaleksey.models.ui.Meaning
 
 /**
  * States that come from the remote server. Total 3 states
@@ -11,7 +13,7 @@ import com.volokhinaleksey.models.states.MeaningsState.*
  */
 
 sealed class MeaningsState {
-    data class Success(val wordData: List<MeaningDTO>) : MeaningsState()
+    data class Success(val wordData: List<Meaning>) : MeaningsState()
     data class Error(val error: Throwable) : MeaningsState()
     object Loading : MeaningsState()
 }

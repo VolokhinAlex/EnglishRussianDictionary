@@ -43,7 +43,6 @@ class HistorySearchFragment : BaseFragment<WordsState>() {
         _binding = FragmentHistorySearchBinding.inflate(inflater)
         binding.historyWordsList.layoutManager = LinearLayoutManager(requireContext())
         binding.historyWordsList.adapter = historyAdapter
-        viewModel.getHistory()
         viewModel.currentData.observe(viewLifecycleOwner) {
             renderData(state = it)
         }

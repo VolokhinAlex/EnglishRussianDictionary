@@ -1,6 +1,6 @@
 package com.volokhinaleksey.networkutils
 
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -11,6 +11,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface NetworkStatus {
 
-    fun isNetworkAvailable() : Observable<Boolean>
+    fun networkObserve(): Flow<Boolean>
 
 }

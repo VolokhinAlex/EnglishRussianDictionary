@@ -13,8 +13,9 @@ import com.volokhinaleksey.core.ui.DATA_KEY
 import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.favorite.databinding.FragmentFavoriteWordsBinding
 import com.volokhinaleksey.favorite.viewmodel.FavoriteViewModel
-import com.volokhinaleksey.models.remote.FavoriteWord
 import com.volokhinaleksey.models.states.FavoriteState
+import com.volokhinaleksey.models.ui.FavoriteWord
+import com.volokhinaleksey.models.ui.Word
 import org.koin.android.scope.getOrCreateScope
 
 class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
@@ -28,7 +29,13 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
         FavoriteAdapter {
             requireView().findNavController().navigate(
                 com.volokhinaleksey.core.R.id.description_nav_graph,
-                bundleOf(DATA_KEY to it)
+                bundleOf(
+                    DATA_KEY to Word(
+                        id = it.wordId,
+                        word = it.word,
+                        meanings = it.meanings
+                    )
+                )
             )
         }
     }
@@ -42,8 +49,7 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
         _binding = FragmentFavoriteWordsBinding.inflate(inflater)
         binding.favoriteWordsList.layoutManager = LinearLayoutManager(requireContext())
         binding.favoriteWordsList.adapter = favoriteAdapter
-        viewModel.getFavorites()
-        viewModel.favoriteData.observe(viewLifecycleOwner) {
+        viewModel.currentData.observe(viewLifecycleOwner) {
             renderData(state = it)
         }
         return binding.root

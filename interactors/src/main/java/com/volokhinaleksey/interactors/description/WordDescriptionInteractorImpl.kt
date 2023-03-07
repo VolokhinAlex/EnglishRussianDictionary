@@ -1,8 +1,9 @@
 package com.volokhinaleksey.interactors.description
 
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.mapperutils.mapMeaningDtoToMeaningUI
 import com.volokhinaleksey.models.states.FavoriteState
 import com.volokhinaleksey.models.states.MeaningsState
+import com.volokhinaleksey.models.ui.FavoriteWord
 import com.volokhinaleksey.repositories.meanings.MeaningsRepository
 
 /**
@@ -21,12 +22,12 @@ class WordDescriptionInteractorImpl(
      */
 
     override suspend fun getMeaningsData(meaningId: Long, isRemoteSource: Boolean): MeaningsState {
-        return MeaningsState.Success(
-            repository.getMeaningsData(
-                meaningId = meaningId,
-                isRemoteSource = isRemoteSource
-            )
-        )
+        return MeaningsState.Success(repository.getMeaningsData(
+            meaningId = meaningId,
+            isRemoteSource = isRemoteSource
+        ).map {
+            mapMeaningDtoToMeaningUI(it)
+        })
     }
 
     override suspend fun saveFavoriteWord(word: FavoriteWord) {

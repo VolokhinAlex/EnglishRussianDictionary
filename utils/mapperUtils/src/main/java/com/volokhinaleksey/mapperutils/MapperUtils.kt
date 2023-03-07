@@ -5,10 +5,18 @@ import com.volokhinaleksey.models.local.HistoryEntity
 import com.volokhinaleksey.models.local.MeaningEntity
 import com.volokhinaleksey.models.local.WordEntity
 import com.volokhinaleksey.models.remote.DefinitionDTO
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.remote.ExampleDTO
 import com.volokhinaleksey.models.remote.MeaningDTO
+import com.volokhinaleksey.models.remote.SimilarTranslationDTO
 import com.volokhinaleksey.models.remote.TranslationDTO
 import com.volokhinaleksey.models.remote.WordDTO
+import com.volokhinaleksey.models.ui.Definition
+import com.volokhinaleksey.models.ui.ExampleWord
+import com.volokhinaleksey.models.ui.FavoriteWord
+import com.volokhinaleksey.models.ui.Meaning
+import com.volokhinaleksey.models.ui.SimilarTranslation
+import com.volokhinaleksey.models.ui.Translation
+import com.volokhinaleksey.models.ui.Word
 
 fun mapListWordDTOToListWordEntity(wordDTO: List<WordDTO>): List<WordEntity> = wordDTO.map {
     WordEntity(
@@ -74,3 +82,94 @@ fun mapFavoriteWordToFavoriteEntity(favoriteWord: FavoriteWord): FavoriteEntity 
         isFavorite = favoriteWord.isFavorite,
         word = favoriteWord.word
     )
+
+fun mapTranslationDTOToTranslationUI(translationDTO: TranslationDTO): Translation =
+    Translation(translation = translationDTO.translation ?: "")
+
+fun mapDefinitionDTOToDefinitionUi(definitionDTO: DefinitionDTO): Definition =
+    Definition(wordDefinition = definitionDTO.text ?: "")
+
+fun mapExampleDTOToExampleWordUi(exampleDTO: ExampleDTO): ExampleWord = ExampleWord(
+    exampleWord = exampleDTO.text ?: ""
+)
+
+fun mapSimilarTranslationDTOToSimilarTranslationUI(similarTranslationDto: SimilarTranslationDTO): SimilarTranslation =
+    SimilarTranslation(
+        partOfSpeechAbbreviation = similarTranslationDto.partOfSpeechAbbreviation ?: "",
+        translation = mapTranslationDTOToTranslationUI(
+            translationDTO = similarTranslationDto.translation ?: TranslationDTO(
+                translation = ""
+            )
+        )
+    )
+
+fun mapMeaningDtoToMeaningUI(meaningDTO: MeaningDTO): Meaning =
+    Meaning(
+        id = meaningDTO.id ?: 0,
+        translation = mapTranslationDTOToTranslationUI(
+            meaningDTO.translation ?: TranslationDTO(
+                translation = ""
+            )
+        ),
+        imageUrl = meaningDTO.imageUrl ?: "",
+        wordId = meaningDTO.wordId ?: 0,
+        word = meaningDTO.text ?: "",
+        transcription = meaningDTO.transcription ?: "",
+        definition = mapDefinitionDTOToDefinitionUi(
+            meaningDTO.definition ?: DefinitionDTO(text = "")
+        ),
+        examples = meaningDTO.examples?.map {
+            mapExampleDTOToExampleWordUi(it)
+        } ?: emptyList(),
+        similarTranslation = meaningDTO.similarTranslation?.map {
+            mapSimilarTranslationDTOToSimilarTranslationUI(
+                it
+            )
+        } ?: emptyList()
+    )
+
+fun mapWordDTOToWordUI(wordDTO: WordDTO): Word = Word(
+    id = wordDTO.id ?: 0,
+    word = wordDTO.text ?: "",
+    meanings = wordDTO.meanings?.map { mapMeaningDtoToMeaningUI(it) } ?: emptyList()
+)
+
+fun mapWordUIToWordDTO(word: Word): WordDTO = WordDTO(
+    id = word.id,
+    text = word.word,
+    meanings = word.meanings.map { mapMeaningUIToMeaningDto(it) }
+)
+
+fun mapTranslationUIToTranslationDTO(translation: Translation): TranslationDTO = TranslationDTO(
+    translation = translation.translation
+)
+
+fun mapDefinitionUIToDefinitionDTO(definition: Definition): DefinitionDTO = DefinitionDTO(
+    text = definition.wordDefinition
+)
+
+fun mapExampleWordToExampleDTO(exampleWord: ExampleWord): ExampleDTO = ExampleDTO(
+    text = exampleWord.exampleWord
+)
+
+fun mapSimilarTranslationUIToSimilarTranslationDTO(similarTranslation: SimilarTranslation): SimilarTranslationDTO =
+    SimilarTranslationDTO(
+        partOfSpeechAbbreviation = similarTranslation.partOfSpeechAbbreviation,
+        translation = mapTranslationUIToTranslationDTO(similarTranslation.translation)
+    )
+
+fun mapMeaningUIToMeaningDto(meaning: Meaning): MeaningDTO = MeaningDTO(
+    id = meaning.id,
+    translation = mapTranslationUIToTranslationDTO(meaning.translation),
+    imageUrl = meaning.imageUrl,
+    wordId = meaning.wordId,
+    text = meaning.word,
+    transcription = meaning.transcription,
+    definition = mapDefinitionUIToDefinitionDTO(meaning.definition),
+    examples = meaning.examples.map { mapExampleWordToExampleDTO(it) },
+    similarTranslation = meaning.similarTranslation.map {
+        mapSimilarTranslationUIToSimilarTranslationDTO(
+            it
+        )
+    }
+)

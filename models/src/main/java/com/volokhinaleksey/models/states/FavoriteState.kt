@@ -1,6 +1,6 @@
 package com.volokhinaleksey.models.states
 
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.ui.FavoriteWord
 import com.volokhinaleksey.models.states.FavoriteState.Error
 import com.volokhinaleksey.models.states.FavoriteState.Loading
 import com.volokhinaleksey.models.states.FavoriteState.Success

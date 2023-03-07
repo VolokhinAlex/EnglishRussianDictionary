@@ -2,6 +2,7 @@ package com.volokhinaleksey.repositories.search
 
 import com.volokhinaleksey.datasource.search.LocalSearchDataSource
 import com.volokhinaleksey.datasource.search.SearchDataSource
+import com.volokhinaleksey.mapperutils.mapWordDTOToWordUI
 import com.volokhinaleksey.models.remote.WordDTO
 import com.volokhinaleksey.models.states.WordsState
 
@@ -23,7 +24,13 @@ class SearchWordsRepositoryImpl(
     override suspend fun getWordsData(word: String, isRemoteSource: Boolean): List<WordDTO> {
         return if (isRemoteSource) {
             val wordsList = remoteDataSource.getWordsData(word = word)
-            localDataSource.saveWordToDB(wordsState = WordsState.Success(wordsList))
+            localDataSource.saveWordToDB(
+                wordsState = WordsState.Success(
+                    wordsList.map {
+                        mapWordDTOToWordUI(it)
+                    }
+                )
+            )
             wordsList
         } else {
             localDataSource.getWordsData(word = word)

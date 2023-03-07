@@ -1,5 +1,6 @@
 package com.volokhinaleksey.interactors.search
 
+import com.volokhinaleksey.mapperutils.mapWordDTOToWordUI
 import com.volokhinaleksey.models.states.WordsState
 import com.volokhinaleksey.repositories.search.SearchWordsRepository
 
@@ -23,7 +24,7 @@ class SearchWordsInteractorImpl(
             repository.getWordsData(
                 word = word,
                 isRemoteSource = isRemoteSource
-            )
+            ).map { mapWordDTOToWordUI(it) }
         )
     }
 

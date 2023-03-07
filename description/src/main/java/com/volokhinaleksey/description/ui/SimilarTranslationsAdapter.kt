@@ -5,24 +5,24 @@ import android.view.ViewGroup
 import com.volokhinaleksey.core.ui.base.BaseAdapter
 import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.description.databinding.ItemSimilarTranslationBinding
-import com.volokhinaleksey.models.remote.SimilarTranslationDTO
+import com.volokhinaleksey.models.ui.SimilarTranslation
 
 /**
  * Adapter class for a list of similar translations of a word
  */
 
 class SimilarTranslationsAdapter :
-    BaseAdapter<SimilarTranslationDTO, ItemSimilarTranslationBinding, SimilarTranslationsAdapter.ViewHolder>() {
+    BaseAdapter<SimilarTranslation, ItemSimilarTranslationBinding, SimilarTranslationsAdapter.ViewHolder>() {
 
     /**
      * ViewHolder for filling elements with data
      */
 
     inner class ViewHolder(private val binding: ItemSimilarTranslationBinding) :
-        BaseViewHolder<SimilarTranslationDTO, ItemSimilarTranslationBinding>(binding) {
+        BaseViewHolder<SimilarTranslation, ItemSimilarTranslationBinding>(binding) {
 
-        override fun bind(data: SimilarTranslationDTO) {
-            binding.textExample.text = data.translation?.translation
+        override fun bind(data: SimilarTranslation) {
+            binding.textExample.text = data.translation.translation
             binding.partOfSpeechAbbreviation.text = data.partOfSpeechAbbreviation
         }
 

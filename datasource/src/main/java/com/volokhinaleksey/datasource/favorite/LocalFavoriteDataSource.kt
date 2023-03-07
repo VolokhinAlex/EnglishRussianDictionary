@@ -1,9 +1,10 @@
 package com.volokhinaleksey.datasource.favorite
 
 import com.volokhinaleksey.database.database.DictionaryDatabase
-import com.volokhinaleksey.models.local.FavoriteEntity
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.mapperutils.mapMeaningDtoToMeaningUI
 import com.volokhinaleksey.mapperutils.mapMeaningsEntityToMeaningsList
+import com.volokhinaleksey.models.local.FavoriteEntity
+import com.volokhinaleksey.models.ui.FavoriteWord
 
 class LocalFavoriteDataSource(
     private val database: DictionaryDatabase
@@ -16,7 +17,9 @@ class LocalFavoriteDataSource(
                 isFavorite = it.isFavorite,
                 meanings = mapMeaningsEntityToMeaningsList(
                     database.meaningDao().getWordMeaningByWordId(wordId = it.wordId)
-                )
+                ).map {
+                    mapMeaningDtoToMeaningUI(it)
+                }
             )
         }
     }

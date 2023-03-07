@@ -1,6 +1,6 @@
 package com.volokhinaleksey.repositories.meanings
 
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.ui.FavoriteWord
 import com.volokhinaleksey.models.remote.MeaningDTO
 
 /**

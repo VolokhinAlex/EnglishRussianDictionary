@@ -1,6 +1,7 @@
 package com.volokhinaleksey.history.viewmodel
 
 
+import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.history.HistoryInteractor
 import com.volokhinaleksey.models.states.WordsState
 import kotlinx.coroutines.Dispatchers
@@ -8,9 +9,13 @@ import kotlinx.coroutines.launch
 
 class HistoryViewModel(
     private val interactor: HistoryInteractor<WordsState>
-) : com.volokhinaleksey.core.viewmodel.BaseViewModel<WordsState>() {
+) : BaseViewModel<WordsState>() {
 
-    fun getHistory() {
+    init {
+        getHistory()
+    }
+
+    private fun getHistory() {
         viewModelScope.launch {
             currentMutableData.emit(WordsState.Loading)
             viewModelScope.launch(Dispatchers.IO) {

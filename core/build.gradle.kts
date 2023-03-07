@@ -29,8 +29,6 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":utils:networkUtils")))
-    implementation(RxJava.rxJavaCore)
-    implementation(RxJava.rxJavaAndroid)
     implementation(Navigation.navigationUi)
     implementation(Navigation.navigationFragment)
     implementation(Coil.coil)

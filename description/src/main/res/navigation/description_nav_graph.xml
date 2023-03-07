@@ -13,7 +13,7 @@
             app:destination="@id/dictionary_nav_graph" />
         <argument
             android:name="wordData"
-            app:argType="com.volokhinaleksey.models.remote.WordDTO" />
+            app:argType="com.volokhinaleksey.models.ui.Word" />
     </fragment>
 
 </navigation>

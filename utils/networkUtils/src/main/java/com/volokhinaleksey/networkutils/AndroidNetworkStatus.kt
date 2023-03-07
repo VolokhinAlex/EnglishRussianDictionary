@@ -3,41 +3,47 @@ package com.volokhinaleksey.networkutils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkRequest
 import androidx.core.content.getSystemService
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
+
 
 /**
  * Implementation of the interface for receiving data from the network on smartphones with Android OS
  */
 
-
 class AndroidNetworkStatus(context: Context) : NetworkStatus {
-    private val statusSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
-    init {
-        statusSubject.onNext(false)
+    private val connectivityManager = context.getSystemService<ConnectivityManager>()
 
-        val connectivityManager = context.getSystemService<ConnectivityManager>()
-        val request = NetworkRequest.Builder().build()
-        connectivityManager?.registerNetworkCallback(
-            request,
-            object : ConnectivityManager.NetworkCallback() {
+    override fun networkObserve(): Flow<Boolean> {
+        return callbackFlow {
+            val callback = object : ConnectivityManager.NetworkCallback() {
+
                 override fun onAvailable(network: Network) {
-                    statusSubject.onNext(true)
-                }
-
-                override fun onUnavailable() {
-                    statusSubject.onNext(false)
+                    super.onAvailable(network)
+                    launch { send(true) }
                 }
 
                 override fun onLost(network: Network) {
-                    statusSubject.onNext(false)
+                    super.onLost(network)
+                    launch { send(false) }
                 }
-            })
-    }
 
-    override fun isNetworkAvailable(): Observable<Boolean> = statusSubject
+                override fun onUnavailable() {
+                    super.onUnavailable()
+                    launch { send(false) }
+                }
+
+            }
+            connectivityManager?.registerDefaultNetworkCallback(callback)
+            awaitClose {
+                connectivityManager?.unregisterNetworkCallback(callback)
+            }
+        }.distinctUntilChanged()
+    }
 
 }

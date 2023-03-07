@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.core.databinding.ItemWordBinding
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
-import com.volokhinaleksey.models.remote.WordDTO
+import com.volokhinaleksey.models.ui.Word
 
 /**
  * Adapter class for creating a list of words obtained.
@@ -16,8 +16,8 @@ import com.volokhinaleksey.models.remote.WordDTO
 
 class DictionaryOfWordsAdapter(
     private val imageLoader: ImageLoader<ImageView>,
-    private val onItemClickListener: (WordDTO) -> Unit
-) : ListAdapter<WordDTO, DictionaryOfWordsAdapter.ViewHolder>(DictionaryOfWordsCallback) {
+    private val onItemClickListener: (Word) -> Unit
+) : ListAdapter<Word, DictionaryOfWordsAdapter.ViewHolder>(DictionaryOfWordsCallback) {
 
     /**
      * ViewHolder for filling elements with data
@@ -26,16 +26,14 @@ class DictionaryOfWordsAdapter(
     inner class ViewHolder(private val binding: ItemWordBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(wordData: WordDTO) {
-            binding.word.text = wordData.text
-            binding.descriptionWord.text = wordData.meanings?.joinToString { it.translation?.translation.orEmpty() }
-            val imageUrl = wordData.meanings?.firstOrNull()?.imageUrl
-            if (!imageUrl.isNullOrEmpty()) {
-                imageLoader.loadImage(
-                    url = imageUrl.substring(imageUrl.indexOf("https")),
-                    target = binding.imageView
-                )
-            }
+        fun bind(wordData: Word) {
+            binding.word.text = wordData.word
+            binding.descriptionWord.text =
+                wordData.meanings.joinToString { it.translation.translation }
+            imageLoader.loadImage(
+                url = "https:${wordData.meanings.firstOrNull()?.imageUrl}",
+                target = binding.imageView
+            )
         }
 
     }
@@ -72,13 +70,13 @@ class DictionaryOfWordsAdapter(
  * Object for defining Diffutils Callback for comparison conditions list.
  */
 
-object DictionaryOfWordsCallback : DiffUtil.ItemCallback<WordDTO>() {
+object DictionaryOfWordsCallback : DiffUtil.ItemCallback<Word>() {
 
-    override fun areItemsTheSame(oldItem: WordDTO, newItem: WordDTO): Boolean {
+    override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: WordDTO, newItem: WordDTO): Boolean {
+    override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
         return oldItem.id == newItem.id
     }
 

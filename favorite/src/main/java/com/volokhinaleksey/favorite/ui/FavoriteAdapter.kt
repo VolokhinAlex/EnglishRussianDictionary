@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.core.databinding.ItemWordBinding
 import com.volokhinaleksey.core.ui.base.BaseAdapter
 import com.volokhinaleksey.core.ui.base.BaseViewHolder
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.ui.FavoriteWord
 
 class FavoriteAdapter(
     private val onItemClickListener: (FavoriteWord) -> Unit
@@ -18,7 +18,7 @@ class FavoriteAdapter(
 
         override fun bind(data: FavoriteWord) {
             binding.word.text = data.word
-            binding.descriptionWord.text = data.meanings.joinToString { it.translation?.translation.orEmpty() }
+            binding.descriptionWord.text = data.meanings.joinToString { it.translation.translation }
         }
 
     }

@@ -9,26 +9,26 @@ import android.view.ViewGroup
 import com.volokhinaleksey.core.ui.base.BaseAdapter
 import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.description.databinding.ItemExampleBinding
-import com.volokhinaleksey.models.remote.ExampleDTO
+import com.volokhinaleksey.models.ui.ExampleWord
 
 /**
  * Adapter class for a list of examples of the use of a word in the text
  */
 
 class WordExamplesAdapter :
-    BaseAdapter<ExampleDTO, ItemExampleBinding, WordExamplesAdapter.ViewHolder>() {
+    BaseAdapter<ExampleWord, ItemExampleBinding, WordExamplesAdapter.ViewHolder>() {
 
     /**
      * ViewHolder for filling elements with data
      */
 
     inner class ViewHolder(private val binding: ItemExampleBinding) :
-        BaseViewHolder<ExampleDTO, ItemExampleBinding>(binding) {
+        BaseViewHolder<ExampleWord, ItemExampleBinding>(binding) {
 
-        override fun bind(data: ExampleDTO) {
-            val startIndex = data.text?.indexOf("[") ?: 0
-            val endIndex = data.text?.indexOf("]") ?: 0
-            val spannable = SpannableString(data.text)
+        override fun bind(data: ExampleWord) {
+            val startIndex = data.exampleWord.indexOf("[")
+            val endIndex = data.exampleWord.indexOf("]")
+            val spannable = SpannableString(data.exampleWord)
             if (startIndex >= 0 && endIndex >= 0) {
                 spannable.setSpan(
                     ForegroundColorSpan(Color.MAGENTA),

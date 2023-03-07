@@ -13,9 +13,10 @@ import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.core.ui.parcelable
 import com.volokhinaleksey.description.databinding.FragmentWordDescriptionBinding
 import com.volokhinaleksey.description.viewmodel.WordDescriptionViewModel
-import com.volokhinaleksey.models.remote.WordDTO
 import com.volokhinaleksey.models.states.FavoriteState
 import com.volokhinaleksey.models.states.MeaningsState
+import com.volokhinaleksey.models.ui.FavoriteWord
+import com.volokhinaleksey.models.ui.Word
 import kotlinx.coroutines.launch
 import org.koin.android.scope.getOrCreateScope
 import java.util.Locale
@@ -31,7 +32,7 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
 
     override val viewModel: WordDescriptionViewModel = scope.get()
 
-    private val wordData: WordDTO? by lazy { arguments?.parcelable() }
+    private val wordData: Word? by lazy { arguments?.parcelable() }
 
     private val wordExamplesAdapter: WordExamplesAdapter by lazy { WordExamplesAdapter() }
 
@@ -51,9 +52,9 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         }
         binding.addFavorite.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveFavoriteWord(
-                word = com.volokhinaleksey.models.remote.FavoriteWord(
+                word = FavoriteWord(
                     wordId = wordData?.id ?: 0,
-                    word = wordData?.text.orEmpty(),
+                    word = wordData?.word.orEmpty(),
                     isFavorite = isChecked,
                     meanings = wordData?.meanings.orEmpty()
                 )
@@ -78,9 +79,9 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
                 showViewOnSuccess()
                 if (data.isEmpty()) {
                     viewModel.saveFavoriteWord(
-                        com.volokhinaleksey.models.remote.FavoriteWord(
+                        FavoriteWord(
                             wordId = wordData?.id ?: 0,
-                            word = wordData?.text.orEmpty(),
+                            word = wordData?.word.orEmpty(),
                             isFavorite = false,
                             meanings = emptyList()
                         )
@@ -115,6 +116,8 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
             ) {
                 error("This language is not supported")
             }
+        } else {
+            error("Some mistake has occurred")
         }
     }
 
@@ -131,18 +134,17 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
                 showViewOnSuccess()
                 binding.textSpeech.setOnClickListener {
                     textToSpeech?.speak(
-                        meaningsData.text,
+                        meaningsData.word,
                         TextToSpeech.QUEUE_FLUSH,
                         null,
                         "textToSpeech"
                     )
                 }
-                binding.word.text =
-                    if (meaningsData.text.isNullOrBlank()) wordData?.text else meaningsData.text
+                binding.word.text = meaningsData.word.ifBlank { wordData?.word }
                 binding.transcription.text = meaningsData.transcription
-                binding.translation.text = meaningsData.translation?.translation
-                meaningsData.examples?.let { wordExamplesAdapter.submitList(it) }
-                meaningsData.similarTranslation?.let { similarTranslationsAdapter.submitList(it) }
+                binding.translation.text = meaningsData.translation.translation
+                meaningsData.examples.let { wordExamplesAdapter.submitList(it) }
+                meaningsData.similarTranslation.let { similarTranslationsAdapter.submitList(it) }
             }
         }
     }
@@ -185,9 +187,9 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         textToSpeech?.stop()
         textToSpeech?.shutdown()
-        super.onDestroy()
     }
 
     override fun onDestroyView() {

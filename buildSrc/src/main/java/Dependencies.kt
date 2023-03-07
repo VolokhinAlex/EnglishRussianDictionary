@@ -1,9 +1,6 @@
 import org.gradle.api.JavaVersion
 
 object Versions {
-    // RxJava
-    const val rxJavaAndroid = "3.0.2"
-    const val rxJavaCore = "3.1.5"
 
     // Room
     const val roomKtx = "2.5.0"
@@ -76,11 +73,6 @@ object Modules {
     const val descriptionScreen = ":description"
     const val favoriteScreen = ":favorite"
     const val historyScreen = ":history"
-}
-
-object RxJava {
-    const val rxJavaAndroid = "io.reactivex.rxjava3:rxandroid:${Versions.rxJavaAndroid}"
-    const val rxJavaCore = "io.reactivex.rxjava3:rxjava:${Versions.rxJavaCore}"
 }
 
 object Room {

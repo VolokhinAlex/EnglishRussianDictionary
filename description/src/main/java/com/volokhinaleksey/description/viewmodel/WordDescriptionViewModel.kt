@@ -2,10 +2,11 @@ package com.volokhinaleksey.description.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.description.WordDescriptionInteractor
-import com.volokhinaleksey.models.remote.FavoriteWord
 import com.volokhinaleksey.models.states.FavoriteState
 import com.volokhinaleksey.models.states.MeaningsState
+import com.volokhinaleksey.models.ui.FavoriteWord
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class WordDescriptionViewModel(
     private val interactor: WordDescriptionInteractor
-) : com.volokhinaleksey.core.viewmodel.BaseViewModel<MeaningsState>() {
+) : BaseViewModel<MeaningsState>() {
 
     private val mutableFavoriteData: MutableLiveData<FavoriteState> = MutableLiveData()
     val favoriteData: LiveData<FavoriteState> = mutableFavoriteData
@@ -28,17 +29,13 @@ class WordDescriptionViewModel(
      */
 
     fun getMeanings(meaningId: Long, isOnline: Boolean) {
-        viewModelScope.launch {
-            currentMutableData.emit(MeaningsState.Loading)
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val responseRequest =
-                        interactor.getMeaningsData(meaningId = meaningId, isRemoteSource = isOnline)
-                    currentMutableData.emit(responseRequest)
-                } catch (exception: Exception) {
-                    currentMutableData.emit(MeaningsState.Error(exception))
-                }
-            }
+        currentMutableData.tryEmit(MeaningsState.Loading)
+        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+            currentMutableData.tryEmit(MeaningsState.Error(throwable))
+        }) {
+            val responseRequest =
+                interactor.getMeaningsData(meaningId = meaningId, isRemoteSource = isOnline)
+            currentMutableData.emit(responseRequest)
         }
     }
 

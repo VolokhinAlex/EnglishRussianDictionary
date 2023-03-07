@@ -3,6 +3,7 @@ package com.volokhinaleksey.repositories.meanings
 import com.volokhinaleksey.datasource.description.DescriptionDataSource
 import com.volokhinaleksey.datasource.description.LocalDescriptionDataSource
 import com.volokhinaleksey.models.remote.MeaningDTO
+import com.volokhinaleksey.models.ui.FavoriteWord
 
 /**
  * Implementation of an interface for storing values obtained from some data source
@@ -32,11 +33,11 @@ class MeaningsRepositoryImpl(
         }
     }
 
-    override suspend fun saveFavoriteWord(word: com.volokhinaleksey.models.remote.FavoriteWord) {
+    override suspend fun saveFavoriteWord(word: FavoriteWord) {
         localDataSource.saveFavoriteWord(favoriteWord = word)
     }
 
-    override suspend fun getFavoriteWordFlag(wordId: Long): com.volokhinaleksey.models.remote.FavoriteWord? {
+    override suspend fun getFavoriteWordFlag(wordId: Long): FavoriteWord? {
         return localDataSource.getFavoriteWordFlag(wordId = wordId)
     }
 

@@ -1,7 +1,9 @@
 package com.volokhinaleksey.search.viewmodel
 
+import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.search.SearchWordsInteractor
 import com.volokhinaleksey.models.states.WordsState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -11,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class DictionaryOfWordsViewModel(
     private val interactor: SearchWordsInteractor<WordsState>
-) : com.volokhinaleksey.core.viewmodel.BaseViewModel<WordsState>() {
+) : BaseViewModel<WordsState>() {
 
     /**
      * The method searches for the meanings of a word by some word
@@ -20,17 +22,12 @@ class DictionaryOfWordsViewModel(
      */
 
     fun getWordMeanings(word: String, isOnline: Boolean) {
-        viewModelScope.launch {
-            currentMutableData.emit(WordsState.Loading)
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val requestResponse =
-                        interactor.getWordsData(word = word, isRemoteSource = isOnline)
-                    currentMutableData.emit(requestResponse)
-                } catch (exception: Exception) {
-                    currentMutableData.emit(WordsState.Error(exception))
-                }
-            }
+        currentMutableData.tryEmit(WordsState.Loading)
+        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+            currentMutableData.tryEmit(WordsState.Error(throwable))
+        }) {
+            val requestResponse = interactor.getWordsData(word = word, isRemoteSource = isOnline)
+            currentMutableData.emit(requestResponse)
         }
     }
 

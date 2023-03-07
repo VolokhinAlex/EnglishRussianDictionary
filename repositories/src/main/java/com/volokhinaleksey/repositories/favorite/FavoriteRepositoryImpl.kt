@@ -1,7 +1,7 @@
 package com.volokhinaleksey.repositories.favorite
 
 import com.volokhinaleksey.datasource.favorite.FavoriteDataSource
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.ui.FavoriteWord
 
 class FavoriteRepositoryImpl(
     private val favoriteDataSource: FavoriteDataSource

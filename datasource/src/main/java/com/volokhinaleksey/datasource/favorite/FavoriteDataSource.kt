@@ -1,6 +1,6 @@
 package com.volokhinaleksey.datasource.favorite
 
-import com.volokhinaleksey.models.remote.FavoriteWord
+import com.volokhinaleksey.models.ui.FavoriteWord
 
 interface FavoriteDataSource {
 
