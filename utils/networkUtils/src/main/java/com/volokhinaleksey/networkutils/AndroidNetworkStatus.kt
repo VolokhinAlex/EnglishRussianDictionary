@@ -21,6 +21,9 @@ class AndroidNetworkStatus(context: Context) : NetworkStatus {
 
     override fun networkObserve(): Flow<Boolean> {
         return callbackFlow {
+
+            launch { send(false) }
+
             val callback = object : ConnectivityManager.NetworkCallback() {
 
                 override fun onAvailable(network: Network) {

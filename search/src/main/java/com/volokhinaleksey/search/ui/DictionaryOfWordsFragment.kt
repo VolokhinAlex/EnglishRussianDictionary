@@ -18,8 +18,11 @@ import com.volokhinaleksey.networkutils.AndroidNetworkStatus
 import com.volokhinaleksey.search.databinding.FragmentDictionaryOfWordsBinding
 import com.volokhinaleksey.search.ui.adapter.DictionaryOfWordsAdapter
 import com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
@@ -47,6 +50,8 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     override val viewModel: DictionaryOfWordsViewModel = scope.get()
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,9 +72,9 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
                     isOnline = isNetworkAvailable
                 )
             }.launchIn(lifecycleScope)
-        lifecycleScope.launch {
+        coroutineScope.launch {
             networkStatus.networkObserve().collect {
-                if (isNetworkAvailable) {
+                if (it) {
                     binding.offlineMessage.visibility = View.GONE
                 } else {
                     binding.offlineMessage.visibility = View.VISIBLE
@@ -133,5 +138,6 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         super.onDestroyView()
         _binding = null
         scope.close()
+        coroutineScope.coroutineContext.cancelChildren()
     }
 }

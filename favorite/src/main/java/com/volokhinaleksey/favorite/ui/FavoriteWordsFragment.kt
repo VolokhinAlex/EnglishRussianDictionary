@@ -95,6 +95,7 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
             FavoriteState.Loading -> showViewOnLoading()
             is FavoriteState.Success -> {
                 val favoriteWords = state.favoriteWord
+                showViewOnSuccess()
                 favoriteAdapter.submitList(favoriteWords)
                 swipeToDeleteFavoriteWord(favoriteWords)
             }

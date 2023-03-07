@@ -3,8 +3,6 @@ package com.volokhinaleksey.favorite.viewmodel
 import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
 import com.volokhinaleksey.models.states.FavoriteState
-import com.volokhinaleksey.models.states.WordsState
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,6 +16,7 @@ class FavoriteViewModel(
 
     private fun getFavorites() {
         viewModelScope.launch {
+            currentMutableData.emit(FavoriteState.Loading)
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val requestResponse =

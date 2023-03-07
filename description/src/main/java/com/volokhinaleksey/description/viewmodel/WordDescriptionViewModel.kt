@@ -29,10 +29,12 @@ class WordDescriptionViewModel(
      */
 
     fun getMeanings(meaningId: Long, isOnline: Boolean) {
-        currentMutableData.tryEmit(MeaningsState.Loading)
         viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
-            currentMutableData.tryEmit(MeaningsState.Error(throwable))
+            viewModelScope.launch {
+                currentMutableData.emit(MeaningsState.Error(throwable))
+            }
         }) {
+            currentMutableData.emit(MeaningsState.Loading)
             val responseRequest =
                 interactor.getMeaningsData(meaningId = meaningId, isRemoteSource = isOnline)
             currentMutableData.emit(responseRequest)
@@ -46,7 +48,7 @@ class WordDescriptionViewModel(
     }
 
     fun getFavoriteWord(wordId: Long) {
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, _ ->
             mutableFavoriteData.postValue(FavoriteState.Success(emptyList()))
         }) {
             mutableFavoriteData.postValue(interactor.getFavoriteWord(wordId = wordId))
