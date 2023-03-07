@@ -14,6 +14,7 @@ import com.volokhinaleksey.core.ui.DATA_KEY
 import com.volokhinaleksey.core.ui.base.BaseFragment
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.models.states.WordsState
+import com.volokhinaleksey.networkutils.AndroidNetworkStatus
 import com.volokhinaleksey.search.databinding.FragmentDictionaryOfWordsBinding
 import com.volokhinaleksey.search.ui.adapter.DictionaryOfWordsAdapter
 import com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.scope.getOrCreateScope
 
 class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
@@ -51,6 +53,7 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDictionaryOfWordsBinding.inflate(inflater)
+        val networkStatus = AndroidNetworkStatus(requireContext())
         binding.wordsList.layoutManager = LinearLayoutManager(requireContext())
         binding.wordsList.adapter = dictionaryOfWordsAdapter
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(it) }
@@ -64,6 +67,15 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
                     isOnline = isNetworkAvailable
                 )
             }.launchIn(lifecycleScope)
+        lifecycleScope.launch {
+            networkStatus.networkObserve().collect {
+                if (isNetworkAvailable) {
+                    binding.offlineMessage.visibility = View.GONE
+                } else {
+                    binding.offlineMessage.visibility = View.VISIBLE
+                }
+            }
+        }
         return binding.root
     }
 

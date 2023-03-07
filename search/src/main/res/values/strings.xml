@@ -32,4 +32,5 @@
     <string name="examples">Examples</string>
     <string name="similar_translation">Similar Translation</string>
     <string name="part_of_speech">Part of speech - </string>
+    <string name="you_are_offline">You are offline</string>
 </resources>
