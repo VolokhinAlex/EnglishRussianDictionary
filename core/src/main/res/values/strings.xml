@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">EnRuDictionary</string>
+    <string name="app_name" translatable="false">ENGLISH RUSSIAN DICTIONARY</string>
     <string name="error_textview_stub">Error</string>
     <string name="reload_button">Reload</string>
     <string name="undefined_error">Undefined error</string>
