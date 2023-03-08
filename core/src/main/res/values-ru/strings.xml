@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_textview_stub">Ошибка</string>
+    <string name="reload_button">Перезагрузка</string>
+    <string name="undefined_error">Неопределенная ошибка</string>
+    <string name="empty_server_response_on_success">Ответ от сервера пуст</string>
+    <string name="search_hint">Поиск по слову</string>
+    <string name="search">Поиск</string>
+    <string name="word_image">Картинка для слова</string>
+    <string name="history">История</string>
+    <string name="favorite">Избранные</string>
+    <string name="add_to_favorite">Добавить в избранные</string>
+    <string name="back">Назад</string>
+    <string name="text_to_speech">Преобразовать текст в речь</string>
+    <string name="examples">Примеры использования слова</string>
+    <string name="similar_translation">Похожие переводы</string>
+    <string name="part_of_speech">Часть речи - </string>
+</resources>

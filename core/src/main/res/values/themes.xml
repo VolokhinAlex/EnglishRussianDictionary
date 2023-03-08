@@ -5,17 +5,16 @@
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="BaseTextStyle" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/color_text_main_dark</item>
+        <item name="android:textColor">@color/color_text_main</item>
         <item name="android:textSize">@dimen/text_size_standard</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="HeaderTextStyle" parent="BaseTextStyle">
-        <item name="android:textColor">@color/color_text_header_dark</item>
+        <item name="android:textColor">@color/color_text_header</item>
         <item name="android:textSize">@dimen/text_size_standard_header</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -38,11 +37,20 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    <style name="Theme.DictionaryOfWords.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <item name="android:background">@drawable/bottom_sheet_dialog_background</item>
+    <style name="Theme.DictionaryOfWords.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.DictionaryOfWords.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="SearchInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">30dp</item>
+        <item name="boxCornerRadiusTopEnd">30dp</item>
+        <item name="boxCornerRadiusBottomStart">30dp</item>
+        <item name="boxCornerRadiusTopStart">30dp</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
     </style>
 </resources>
