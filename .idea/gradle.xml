@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/utils" />
             <option value="$PROJECT_DIR$/utils/mapperUtils" />
             <option value="$PROJECT_DIR$/utils/networkUtils" />
+            <option value="$PROJECT_DIR$/utils/sharedPreferencesHelper" />
             <option value="$PROJECT_DIR$/utils/viewByIdUtils" />
           </set>
         </option>
