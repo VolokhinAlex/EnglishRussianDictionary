@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.volokhinaleksey.models.local.FavoriteEntity
 
 private const val FAVORITE_WORD = 1
 
@@ -13,21 +14,21 @@ private const val FAVORITE_WORD = 1
 interface FavoriteDao {
 
     @Query("SELECT * FROM favorite_table WHERE word_id = :wordId")
-    suspend fun getFavoriteWord(wordId: Long): com.volokhinaleksey.models.local.FavoriteEntity?
+    suspend fun getFavoriteWord(wordId: Long): FavoriteEntity?
 
     @Query("SELECT * FROM favorite_table WHERE favorite = $FAVORITE_WORD")
-    suspend fun getFavoriteWords(): List<com.volokhinaleksey.models.local.FavoriteEntity>
+    suspend fun getFavoriteWords(): List<FavoriteEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(entity: com.volokhinaleksey.models.local.FavoriteEntity)
+    suspend fun insert(entity: FavoriteEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(entity: List<com.volokhinaleksey.models.local.FavoriteEntity>)
+    suspend fun insert(entity: List<FavoriteEntity>)
 
     @Update
-    suspend fun update(entity: com.volokhinaleksey.models.local.FavoriteEntity)
+    suspend fun update(entity: FavoriteEntity)
 
     @Delete
-    suspend fun delete(entity: com.volokhinaleksey.models.local.FavoriteEntity)
+    suspend fun delete(entity: FavoriteEntity)
 
 }

@@ -1,8 +1,10 @@
 package com.volokhinaleksey.mapperutils
 
+import com.volokhinaleksey.models.local.ExampleEntity
 import com.volokhinaleksey.models.local.FavoriteEntity
 import com.volokhinaleksey.models.local.HistoryEntity
 import com.volokhinaleksey.models.local.MeaningEntity
+import com.volokhinaleksey.models.local.SimilarTranslationEntity
 import com.volokhinaleksey.models.local.WordEntity
 import com.volokhinaleksey.models.remote.DefinitionDTO
 import com.volokhinaleksey.models.remote.ExampleDTO
@@ -25,7 +27,11 @@ fun mapListWordDTOToListWordEntity(wordDTO: List<WordDTO>): List<WordEntity> = w
     )
 }
 
-fun mapMeaningsEntityToMeaningsList(meaningEntity: List<MeaningEntity>): List<MeaningDTO> =
+fun mapMeaningsEntityToMeaningsList(
+    meaningEntity: List<MeaningEntity>,
+    exampleEntity: List<ExampleEntity>,
+    similarTranslationEntity: List<SimilarTranslationEntity>
+): List<MeaningDTO> =
     meaningEntity.map { meaning ->
         MeaningDTO(
             id = meaning.id,
@@ -35,8 +41,12 @@ fun mapMeaningsEntityToMeaningsList(meaningEntity: List<MeaningEntity>): List<Me
             text = meaning.word,
             transcription = meaning.transcription,
             definition = DefinitionDTO(text = meaning.definition),
-            examples = null,
-            similarTranslation = null
+            examples = exampleEntity.map { mapExampleEntityToExampleDTO(it) },
+            similarTranslation = similarTranslationEntity.map {
+                mapSimilarTranslationEntityToSimilarTranslationDTO(
+                    it
+                )
+            }
         )
     }
 
@@ -172,4 +182,35 @@ fun mapMeaningUIToMeaningDto(meaning: Meaning): MeaningDTO = MeaningDTO(
             it
         )
     }
+)
+
+fun mapSimilarTranslationDTOToSimilarTranslationEntity(
+    meaningId: Long,
+    similarTranslationDto: SimilarTranslationDTO
+): SimilarTranslationEntity =
+    SimilarTranslationEntity(
+        meaningId = meaningId,
+        partOfSpeechAbbreviation = similarTranslationDto.partOfSpeechAbbreviation.orEmpty(),
+        translation = similarTranslationDto.translation?.translation.orEmpty()
+    )
+
+fun mapSimilarTranslationEntityToSimilarTranslationDTO(
+    similarTranslationEntity: SimilarTranslationEntity
+): SimilarTranslationDTO = SimilarTranslationDTO(
+    partOfSpeechAbbreviation = similarTranslationEntity.partOfSpeechAbbreviation,
+    translation = TranslationDTO(translation = similarTranslationEntity.translation)
+)
+
+fun mapExampleEntityToExampleDTO(
+    exampleEntity: ExampleEntity
+): ExampleDTO = ExampleDTO(
+    text = exampleEntity.exampleText
+)
+
+fun mapExampleDTOToExampleEntity(
+    meaningId: Long,
+    exampleDto: ExampleDTO
+): ExampleEntity = ExampleEntity(
+    meaningId = meaningId,
+    exampleText = exampleDto.text.orEmpty()
 )

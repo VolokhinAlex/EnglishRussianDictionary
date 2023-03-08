@@ -26,7 +26,10 @@ class LocalSearchDataSourceImpl(
                 id = wordEntity.id,
                 text = wordEntity.word,
                 meanings = mapMeaningsEntityToMeaningsList(
-                    db.meaningDao().getWordMeaningByWordId(wordId = wordEntity.id)
+                    meaningEntity = db.meaningDao().getWordMeaningByWordId(wordId = wordEntity.id),
+                    exampleEntity = db.exampleDao().getExampleWordById(meaningId = wordEntity.id),
+                    similarTranslationEntity = db.similarTranslationDao()
+                        .getSimilarTranslationById(meaningId = wordEntity.id)
                 )
             )
         }

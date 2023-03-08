@@ -116,8 +116,6 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
             ) {
                 error("This language is not supported")
             }
-        } else {
-            error("Some mistake has occurred")
         }
     }
 

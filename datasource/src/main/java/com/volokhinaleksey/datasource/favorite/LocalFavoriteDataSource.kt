@@ -11,12 +11,20 @@ class LocalFavoriteDataSource(
 ) : FavoriteDataSource {
     override suspend fun getFavorites(): List<FavoriteWord> {
         return database.favoriteDao().getFavoriteWords().map {
+            val meanings = database.meaningDao().getWordMeaningByWordId(wordId = it.wordId)
             FavoriteWord(
                 wordId = it.wordId,
                 word = it.word,
                 isFavorite = it.isFavorite,
                 meanings = mapMeaningsEntityToMeaningsList(
-                    database.meaningDao().getWordMeaningByWordId(wordId = it.wordId)
+                    meaningEntity = meanings,
+                    exampleEntity = meanings.flatMap {
+                        database.exampleDao().getExampleWordById(meaningId = it.id)
+                    },
+                    similarTranslationEntity = meanings.flatMap {
+                        database.similarTranslationDao()
+                            .getSimilarTranslationById(meaningId = it.id)
+                    }
                 ).map {
                     mapMeaningDtoToMeaningUI(it)
                 }
