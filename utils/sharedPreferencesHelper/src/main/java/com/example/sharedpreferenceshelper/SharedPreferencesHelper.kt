@@ -4,6 +4,12 @@ import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * A delegate for convenient writing and reading from SharedPreferences.
+ * The class accepts the following data types for writing and reading String, Int, Long, Float, Boolean,
+ * otherwise it returns IllegalStateException with the error "Unknown data type"
+ */
+
 @Suppress("UNCHECKED_CAST")
 class SharedPreferencesHelper<V>(
     private val sharedPreferences: SharedPreferences,

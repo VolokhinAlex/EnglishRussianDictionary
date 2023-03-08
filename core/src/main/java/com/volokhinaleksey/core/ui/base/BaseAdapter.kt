@@ -30,9 +30,17 @@ abstract class BaseAdapter<T, V : ViewBinding, VH : BaseViewHolder<T, V>> :
         notifyDataSetChanged()
     }
 
+    /**
+     * Method for filling in list items
+     */
+
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.bind(currentList[position])
     }
+
+    /**
+     * Method for getting the size of the data list
+     */
 
     override fun getItemCount(): Int = currentList.size
 

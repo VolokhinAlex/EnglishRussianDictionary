@@ -7,6 +7,10 @@ import com.volokhinaleksey.models.states.WordsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the screen of search history.
+ */
+
 class HistoryViewModel(
     private val interactor: HistoryInteractor<WordsState>
 ) : BaseViewModel<WordsState>() {
@@ -14,6 +18,10 @@ class HistoryViewModel(
     init {
         getHistory()
     }
+
+    /**
+     * Method for getting the history of the list of words
+     */
 
     private fun getHistory() {
         viewModelScope.launch {

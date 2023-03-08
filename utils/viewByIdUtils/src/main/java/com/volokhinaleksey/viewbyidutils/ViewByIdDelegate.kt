@@ -8,6 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import java.lang.ref.WeakReference
 import kotlin.reflect.KProperty
 
+/**
+ * Auxiliary delegate utility to get a view using its identifier using the findViewById method
+ */
+
 class ViewByIdDelegate<out T : View>(
     private val rootGetter: () -> View?,
     private val viewId: Int
@@ -39,17 +43,33 @@ class ViewByIdDelegate<out T : View>(
 
 }
 
+/**
+ * Extension function for using the viewById method in Activity
+ */
+
 fun <T : View> Activity.viewById(@IdRes viewId: Int): ViewByIdDelegate<T> {
     return ViewByIdDelegate({ window.decorView.findViewById(android.R.id.content) }, viewId)
 }
+
+/**
+ * Extension function for using the viewById method in Fragment
+ */
 
 fun <T : View> Fragment.viewById(@IdRes viewId: Int): ViewByIdDelegate<T> {
     return ViewByIdDelegate({ view }, viewId)
 }
 
+/**
+ * Extension function for using the viewById method in any view
+ */
+
 fun <T : View> View.viewById(@IdRes viewId: Int): ViewByIdDelegate<T> {
     return ViewByIdDelegate({ this }, viewId)
 }
+
+/**
+ * Extension function for using the viewById method in RecyclerView.ViewHolder
+ */
 
 fun <T : View> RecyclerView.ViewHolder.viewById(@IdRes viewId: Int): ViewByIdDelegate<T> {
     return ViewByIdDelegate({ this.itemView }, viewId)

@@ -19,9 +19,14 @@ class AndroidNetworkStatus(context: Context) : NetworkStatus {
 
     private val connectivityManager = context.getSystemService<ConnectivityManager>()
 
+    /**
+     * A method for monitoring the state of the network, if there is a network, then the source is
+     * returned with true, otherwise the source is returned with false
+     */
+
     override fun networkObserve(): Flow<Boolean> {
         return callbackFlow {
-
+            // The base value for the source
             launch { send(false) }
 
             val callback = object : ConnectivityManager.NetworkCallback() {

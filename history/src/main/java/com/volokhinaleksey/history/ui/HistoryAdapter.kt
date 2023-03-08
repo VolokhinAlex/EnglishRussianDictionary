@@ -9,10 +9,18 @@ import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.models.ui.Word
 
+/**
+ * Adapter class for a list of search history
+ */
+
 class HistoryAdapter(
     private val imageLoader: ImageLoader<ImageView>,
     private val onItemClickListener: (Word) -> Unit
 ) : BaseAdapter<Word, ItemWordBinding, HistoryAdapter.ViewHolder>() {
+
+    /**
+     * ViewHolder for filling elements with data
+     */
 
     inner class ViewHolder(private val binding: ItemWordBinding) :
         BaseViewHolder<Word, ItemWordBinding>(binding) {
@@ -27,6 +35,10 @@ class HistoryAdapter(
         }
 
     }
+
+    /**
+     * Method for creating a ViewHolder
+     */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

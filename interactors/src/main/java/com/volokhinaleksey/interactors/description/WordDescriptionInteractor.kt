@@ -19,7 +19,17 @@ interface WordDescriptionInteractor {
 
     suspend fun getMeaningsData(meaningId: Long, isRemoteSource: Boolean): MeaningsState
 
+    /**
+     * Method for saving a favorite word
+     * @param word - The word to save
+     */
+
     suspend fun saveFavoriteWord(word: FavoriteWord)
+
+    /**
+     * Method for getting a favorite word by its id
+     * @param wordId - Word ID
+     */
 
     suspend fun getFavoriteWord(wordId: Long): FavoriteState
 }

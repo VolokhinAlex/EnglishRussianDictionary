@@ -84,6 +84,11 @@ class HistorySearchFragment : BaseFragment<WordsState>() {
         binding.baseView.reloadButton.visibility = View.GONE
     }
 
+    /**
+     * Method of processing states of the [WordsState] class coming from outside
+     * @param state - The state to be processed
+     */
+
     override fun renderData(state: WordsState) {
         when (state) {
             is WordsState.Error -> showViewOnError(error = state.error.localizedMessage.orEmpty())

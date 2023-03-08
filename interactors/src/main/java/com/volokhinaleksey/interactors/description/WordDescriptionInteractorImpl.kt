@@ -30,9 +30,19 @@ class WordDescriptionInteractorImpl(
         })
     }
 
+    /**
+     * Method for saving a favorite word
+     * @param word - The word to save
+     */
+
     override suspend fun saveFavoriteWord(word: FavoriteWord) {
         repository.saveFavoriteWord(word = word)
     }
+
+    /**
+     * Method for getting a favorite word by its id
+     * @param wordId - Word ID
+     */
 
     override suspend fun getFavoriteWord(wordId: Long): FavoriteState {
         val favoriteData = repository.getFavoriteWordFlag(wordId = wordId)
