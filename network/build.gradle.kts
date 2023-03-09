@@ -4,7 +4,9 @@ plugins {
 }
 
 android {
-    namespace = "com.volokhinaleksey.description"
+    namespace = "com.volokhinaleksey.network"
+    compileSdk = 33
+
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -25,20 +27,11 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to Modules.core)))
     implementation(project(mapOf("path" to Modules.models)))
-    implementation(project(mapOf("path" to Modules.interactors)))
-    implementation(Koin.koinCore)
-    implementation(Koin.koinAndroid)
-    implementation(Koin.koinAndroidCompat)
-    implementation(Navigation.navigationUi)
-    implementation(Navigation.navigationFragment)
-    implementation(Coil.coil)
-    implementation(Lifecycle.livedata)
-    implementation(Lifecycle.viewModel)
+    implementation(Retrofit.retrofit)
+    implementation(Retrofit.converterGson)
+    implementation(Retrofit.loggingOkHttp)
     implementation(Android.androidCore)
-    implementation(Design.appcompat)
-    implementation(Design.material)
     testImplementation(Tests.junit)
     androidTestImplementation(Tests.extJunit)
     androidTestImplementation(Tests.espressoCore)

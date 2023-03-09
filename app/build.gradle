@@ -39,6 +39,7 @@ dependencies {
     implementation project(Modules.historyScreen)
     implementation project(Modules.favoriteScreen)
     implementation project(Modules.descriptionScreen)
+    implementation project(Modules.network)
 
     // Room
     implementation Room.roomKtx

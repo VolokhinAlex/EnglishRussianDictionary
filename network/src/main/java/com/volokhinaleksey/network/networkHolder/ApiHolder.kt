@@ -1,4 +1,6 @@
-package com.volokhinaleksey.datasource
+package com.volokhinaleksey.network.networkHolder
+
+import com.volokhinaleksey.network.networkService.ApiService
 
 /**
  * Interface for working with the remote API.

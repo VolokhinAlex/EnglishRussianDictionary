@@ -8,9 +8,6 @@ import com.google.gson.GsonBuilder
 import com.volokhinaleksey.core.ui.imageloader.CoilImageLoader
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.database.database.DictionaryDatabase
-import com.volokhinaleksey.datasource.ApiHolder
-import com.volokhinaleksey.datasource.ApiService
-import com.volokhinaleksey.datasource.DictionaryApiHolder
 import com.volokhinaleksey.datasource.description.DescriptionDataSource
 import com.volokhinaleksey.datasource.description.LocalDescriptionDataSource
 import com.volokhinaleksey.datasource.description.LocalDescriptionDataSourceImpl
@@ -38,6 +35,9 @@ import com.volokhinaleksey.interactors.history.HistoryInteractorImpl
 import com.volokhinaleksey.interactors.search.SearchWordsInteractor
 import com.volokhinaleksey.interactors.search.SearchWordsInteractorImpl
 import com.volokhinaleksey.models.states.WordsState
+import com.volokhinaleksey.network.networkHolder.ApiHolder
+import com.volokhinaleksey.network.networkHolder.DictionaryApiHolder
+import com.volokhinaleksey.network.networkService.ApiService
 import com.volokhinaleksey.repositories.favorite.FavoriteRepository
 import com.volokhinaleksey.repositories.favorite.FavoriteRepositoryImpl
 import com.volokhinaleksey.repositories.history.HistoryRepository

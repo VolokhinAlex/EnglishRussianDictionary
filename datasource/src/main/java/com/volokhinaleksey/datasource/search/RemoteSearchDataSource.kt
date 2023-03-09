@@ -1,7 +1,7 @@
 package com.volokhinaleksey.datasource.search
 
-import com.volokhinaleksey.datasource.ApiHolder
 import com.volokhinaleksey.models.remote.WordDTO
+import com.volokhinaleksey.network.networkHolder.ApiHolder
 
 class RemoteSearchDataSource(
     private val apiHolder: ApiHolder

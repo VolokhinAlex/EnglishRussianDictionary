@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":utils:networkUtils")))
-    implementation(project(mapOf("path" to ":utils:viewByIdUtils")))
+    implementation(project(mapOf("path" to Modules.networkUtils)))
+    implementation(project(mapOf("path" to Modules.viewByIdUtils)))
     implementation(Navigation.navigationUi)
     implementation(Navigation.navigationFragment)
     implementation(Coil.coil)

@@ -1,4 +1,4 @@
-package com.volokhinaleksey.datasource
+package com.volokhinaleksey.network.networkService
 
 import com.volokhinaleksey.models.remote.MeaningDTO
 import com.volokhinaleksey.models.remote.WordDTO
