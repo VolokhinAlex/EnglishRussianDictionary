@@ -95,8 +95,13 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
             WordsState.Loading -> showViewOnLoading()
             is WordsState.Success -> {
                 val words = state.wordData
-                showViewOnSuccess()
-                dictionaryOfWordsAdapter.submitList(words)
+                if (words.isEmpty()) {
+                    showViewOnError("There are no words for such a query, try another query")
+                    binding.baseView.reloadButton.visibility = View.GONE
+                } else {
+                    showViewOnSuccess()
+                    dictionaryOfWordsAdapter.submitList(words)
+                }
             }
         }
     }

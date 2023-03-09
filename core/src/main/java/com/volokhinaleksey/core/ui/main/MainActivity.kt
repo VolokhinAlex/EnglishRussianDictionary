@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         var isHideSplashScreen = false
         lifecycleScope.launch {
-            delay(3000)
+            delay(1500)
             isHideSplashScreen = true
         }
         val content by viewById<View>(android.R.id.content)

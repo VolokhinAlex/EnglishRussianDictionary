@@ -7,7 +7,7 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowSplashScreenBackground">#FF958DA5</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo</item>
-        <item name="android:windowSplashScreenAnimationDuration">800</item>
+        <item name="android:windowSplashScreenAnimationDuration">500</item>
         <item name="android:windowSplashScreenBrandingImage">@drawable/english_russian</item>
     </style>
 </resources>
