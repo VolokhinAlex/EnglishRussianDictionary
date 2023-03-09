@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
              * Checking destination if you need to hide the bottom navigation view on some screens
              */
 
-            if (destination.id == R.id.description_nav_graph) {
+            if (destination.parent?.id == R.id.description_nav_graph) {
                 binding.bottomNavigationBar.visibility = View.GONE
             } else {
                 binding.bottomNavigationBar.visibility = View.VISIBLE
