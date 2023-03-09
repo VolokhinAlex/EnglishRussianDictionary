@@ -10,7 +10,7 @@
     <string name="history">History</string>
     <string name="favorite">Favorite</string>
     <string name="add_to_favorite">Add To Favorite</string>
-    <string name="back">Back</string>
+    <string name="button_back">Button Back</string>
     <string name="text_to_speech">Text To Speech</string>
     <string name="examples">Examples</string>
     <string name="similar_translation">Similar Translation</string>

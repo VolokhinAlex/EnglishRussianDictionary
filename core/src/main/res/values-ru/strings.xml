@@ -10,7 +10,7 @@
     <string name="history">История</string>
     <string name="favorite">Избранные</string>
     <string name="add_to_favorite">Добавить в избранные</string>
-    <string name="back">Назад</string>
+    <string name="button_back">Кнопка назад</string>
     <string name="text_to_speech">Преобразовать текст в речь</string>
     <string name="examples">Примеры использования слова</string>
     <string name="similar_translation">Похожие переводы</string>

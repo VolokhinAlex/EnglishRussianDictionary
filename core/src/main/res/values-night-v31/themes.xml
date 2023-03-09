@@ -12,9 +12,9 @@
         <item name="android:statusBarColor">@color/DarkColorPrimary</item>
         <item name="materialCardViewStyle">@style/MaterialCardView</item>
         <item name="android:windowSplashScreenBackground">#FF958DA5</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_dark</item>
         <item name="android:windowSplashScreenAnimationDuration">800</item>
-        <item name="android:windowSplashScreenBrandingImage">@drawable/english_russian</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/english_russian_dark</item>
     </style>
 
     <style name="BottomNavigationBar" parent="Widget.MaterialComponents.BottomNavigationView">

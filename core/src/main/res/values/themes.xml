@@ -58,7 +58,8 @@
         <item name="boxCornerRadiusTopEnd">30dp</item>
         <item name="boxCornerRadiusBottomStart">30dp</item>
         <item name="boxCornerRadiusTopStart">30dp</item>
-        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
     </style>
 
     <style name="MaterialCardView" parent="Widget.MaterialComponents.CardView">
