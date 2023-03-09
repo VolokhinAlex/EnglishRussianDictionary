@@ -15,7 +15,8 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentScrim="@color/color_white"
+            android:background="?attr/colorPrimary"
+            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
             <View
@@ -29,6 +30,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
                 app:layout_collapseMode="pin"
+                android:background="?attr/colorPrimary"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
                 <ImageView
