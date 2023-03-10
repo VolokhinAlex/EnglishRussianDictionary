@@ -167,6 +167,15 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.baseView.errorMessage.visibility = View.VISIBLE
         binding.baseView.reloadButton.visibility = View.VISIBLE
         binding.baseView.errorMessage.text = error
+        binding.baseView.reloadButton.setOnClickListener {
+            viewModel.getFavoriteWord(wordId = wordData?.id ?: 0)
+            lifecycleScope.launch {
+                viewModel.getMeanings(
+                    meaningId = wordData?.meanings?.get(0)?.id ?: 0,
+                    isOnline = isNetworkAvailable
+                )
+            }
+        }
     }
 
     /**

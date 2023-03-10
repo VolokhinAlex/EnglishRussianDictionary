@@ -127,6 +127,12 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         binding.baseView.errorMessage.visibility = View.VISIBLE
         binding.baseView.reloadButton.visibility = View.VISIBLE
         binding.baseView.errorMessage.text = error
+        binding.baseView.reloadButton.setOnClickListener {
+            viewModel.getWordMeanings(
+                word = binding.searchEditText.text.toString(),
+                isOnline = isNetworkAvailable
+            )
+        }
     }
 
     /**
