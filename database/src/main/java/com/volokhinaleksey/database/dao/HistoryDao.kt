@@ -40,14 +40,6 @@ interface HistoryDao {
     suspend fun insert(entity: List<HistoryEntity>)
 
     /**
-     * Method for updating the search history in a database
-     * @param entity - The entity that needs to be updated in the database
-     */
-
-    @Update
-    suspend fun update(entity: HistoryEntity)
-
-    /**
      * Method for deleting the search history from the database
      * @param entity - The entity to be deleted from the database
      */

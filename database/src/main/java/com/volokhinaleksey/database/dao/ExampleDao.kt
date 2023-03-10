@@ -40,14 +40,6 @@ interface ExampleDao {
     suspend fun insert(entity: List<ExampleEntity>)
 
     /**
-     * Method for updating an example of using a word in a database
-     * @param entity - The entity that needs to be updated in the database
-     */
-
-    @Update
-    suspend fun update(entity: ExampleEntity)
-
-    /**
      * Method for deleting an example of using a word from the database
      * @param entity - The entity to be deleted from the database
      */

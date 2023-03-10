@@ -32,6 +32,8 @@ dependencies {
     implementation Room.roomKtx
     implementation(Android.androidCore)
     testImplementation(Tests.junit)
+    androidTestImplementation(Coroutines.coroutinesTest)
+    androidTestImplementation(Tests.googleTruth)
     androidTestImplementation(Tests.extJunit)
     androidTestImplementation(Tests.espressoCore)
 }
