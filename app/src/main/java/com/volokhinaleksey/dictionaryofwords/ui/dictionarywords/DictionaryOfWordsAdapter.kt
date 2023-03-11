@@ -7,20 +7,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.volokhinaleksey.dictionaryofwords.databinding.ItemWordBinding
-import com.volokhinaleksey.dictionaryofwords.model.WordData
+import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 
 class DictionaryOfWordsAdapter(
     private val imageLoader: ImageLoader<ImageView>,
-    private val onSoundClickListener: (String) -> Unit,
-    private val onItemClickListener: (WordData) -> Unit
+    private val onItemClickListener: (WordDTO) -> Unit
 ) :
-    ListAdapter<WordData, DictionaryOfWordsAdapter.ViewHolder>(DictionaryOfWordsCallback) {
+    ListAdapter<WordDTO, DictionaryOfWordsAdapter.ViewHolder>(DictionaryOfWordsCallback) {
 
     inner class ViewHolder(private val binding: ItemWordBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(wordData: WordData) {
+        fun bind(wordData: WordDTO) {
             binding.word.text = wordData.text
             binding.descriptionWord.text =
                 wordData.meanings?.firstOrNull()?.translation?.translation
@@ -30,9 +29,6 @@ class DictionaryOfWordsAdapter(
                     url = imageUrl.substring(imageUrl.indexOf("https")),
                     target = binding.imageView
                 )
-            }
-            binding.testButton.setOnClickListener {
-                onSoundClickListener(wordData.text.orEmpty())
             }
         }
 
@@ -57,14 +53,14 @@ class DictionaryOfWordsAdapter(
 
 }
 
-object DictionaryOfWordsCallback : DiffUtil.ItemCallback<WordData>() {
+object DictionaryOfWordsCallback : DiffUtil.ItemCallback<WordDTO>() {
 
-    override fun areItemsTheSame(oldItem: WordData, newItem: WordData): Boolean {
+    override fun areItemsTheSame(oldItem: WordDTO, newItem: WordDTO): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: WordData, newItem: WordData): Boolean {
-        return oldItem == newItem
+    override fun areContentsTheSame(oldItem: WordDTO, newItem: WordDTO): Boolean {
+        return oldItem.id == newItem.id
     }
 
 }

@@ -19,15 +19,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navHostFragment =
             supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment
-
         val navController = navHostFragment.navController
         binding.bottomNavigationBar.setupWithNavController(navController = navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.wordDescriptionFragment) {
-
                 binding.bottomNavigationBar.visibility = View.GONE
             } else {
-
                 binding.bottomNavigationBar.visibility = View.VISIBLE
             }
         }

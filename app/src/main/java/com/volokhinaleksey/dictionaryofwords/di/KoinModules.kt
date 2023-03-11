@@ -7,14 +7,17 @@ import com.google.gson.GsonBuilder
 import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.LocalDictionaryDataSource
 import com.volokhinaleksey.dictionaryofwords.datasource.RemoteDictionaryDataSource
-import com.volokhinaleksey.dictionaryofwords.interactor.DictionaryOfWordsInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.Interactor
-import com.volokhinaleksey.dictionaryofwords.model.WordData
+import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
+import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractorImpl
+import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractor
+import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractorImpl
 import com.volokhinaleksey.dictionaryofwords.repository.*
+import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.CoilImageLoader
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
+import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -24,8 +27,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val repositoryModule = module {
-    single<Repository<List<WordData>>> {
-        DictionaryOfWordsRepository(
+    single<SearchWordsRepository> {
+        SearchWordsRepositoryImpl(
             get(named(REMOTE_SOURCE)),
             get(named(LOCAL_SOURCE))
         )
@@ -36,6 +39,13 @@ val repositoryModule = module {
     }
     single<DictionaryDataSource>(named(LOCAL_SOURCE)) {
         LocalDictionaryDataSource()
+    }
+
+    single<MeaningsRepository> {
+        MeaningsRepositoryImpl(
+            get(named(REMOTE_SOURCE)),
+            get(named(LOCAL_SOURCE))
+        )
     }
 }
 
@@ -65,7 +75,14 @@ val networkModule = module {
 }
 
 val dictionaryOfWordsScreen = module {
-    factory<Interactor<WordsState>> { DictionaryOfWordsInteractor(get()) }
+    factory<SearchWordsInteractor<WordsState>> { SearchWordsInteractorImpl(get()) }
     viewModel { DictionaryOfWordsViewModel(get()) }
     factory<ImageLoader<ImageView>> { CoilImageLoader() }
+}
+
+val wordDescriptionScreen = module {
+    factory<WordDescriptionInteractor<MeaningsState>> {
+        WordDescriptionInteractorImpl(get())
+    }
+    viewModel { WordDescriptionViewModel(get()) }
 }

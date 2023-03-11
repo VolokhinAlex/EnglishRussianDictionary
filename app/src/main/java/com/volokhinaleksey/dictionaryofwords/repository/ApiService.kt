@@ -1,6 +1,7 @@
 package com.volokhinaleksey.dictionaryofwords.repository
 
-import com.volokhinaleksey.dictionaryofwords.model.WordData
+import com.volokhinaleksey.dictionaryofwords.model.remote.MeaningsDataDTO
+import com.volokhinaleksey.dictionaryofwords.model.remote.WordDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,6 +17,8 @@ interface ApiService {
      */
 
     @GET("words/search")
-    suspend fun getWordsBySearch(@Query("search") wordToSearch: String): List<WordData>
+    suspend fun getWordsBySearch(@Query("search") wordToSearch: String): List<WordDTO>
 
+    @GET("meanings")
+    suspend fun getMeanings(@Query("ids") meaningId: Long): List<MeaningsDataDTO>
 }
