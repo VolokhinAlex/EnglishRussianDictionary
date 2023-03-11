@@ -26,9 +26,9 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":core")))
-    implementation(project(mapOf("path" to ":models")))
-    implementation(project(mapOf("path" to ":interactors")))
+    implementation(project(mapOf("path" to Modules.core)))
+    implementation(project(mapOf("path" to Modules.models)))
+    implementation(project(mapOf("path" to Modules.interactors)))
     implementation(Koin.koinCore)
     implementation(Koin.koinAndroid)
     implementation(Koin.koinAndroidCompat)

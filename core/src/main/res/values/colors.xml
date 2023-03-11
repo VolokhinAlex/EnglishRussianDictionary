@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -9,31 +9,25 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorPrimary">#FF6750A4</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorOnPrimary">#FFFFFFFF</color>
+    <color name="colorPrimaryDark">#473A6C</color>
+    <color name="colorAccent">#FFE8DEF8</color>
+    <color name="colorSecondary">#FF958DA5</color>
+    <color name="colorSurface">#FFFFFBFE</color>
+    <color name="colorOnSurface">#FF1C1B1F</color>
+    <color name="colorTertiary">#FFB58392</color>
+    <color name="background">#FFFFFBFE</color>
+    <color name="colorSecondaryContainer">#FFDCCCF7</color>
 
-<!-- Primary -  #FF6750A4
-     OnPrimary - #FFFFFFFF
-     OnSecondary - #FFE8DEF8
-     background - #FFFFFBFE
-     Secondary - #FF958DA5
-     Tertiary - #FFB58392
-     Surface - #FFFFFBFE
-     OnSurface - #FF1C1B1F
-     SecondaryContainer - #FFDCCCF7
-
-     Dark
-
-    Primary -  #FFD0BCFF
-     OnPrimary - #FF381E72
-     OnSecondary - #FF332D41
-     background - #FF1C1B1F
-     Secondary - #FFCCC2DC
-     Tertiary - #FFEFB8C8
-     Surface - #FFE6E1E5
-     OnSurface - #FFE6E1E5
-
-  -->
+    <color name="DarkColorPrimary">#FFD0BCFF</color>
+    <color name="DarkColorOnPrimary">#FF381E72</color>
+    <color name="DarkColorPrimaryDark">#FF332D41</color>
+    <color name="DarkColorAccent">#FF332D41</color>
+    <color name="DarkColorSecondary">#FFCCC2DC</color>
+    <color name="DarkColorSurface">#FFE6E1E5</color>
+    <color name="DarkColorOnSurface">#FFE6E1E5</color>
+    <color name="DarkColorTertiary">#FFEFB8C8</color>
+    <color name="DarkBackground">#FFE6E1E5</color>
 
     <color name="color_error">#bf1e19</color>
     <color name="color_text_main">#66000014</color>
@@ -50,4 +44,5 @@
     <color name="color_black_dark">#979797</color>
     <color name="color_white_dark">#FFFFFF</color>
     <color name="color_gray_dark">#66CFCFCF</color>
+
 </resources>

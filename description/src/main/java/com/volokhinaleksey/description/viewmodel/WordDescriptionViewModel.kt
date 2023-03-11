@@ -41,11 +41,21 @@ class WordDescriptionViewModel(
         }
     }
 
+    /**
+     * Method for saving a favorite word
+     * @param word - The word to save
+     */
+
     fun saveFavoriteWord(word: FavoriteWord) {
         viewModelScope.launch(Dispatchers.IO) {
             interactor.saveFavoriteWord(word = word)
         }
     }
+
+    /**
+     * Method for getting a favorite word by its id
+     * @param wordId - Id of the word by which you want to get the favorite words
+     */
 
     fun getFavoriteWord(wordId: Long) {
         viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, _ ->
