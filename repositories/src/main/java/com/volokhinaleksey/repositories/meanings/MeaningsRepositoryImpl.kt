@@ -33,11 +33,22 @@ class MeaningsRepositoryImpl(
         }
     }
 
+    /**
+     * Method for saving a favorite word
+     * @param word - The word to save
+     */
+
+
     override suspend fun saveFavoriteWord(word: FavoriteWord) {
         localDataSource.saveFavoriteWord(favoriteWord = word)
     }
 
-    override suspend fun getFavoriteWordFlag(wordId: Long): FavoriteWord? {
+    /**
+     *  A method for getting a favorite word by word id. The method returns either the selected word or null.
+     *  @param wordId - Id of the word to search for favorites
+     */
+
+    override suspend fun getFavoriteWord(wordId: Long): FavoriteWord? {
         return localDataSource.getFavoriteWord(wordId = wordId)
     }
 

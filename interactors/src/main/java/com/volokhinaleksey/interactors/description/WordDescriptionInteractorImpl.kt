@@ -45,7 +45,7 @@ class WordDescriptionInteractorImpl(
      */
 
     override suspend fun getFavoriteWord(wordId: Long): FavoriteState {
-        val favoriteData = repository.getFavoriteWordFlag(wordId = wordId)
+        val favoriteData = repository.getFavoriteWord(wordId = wordId)
         return if (favoriteData == null) {
             FavoriteState.Success(emptyList())
         } else {

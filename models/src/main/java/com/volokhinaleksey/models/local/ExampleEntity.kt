@@ -21,8 +21,7 @@ import androidx.room.PrimaryKey
     foreignKeys = [ForeignKey(
         entity = MeaningEntity::class,
         parentColumns = ["id"],
-        childColumns = ["meaning_id"],
-        onDelete = ForeignKey.CASCADE
+        childColumns = ["meaning_id"]
     )],
     indices = [Index(value = arrayOf("example_text"), unique = true)]
 )
