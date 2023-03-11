@@ -1,30 +1,69 @@
 package com.volokhinaleksey.dictionaryofwords.di
 
 import android.widget.ImageView
+import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.volokhinaleksey.dictionaryofwords.datasource.DictionaryDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.LocalDictionaryDataSource
-import com.volokhinaleksey.dictionaryofwords.datasource.RemoteDictionaryDataSource
-import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractorImpl
-import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractor
-import com.volokhinaleksey.dictionaryofwords.interactor.description.WordDescriptionInteractorImpl
-import com.volokhinaleksey.dictionaryofwords.repository.*
-import com.volokhinaleksey.dictionaryofwords.states.MeaningsState
-import com.volokhinaleksey.dictionaryofwords.states.WordsState
-import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.CoilImageLoader
-import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
-import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
-import com.volokhinaleksey.dictionaryofwords.viewmodel.WordDescriptionViewModel
+import com.volokhinaleksey.core.ui.imageloader.CoilImageLoader
+import com.volokhinaleksey.core.ui.imageloader.ImageLoader
+import com.volokhinaleksey.database.database.DictionaryDatabase
+import com.volokhinaleksey.datasource.ApiHolder
+import com.volokhinaleksey.datasource.ApiService
+import com.volokhinaleksey.datasource.DictionaryApiHolder
+import com.volokhinaleksey.datasource.description.DescriptionDataSource
+import com.volokhinaleksey.datasource.description.LocalDescriptionDataSource
+import com.volokhinaleksey.datasource.description.LocalDescriptionDataSourceImpl
+import com.volokhinaleksey.datasource.description.RemoteDescriptionDataSource
+import com.volokhinaleksey.datasource.favorite.FavoriteDataSource
+import com.volokhinaleksey.datasource.favorite.LocalFavoriteDataSource
+import com.volokhinaleksey.datasource.history.HistoryDataSource
+import com.volokhinaleksey.datasource.history.LocalHistoryDataSource
+import com.volokhinaleksey.datasource.search.LocalSearchDataSource
+import com.volokhinaleksey.datasource.search.LocalSearchDataSourceImpl
+import com.volokhinaleksey.datasource.search.RemoteSearchDataSource
+import com.volokhinaleksey.datasource.search.SearchDataSource
+import com.volokhinaleksey.description.ui.WordDescriptionFragment
+import com.volokhinaleksey.description.viewmodel.WordDescriptionViewModel
+import com.volokhinaleksey.favorite.ui.FavoriteWordsFragment
+import com.volokhinaleksey.favorite.viewmodel.FavoriteViewModel
+import com.volokhinaleksey.history.ui.HistorySearchFragment
+import com.volokhinaleksey.history.viewmodel.HistoryViewModel
+import com.volokhinaleksey.interactors.description.WordDescriptionInteractor
+import com.volokhinaleksey.interactors.description.WordDescriptionInteractorImpl
+import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
+import com.volokhinaleksey.interactors.favorite.FavoriteInteractorImpl
+import com.volokhinaleksey.interactors.history.HistoryInteractor
+import com.volokhinaleksey.interactors.history.HistoryInteractorImpl
+import com.volokhinaleksey.interactors.search.SearchWordsInteractor
+import com.volokhinaleksey.interactors.search.SearchWordsInteractorImpl
+import com.volokhinaleksey.models.states.WordsState
+import com.volokhinaleksey.repositories.favorite.FavoriteRepository
+import com.volokhinaleksey.repositories.favorite.FavoriteRepositoryImpl
+import com.volokhinaleksey.repositories.history.HistoryRepository
+import com.volokhinaleksey.repositories.history.HistoryRepositoryImpl
+import com.volokhinaleksey.repositories.meanings.MeaningsRepository
+import com.volokhinaleksey.repositories.meanings.MeaningsRepositoryImpl
+import com.volokhinaleksey.repositories.search.SearchWordsRepository
+import com.volokhinaleksey.repositories.search.SearchWordsRepositoryImpl
+import com.volokhinaleksey.search.ui.DictionaryOfWordsFragment
+import com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+private const val DICTIONARY_DATABASE_NAME = "dictionary.db"
+
+val databaseModule = module {
+    single {
+        Room
+            .databaseBuilder(get(), DictionaryDatabase::class.java, DICTIONARY_DATABASE_NAME)
+            .build()
+    }
+}
 
 /**
  * A module for implementing dependencies for repositories and their data sources.
@@ -37,26 +76,31 @@ val repositoryModule = module {
      */
 
     single<SearchWordsRepository> {
-        SearchWordsRepositoryImpl(
-            get(named(REMOTE_SOURCE)),
-            get(named(LOCAL_SOURCE))
-        )
+        SearchWordsRepositoryImpl(get(), get())
     }
 
     /**
-     * Dependency injection for RemoteDictionaryDataSource()
+     * Dependency injection for RemoteSearchDataSource()
      */
 
-    single<DictionaryDataSource>(named(REMOTE_SOURCE)) {
-        RemoteDictionaryDataSource(get())
+    single<SearchDataSource> {
+        RemoteSearchDataSource(get())
     }
 
     /**
      * Dependency injection for LocalDictionaryDataSource()
      */
 
-    single<DictionaryDataSource>(named(LOCAL_SOURCE)) {
-        LocalDictionaryDataSource()
+    single<LocalSearchDataSource> {
+        LocalSearchDataSourceImpl(get())
+    }
+
+    single<LocalDescriptionDataSource> {
+        LocalDescriptionDataSourceImpl(get())
+    }
+
+    single<DescriptionDataSource> {
+        RemoteDescriptionDataSource(get())
     }
 
     /**
@@ -64,10 +108,27 @@ val repositoryModule = module {
      */
 
     single<MeaningsRepository> {
-        MeaningsRepositoryImpl(
-            get(named(REMOTE_SOURCE)),
-            get(named(LOCAL_SOURCE))
-        )
+        MeaningsRepositoryImpl(get(), get())
+    }
+
+    single<HistoryDataSource> {
+        LocalHistoryDataSource(get())
+    }
+
+    single<HistoryRepository> {
+        HistoryRepositoryImpl(get())
+    }
+
+    /**
+     * Favorite Screen
+     */
+
+    single<FavoriteDataSource> {
+        LocalFavoriteDataSource(get())
+    }
+
+    single<FavoriteRepository> {
+        FavoriteRepositoryImpl(get())
     }
 }
 
@@ -105,9 +166,15 @@ val networkModule = module {
  */
 
 val dictionaryOfWordsScreen = module {
-    factory<SearchWordsInteractor<WordsState>> { SearchWordsInteractorImpl(get()) }
-    viewModel { DictionaryOfWordsViewModel(get()) }
-    factory<ImageLoader<ImageView>> { CoilImageLoader() }
+    scope<DictionaryOfWordsFragment> {
+        scoped<SearchWordsInteractor<WordsState>> {
+            SearchWordsInteractorImpl(
+                get()
+            )
+        }
+        viewModel { DictionaryOfWordsViewModel(get()) }
+        scoped<ImageLoader<ImageView>> { CoilImageLoader() }
+    }
 }
 
 /**
@@ -115,8 +182,30 @@ val dictionaryOfWordsScreen = module {
  */
 
 val wordDescriptionScreen = module {
-    factory<WordDescriptionInteractor<MeaningsState>> {
-        WordDescriptionInteractorImpl(get())
+    scope<WordDescriptionFragment> {
+        scoped<WordDescriptionInteractor> {
+            WordDescriptionInteractorImpl(get())
+        }
+        viewModel { WordDescriptionViewModel(get()) }
     }
-    viewModel { WordDescriptionViewModel(get()) }
+}
+
+
+val historyScreen = module {
+    scope<HistorySearchFragment> {
+        scoped<HistoryInteractor<WordsState>> {
+            HistoryInteractorImpl(get())
+        }
+        scoped<ImageLoader<ImageView>> { CoilImageLoader() }
+        viewModel { HistoryViewModel(get()) }
+    }
+}
+
+val favoriteScreen = module {
+    scope<FavoriteWordsFragment> {
+        scoped<FavoriteInteractor> {
+            FavoriteInteractorImpl(get())
+        }
+        viewModel { FavoriteViewModel(get()) }
+    }
 }

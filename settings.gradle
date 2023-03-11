@@ -14,3 +14,17 @@ dependencyResolutionManagement {
 }
 rootProject.name = "DictionaryOfWords"
 include ':app'
+include ':core'
+include ':utils:networkUtils'
+include ':utils:mapperUtils'
+include ':repositories'
+include ':models'
+include ':datasource'
+include ':database'
+include ':interactors'
+include ':history'
+include ':favorite'
+include ':search'
+include ':description'
+include ':utils:viewByIdUtils'
+include ':utils:sharedPreferencesHelper'

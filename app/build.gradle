@@ -3,19 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
     namespace 'com.volokhinaleksey.dictionaryofwords'
-    compileSdk 33
+    compileSdk Config.compileSdk
 
     defaultConfig {
-        applicationId "com.volokhinaleksey.dictionaryofwords"
-        minSdk 27
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        applicationId Config.applicationId
+        versionCode Releases.versionCode
+        versionName Releases.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,50 +23,47 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    buildFeatures {
-        viewBinding true
     }
 }
 
 dependencies {
-    def nav_version = "2.5.3"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation project(Modules.database)
+    implementation project(Modules.datasource)
+    implementation project(Modules.models)
+    implementation project(Modules.core)
+    implementation project(Modules.repositories)
+    implementation project(Modules.interactors)
+    implementation project(Modules.searchScreen)
+    implementation project(Modules.historyScreen)
+    implementation project(Modules.favoriteScreen)
+    implementation project(Modules.descriptionScreen)
+
+    // Room
+    implementation Room.roomKtx
+
+    implementation Navigation.navigationFragment
+    implementation Navigation.navigationUi
 
     // Koin
-    def koin_version= "3.3.3"
-    implementation "io.insert-koin:koin-core:$koin_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "io.insert-koin:koin-android-compat:$koin_version"
+    implementation Koin.koinCore
+    implementation Koin.koinAndroid
+    implementation Koin.koinAndroidCompat
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-
-    // Lifecycle
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation Coroutines.coroutinesCore
+    implementation Coroutines.coroutinesAndroid
 
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation Retrofit.retrofit
+    implementation Retrofit.converterGson
+    implementation Retrofit.loggingOkHttp
 
-    // Coil
-    implementation "io.coil-kt:coil:2.2.2"
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation Android.androidCore
+
+    testImplementation Tests.junit
+    androidTestImplementation Tests.extJunit
+    androidTestImplementation Tests.espressoCore
 }

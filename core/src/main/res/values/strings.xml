@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name" translatable="false">EnRuDictionary</string>
+    <string name="error_textview_stub">Error</string>
+    <string name="reload_button">Reload</string>
+    <string name="undefined_error">Undefined error</string>
+    <string name="empty_server_response_on_success">Response from server is empty</string>
+    <string name="search_hint">Search for a word</string>
+    <string name="search">Search</string>
+    <string name="word_image">Word Image</string>
+    <string name="history">History</string>
+    <string name="favorite">Favorite</string>
+    <string name="add_to_favorite">Add To Favorite</string>
+    <string name="back">Back</string>
+    <string name="text_to_speech">Text To Speech</string>
+    <string name="examples">Examples</string>
+    <string name="similar_translation">Similar Translation</string>
+    <string name="part_of_speech">Part of speech - </string>
+</resources>
