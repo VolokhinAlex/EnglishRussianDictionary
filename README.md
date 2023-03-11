@@ -1,4 +1,5 @@
 # English Russian Dictionary
+The project uses the api to get data from skyeng
 
 # Screenshots
 <img src="https://user-images.githubusercontent.com/89124134/224475287-8dd9d392-b82e-4d8b-bc1b-898feb95864d.png" width="25%"> <img src="https://user-images.githubusercontent.com/89124134/224475296-395ec84c-c824-4a19-a6c3-4a35f6306dbd.png" width="25%"> 
