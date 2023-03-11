@@ -11,6 +11,11 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
+/**
+ * Implementation of the interface for receiving data from the network on smartphones with Android OS
+ */
+
+
 class AndroidNetworkStatus(context: Context) : NetworkStatus {
 
     private val connectivityManager = context.getSystemService<ConnectivityManager>()
