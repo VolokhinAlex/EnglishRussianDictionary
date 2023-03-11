@@ -1,11 +1,10 @@
 package com.volokhinaleksey.database.dao
 
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.volokhinaleksey.database.database.DictionaryDatabase
+import com.volokhinaleksey.database.di.databaseTestingModule
 import com.volokhinaleksey.models.local.MeaningEntity
 import com.volokhinaleksey.models.local.SimilarTranslationEntity
 import com.volokhinaleksey.models.local.WordEntity
@@ -15,23 +14,26 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.KoinTest
+import org.koin.test.inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class SimilarTranslationDaoTest {
+class SimilarTranslationDaoTest : KoinTest {
 
-    private lateinit var database: DictionaryDatabase
+    private val database: DictionaryDatabase by inject()
     private lateinit var similarTranslationDao: SimilarTranslationDao
     private lateinit var meaningDao: MeaningDao
     private lateinit var wordDao: WordDao
 
     @Before
     fun setUp() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            DictionaryDatabase::class.java
-        ).allowMainThreadQueries().build()
+        startKoin {
+            modules(databaseTestingModule)
+        }
         similarTranslationDao = database.similarTranslationDao()
         meaningDao = database.meaningDao()
         wordDao = database.wordDao()
@@ -43,15 +45,17 @@ class SimilarTranslationDaoTest {
 
     @Test
     fun insertSimilarTranslationListEntity_returnTrue() = runTest {
-        val similarTranslationEntities = listOf(SimilarTranslationEntity(
-            translation = "Солнце",
-            meaningId = 0,
-            partOfSpeechAbbreviation = "сущ."
-        ), SimilarTranslationEntity(
-            translation = "Солнышко",
-            meaningId = 0,
-            partOfSpeechAbbreviation = "сущ."
-        ))
+        val similarTranslationEntities = listOf(
+            SimilarTranslationEntity(
+                translation = "Солнце",
+                meaningId = 0,
+                partOfSpeechAbbreviation = "сущ."
+            ), SimilarTranslationEntity(
+                translation = "Солнышко",
+                meaningId = 0,
+                partOfSpeechAbbreviation = "сущ."
+            )
+        )
         similarTranslationDao.insert(similarTranslationEntities)
         val result = similarTranslationDao.getSimilarTranslationById(0)
         assertThat(result).isEqualTo(similarTranslationEntities)
@@ -106,6 +110,7 @@ class SimilarTranslationDaoTest {
     @After
     fun tearDown() {
         database.close()
+        stopKoin()
     }
 
 }

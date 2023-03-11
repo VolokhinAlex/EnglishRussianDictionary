@@ -1,11 +1,10 @@
 package com.volokhinaleksey.database.dao
 
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.volokhinaleksey.database.database.DictionaryDatabase
+import com.volokhinaleksey.database.di.databaseTestingModule
 import com.volokhinaleksey.models.local.WordEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -13,22 +12,25 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.KoinTest
+import org.koin.test.inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class WordDaoTest {
+class WordDaoTest : KoinTest {
 
-    private lateinit var dictionaryDatabase: DictionaryDatabase
+    private val database: DictionaryDatabase by inject()
     private lateinit var wordDao: WordDao
 
     @Before
     fun createDb() {
-        dictionaryDatabase = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            DictionaryDatabase::class.java
-        ).allowMainThreadQueries().build()
-        wordDao = dictionaryDatabase.wordDao()
+        startKoin {
+            modules(databaseTestingModule)
+        }
+        wordDao = database.wordDao()
     }
 
     @Test
@@ -70,7 +72,8 @@ class WordDaoTest {
 
     @After
     fun tearDown() {
-        dictionaryDatabase.close()
+        database.close()
+        stopKoin()
     }
 
 }
