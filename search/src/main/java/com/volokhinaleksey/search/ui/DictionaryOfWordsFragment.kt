@@ -86,6 +86,7 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     /**
      * Method of processing states of the [WordsState] class coming from outside
+     * @param state - The state to be processed
      */
 
     override fun renderData(state: WordsState) {
@@ -94,8 +95,13 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
             WordsState.Loading -> showViewOnLoading()
             is WordsState.Success -> {
                 val words = state.wordData
-                showViewOnSuccess()
-                dictionaryOfWordsAdapter.submitList(words)
+                if (words.isEmpty()) {
+                    showViewOnError("There are no words for such a query, try another query")
+                    binding.baseView.reloadButton.visibility = View.GONE
+                } else {
+                    showViewOnSuccess()
+                    dictionaryOfWordsAdapter.submitList(words)
+                }
             }
         }
     }
@@ -121,6 +127,12 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         binding.baseView.errorMessage.visibility = View.VISIBLE
         binding.baseView.reloadButton.visibility = View.VISIBLE
         binding.baseView.errorMessage.text = error
+        binding.baseView.reloadButton.setOnClickListener {
+            viewModel.getWordMeanings(
+                word = binding.searchEditText.text.toString(),
+                isOnline = isNetworkAvailable
+            )
+        }
     }
 
     /**

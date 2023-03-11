@@ -44,21 +44,10 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
     ): View {
         _binding = FragmentWordDescriptionBinding.inflate(inflater)
         textToSpeech = TextToSpeech(requireContext(), this)
-        binding.backArrow.setOnClickListener { requireView().findNavController().popBackStack() }
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(state = it) }
         viewModel.getFavoriteWord(wordId = wordData?.id ?: 0)
         viewModel.favoriteData.observe(viewLifecycleOwner) {
             renderFavoriteData(state = it)
-        }
-        binding.addFavorite.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.saveFavoriteWord(
-                word = FavoriteWord(
-                    wordId = wordData?.id ?: 0,
-                    word = wordData?.word.orEmpty(),
-                    isFavorite = isChecked,
-                    meanings = wordData?.meanings.orEmpty()
-                )
-            )
         }
         lifecycleScope.launch {
             viewModel.getMeanings(
@@ -66,9 +55,16 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
                 isOnline = isNetworkAvailable
             )
         }
+        setFavoriteWord()
+        onBackButtonListener()
         initLists()
         return binding.root
     }
+
+    /**
+     * Method of processing states of the [FavoriteState] class coming from outside
+     * @param state - The state to be processed
+     */
 
     private fun renderFavoriteData(state: FavoriteState) {
         when (state) {
@@ -121,6 +117,7 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
 
     /**
      * Method of processing states of the [MeaningsState] class coming from outside
+     * @param state - The state to be processed
      */
 
     override fun renderData(state: MeaningsState) {
@@ -170,6 +167,15 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.baseView.errorMessage.visibility = View.VISIBLE
         binding.baseView.reloadButton.visibility = View.VISIBLE
         binding.baseView.errorMessage.text = error
+        binding.baseView.reloadButton.setOnClickListener {
+            viewModel.getFavoriteWord(wordId = wordData?.id ?: 0)
+            lifecycleScope.launch {
+                viewModel.getMeanings(
+                    meaningId = wordData?.meanings?.get(0)?.id ?: 0,
+                    isOnline = isNetworkAvailable
+                )
+            }
+        }
     }
 
     /**
@@ -182,6 +188,31 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
         binding.baseView.errorMessage.visibility = View.GONE
         binding.baseView.progressBar.visibility = View.GONE
         binding.baseView.reloadButton.visibility = View.GONE
+    }
+
+    /**
+     * Method to go back to the previous screen
+     */
+
+    private fun onBackButtonListener() {
+        binding.backArrow.setOnClickListener { requireView().findNavController().popBackStack() }
+    }
+
+    /**
+     * Method for setting a favorite word
+     */
+
+    private fun setFavoriteWord() {
+        binding.addFavorite.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveFavoriteWord(
+                word = FavoriteWord(
+                    wordId = wordData?.id ?: 0,
+                    word = wordData?.word.orEmpty(),
+                    isFavorite = isChecked,
+                    meanings = wordData?.meanings.orEmpty()
+                )
+            )
+        }
     }
 
     override fun onDestroy() {

@@ -1,7 +1,7 @@
 package com.volokhinaleksey.repositories.meanings
 
-import com.volokhinaleksey.models.ui.FavoriteWord
 import com.volokhinaleksey.models.remote.MeaningDTO
+import com.volokhinaleksey.models.ui.FavoriteWord
 
 /**
  * Interface for a repository of values obtained from some data source
@@ -17,7 +17,17 @@ interface MeaningsRepository {
 
     suspend fun getMeaningsData(meaningId: Long, isRemoteSource: Boolean): List<MeaningDTO>
 
+    /**
+     * Method for saving a favorite word
+     * @param word - The word to save
+     */
+
     suspend fun saveFavoriteWord(word: FavoriteWord)
 
-    suspend fun getFavoriteWordFlag(wordId: Long): FavoriteWord?
+    /**
+     *  A method for getting a favorite word by word id. The method returns either the selected word or null.
+     *  @param wordId - Id of the word to search for favorites
+     */
+
+    suspend fun getFavoriteWord(wordId: Long): FavoriteWord?
 }

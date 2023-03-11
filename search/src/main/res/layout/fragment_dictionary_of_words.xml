@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="18sp"
+            android:textSize="@dimen/offline_message_text_size"
             android:layout_gravity="center"
             android:text="@string/you_are_offline" />
 
@@ -34,6 +34,7 @@
         android:layout_margin="@dimen/search_margin"
         android:hint="@string/search_hint"
         app:endIconMode="clear_text"
+        app:boxStrokeWidth="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/offline_message"

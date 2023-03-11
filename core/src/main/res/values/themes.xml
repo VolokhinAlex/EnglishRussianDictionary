@@ -1,10 +1,17 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.DictionaryOfWords" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorTertiary">@color/colorTertiary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondaryContainer">@color/colorSecondaryContainer</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="materialCardViewStyle">@style/MaterialCardView</item>
     </style>
 
     <style name="BaseTextStyle" parent="TextAppearance.MaterialComponents.Body1">
@@ -51,6 +58,19 @@
         <item name="boxCornerRadiusTopEnd">30dp</item>
         <item name="boxCornerRadiusBottomStart">30dp</item>
         <item name="boxCornerRadiusTopStart">30dp</item>
-        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+    </style>
+
+    <style name="MaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/colorSecondary</item>
+    </style>
+
+    <style name="BottomNavigationBar" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="backgroundTint">@color/colorAccent</item>
+    </style>
+
+    <style name="AppBar">
+        <item name="background">@color/white</item>
     </style>
 </resources>
