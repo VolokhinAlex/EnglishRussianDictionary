@@ -21,12 +21,14 @@ class WordExamplesAdapter :
             val startIndex = data.text?.indexOf("[") ?: 0
             val endIndex = data.text?.indexOf("]") ?: 0
             val spannable = SpannableString(data.text)
-            spannable.setSpan(
-                ForegroundColorSpan(Color.CYAN),
-                startIndex,
-                endIndex + 1,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+            if (startIndex >= 0 && endIndex >= 0) {
+                spannable.setSpan(
+                    ForegroundColorSpan(Color.MAGENTA),
+                    startIndex,
+                    endIndex + 1,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
             binding.textExample.text = spannable
         }
 

@@ -2,7 +2,6 @@ package com.volokhinaleksey.dictionaryofwords.viewmodel
 
 import com.volokhinaleksey.dictionaryofwords.interactor.search.SearchWordsInteractor
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -21,12 +20,17 @@ class DictionaryOfWordsViewModel(
      */
 
     fun getWordMeanings(word: String, isOnline: Boolean) {
-        currentMutableData.value = WordsState.Loading
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
-            currentMutableData.postValue(WordsState.Error(throwable))
-        }) {
-            val requestResponse = interactor.getWordsData(word = word, isRemoteSource = isOnline)
-            currentMutableData.postValue(requestResponse)
+        viewModelScope.launch {
+            currentMutableData.emit(WordsState.Loading)
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val requestResponse =
+                        interactor.getWordsData(word = word, isRemoteSource = isOnline)
+                    currentMutableData.emit(requestResponse)
+                } catch (exception: Exception) {
+                    currentMutableData.emit(WordsState.Error(exception))
+                }
+            }
         }
     }
 

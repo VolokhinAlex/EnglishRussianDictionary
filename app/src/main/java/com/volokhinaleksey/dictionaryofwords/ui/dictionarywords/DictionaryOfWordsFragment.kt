@@ -5,26 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jakewharton.rxbinding4.widget.textChanges
 import com.volokhinaleksey.dictionaryofwords.databinding.FragmentDictionaryOfWordsBinding
-import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProvider
-import com.volokhinaleksey.dictionaryofwords.schedulers.SchedulersProviderImpl
 import com.volokhinaleksey.dictionaryofwords.states.WordsState
 import com.volokhinaleksey.dictionaryofwords.ui.base.BaseFragment
 import com.volokhinaleksey.dictionaryofwords.ui.imageloaders.ImageLoader
+import com.volokhinaleksey.dictionaryofwords.ui.textChanges
 import com.volokhinaleksey.dictionaryofwords.viewmodel.DictionaryOfWordsViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     private var _binding: FragmentDictionaryOfWordsBinding? = null
     private val binding: FragmentDictionaryOfWordsBinding get() = _binding!!
-
-    private var schedulers: SchedulersProvider = SchedulersProviderImpl()
 
     private val imageLoader: ImageLoader<ImageView> by inject()
 
@@ -38,6 +37,7 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     override val viewModel: DictionaryOfWordsViewModel by viewModel()
 
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,21 +46,19 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
         binding.wordsList.layoutManager = LinearLayoutManager(requireContext())
         binding.wordsList.adapter = dictionaryOfWordsAdapter
         viewModel.currentData.observe(viewLifecycleOwner) { renderData(it) }
-        compositeDisposable.add(
-            binding.searchEditText
-                .textChanges()
-                .subscribeOn(schedulers.io())
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .observeOn(schedulers.mainThread())
-                .subscribe {
-                    if (it.isNotEmpty()) {
-                        viewModel.getWordMeanings(
-                            word = it.toString(),
-                            isOnline = isNetworkAvailable
-                        )
-                    }
+        binding.searchEditText
+            .textChanges()
+            .filterNot { it.isNullOrBlank() }
+            .debounce(500)
+            .distinctUntilChanged()
+            .onEach {
+                networkStatus?.isNetworkAvailable()?.collect {
+                    viewModel.getWordMeanings(
+                        word = it.toString(),
+                        isOnline = it
+                    )
                 }
-        )
+            }.launchIn(lifecycleScope)
         return binding.root
     }
 
