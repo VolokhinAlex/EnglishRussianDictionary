@@ -8,6 +8,10 @@ class LocalHistoryDataSource(
     private val database: DictionaryDatabase
 ) : HistoryDataSource {
 
+    /**
+     * Method for getting a list of words history
+     */
+
     override suspend fun getHistoryData(): List<WordDTO> {
         return database.historyDao().all().map { historyEntity ->
             val meanings = database.meaningDao()

@@ -15,6 +15,10 @@ import com.volokhinaleksey.models.local.MeaningEntity
 import com.volokhinaleksey.models.local.SimilarTranslationEntity
 import com.volokhinaleksey.models.local.WordEntity
 
+/**
+ * Database Room object for combining DAO objects with entities
+ */
+
 @Database(
     entities = [
         WordEntity::class,
@@ -28,11 +32,41 @@ import com.volokhinaleksey.models.local.WordEntity
     exportSchema = false
 )
 abstract class DictionaryDatabase : RoomDatabase() {
+
+    /**
+     * WordDao for working with word entity
+     */
+
     abstract fun wordDao(): WordDao
+
+    /**
+     * WordDao for working with History Entity
+     */
+
     abstract fun historyDao(): HistoryDao
+
+    /**
+     * WordDao for working with Meaning Entity
+     */
+
     abstract fun meaningDao(): MeaningDao
+
+    /**
+     * WordDao for working with Favorite Entity
+     */
+
     abstract fun favoriteDao(): FavoriteDao
+
+    /**
+     * WordDao for working with ExampleEntity
+     */
+
     abstract fun exampleDao(): ExampleDao
+
+    /**
+     * WordDao for working with SimilarTranslation Entity
+     */
+
     abstract fun similarTranslationDao(): SimilarTranslationDao
 
 }

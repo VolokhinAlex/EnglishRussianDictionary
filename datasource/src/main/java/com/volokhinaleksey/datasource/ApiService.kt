@@ -21,6 +21,7 @@ interface ApiService {
 
     /**
      * Method for getting a list of word meanings by meaning ID
+     * @param meaningId - Meaning ID
      */
 
     @GET("meanings")

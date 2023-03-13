@@ -86,6 +86,7 @@ class DictionaryOfWordsFragment : BaseFragment<WordsState>() {
 
     /**
      * Method of processing states of the [WordsState] class coming from outside
+     * @param state - The state to be processed
      */
 
     override fun renderData(state: WordsState) {
