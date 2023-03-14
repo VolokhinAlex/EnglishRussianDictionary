@@ -31,9 +31,9 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":datasource")))
-    implementation(project(mapOf("path" to ":models")))
-    implementation(project(mapOf("path" to ":utils:mapperUtils")))
+    implementation(project(mapOf("path" to Modules.datasource)))
+    implementation(project(mapOf("path" to Modules.models)))
+    implementation(project(mapOf("path" to Modules.mapperUtils)))
     implementation(Retrofit.retrofit)
     implementation(Retrofit.converterGson)
     implementation(Retrofit.loggingOkHttp)

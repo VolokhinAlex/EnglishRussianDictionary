@@ -89,6 +89,11 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
         binding.baseView.reloadButton.visibility = View.GONE
     }
 
+    /**
+     * Method of processing states of the [FavoriteState] class coming from outside
+     * @param state - The state to be processed
+     */
+
     override fun renderData(state: FavoriteState) {
         when (state) {
             is FavoriteState.Error -> showViewOnError(error = state.error.localizedMessage.orEmpty())
@@ -102,11 +107,16 @@ class FavoriteWordsFragment : BaseFragment<FavoriteState>() {
         }
     }
 
-    private fun swipeToDeleteFavoriteWord(favoriteWord: List<FavoriteWord>) {
+    /**
+     * A method for removing selected words from the list using swipes
+     * @param favoriteWords - list of favorite words
+     */
+
+    private fun swipeToDeleteFavoriteWord(favoriteWords: List<FavoriteWord>) {
         val swipeToDirections = object : SwipeToDeleteCallback() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                viewModel.deleteFavoriteWord(FavoriteState.Success(listOf(favoriteWord[position])))
+                viewModel.deleteFavoriteWord(FavoriteState.Success(listOf(favoriteWords[position])))
                 favoriteAdapter.removeItem(position)
             }
         }

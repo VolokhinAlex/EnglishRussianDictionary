@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_example_margin">10dp</dimen>
+    <dimen name="item_example_margin_bottom">20dp</dimen>
+    <dimen name="item_example_text_size">20sp</dimen>
+    <dimen name="item_similar_width">300dp</dimen>
+    <dimen name="item_similar_translation_margin">10dp</dimen>
+    <dimen name="item_similar_translation_card_corner">5dp</dimen>
+    <dimen name="item_similar_translation_card_elevation">3dp</dimen>
+    <dimen name="item_similar_translation_text_size">20sp</dimen>
+    <dimen name="button_back_size">32dp</dimen>
+    <dimen name="word_description_title_size">25sp</dimen>
+    <dimen name="word_description_text_to_speech_icon_size">32dp</dimen>
+    <dimen name="word_description_favorite_icon_size">32dp</dimen>
+    <dimen name="word_description_icon_back_margin">15dp</dimen>
+    <dimen name="word_description_title_margin">10dp</dimen>
+    <dimen name="word_description_icon_speech_margin">15dp</dimen>
+    <dimen name="word_description_icon_favorite_margin">15dp</dimen>
+    <dimen name="word_description_transcription_margin">10dp</dimen>
+    <dimen name="word_description_transcription_size">20sp</dimen>
+    <dimen name="word_description_translation_container_margin">10dp</dimen>
+    <dimen name="word_description_translation_text_size">20sp</dimen>
+    <dimen name="word_description_part_of_speech_text_size">16sp</dimen>
+    <dimen name="word_description_similar_translation_label_margin">15dp</dimen>
+    <dimen name="word_description_similar_translation_label_text_size">20sp</dimen>
+    <dimen name="word_description_examples_label_margin">15dp</dimen>
+    <dimen name="word_description_examples_label_text_size">20sp</dimen>
+</resources>

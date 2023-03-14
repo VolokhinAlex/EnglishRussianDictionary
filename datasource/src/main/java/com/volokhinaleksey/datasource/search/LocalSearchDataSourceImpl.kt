@@ -3,13 +3,10 @@ package com.volokhinaleksey.datasource.search
 import com.volokhinaleksey.database.database.DictionaryDatabase
 import com.volokhinaleksey.mapperutils.mapListWordDTOToListWordEntity
 import com.volokhinaleksey.mapperutils.mapListWordDTOToMeaningEntityList
-import com.volokhinaleksey.mapperutils.mapMeaningUIToMeaningDto
 import com.volokhinaleksey.mapperutils.mapMeaningsEntityToMeaningsList
 import com.volokhinaleksey.mapperutils.mapWordDTOToHistoryEntity
-import com.volokhinaleksey.mapperutils.mapWordUIToWordDTO
 import com.volokhinaleksey.models.local.HistoryEntity
 import com.volokhinaleksey.models.remote.WordDTO
-import com.volokhinaleksey.models.states.WordsState
 
 class LocalSearchDataSourceImpl(
     private val db: DictionaryDatabase
@@ -35,38 +32,32 @@ class LocalSearchDataSourceImpl(
         }
     }
 
-    override suspend fun saveWordToDB(wordsState: WordsState) {
-        when (wordsState) {
-            is WordsState.Success -> {
-                val searchResult = wordsState.wordData
-                if (searchResult.isEmpty() || searchResult[0].word.isEmpty()) {
-                    error("Empty data")
-                } else {
-                    db.wordDao().insert(
-                        wordEntity = mapListWordDTOToListWordEntity(
-                            searchResult.map {
-                                mapWordUIToWordDTO(it)
-                            }
-                        )
-                    )
-                    db.historyDao()
-                        .insert(mapWordDTOToHistoryEntity(wordDTO = mapWordUIToWordDTO(searchResult[0])))
-                    searchResult.forEach { word ->
-                        db.meaningDao().insert(
-                            mapListWordDTOToMeaningEntityList(
-                                meaningDTO = word.meanings.map { mapMeaningUIToMeaningDto(it) },
-                                wordId = word.id
-                            )
-                        )
-                    }
-                    HistoryEntity(
-                        word = searchResult[0].word,
-                        wordId = searchResult[0].id
-                    )
-                }
-            }
+    /**
+     * A method for saving a word to a local database
+     * @param word - The word to save to the database
+     */
 
-            else -> Unit
+    override suspend fun saveWordToDB(word: List<WordDTO>) {
+        if (word.isEmpty() || word[0].text?.isBlank() == true) {
+            error("Empty data")
+        } else {
+            db.wordDao().insert(
+                wordEntity = mapListWordDTOToListWordEntity(word)
+            )
+            db.historyDao()
+                .insert(mapWordDTOToHistoryEntity(wordDTO = word[0]))
+            word.forEach { data ->
+                db.meaningDao().insert(
+                    mapListWordDTOToMeaningEntityList(
+                        meaningDTO = data.meanings ?: emptyList(),
+                        wordId = data.id ?: 0
+                    )
+                )
+            }
+            HistoryEntity(
+                word = word[0].text.orEmpty(),
+                wordId = word[0].id ?: 0
+            )
         }
     }
 }

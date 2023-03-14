@@ -14,10 +14,12 @@ object Versions {
     const val koinCore = "3.3.3"
     const val androidKoin = "3.3.3"
     const val compatAndroidKoin = "3.3.3"
+    const val koinTest = "3.3.3"
 
     // Coroutines
     const val coroutinesCore = "1.6.4"
     const val coroutinesAndroid = "1.6.4"
+    const val coroutinesTest = "1.6.4"
 
     // Lifecycle
     const val lifecycleLivedata = "2.5.1"
@@ -43,6 +45,8 @@ object Versions {
     const val junit = "4.13.2"
     const val extJunit = "1.1.5"
     const val espressoCore = "3.5.1"
+    const val googleTruth = "1.1.3"
+    const val mockito = "5.1.1"
 }
 
 object Config {
@@ -65,9 +69,12 @@ object Modules {
     const val models = ":models"
     const val database = ":database"
     const val datasource = ":datasource"
-    const val networkUtils = ":networkUtils"
-    const val mapperUtils = ":mapperUtils"
+    const val networkUtils = ":utils:networkUtils"
+    const val mapperUtils = ":utils:mapperUtils"
     const val interactors = ":interactors"
+    const val network = ":network"
+    const val sharedPreferencesHelper = ":utils:sharedPreferencesHelper"
+    const val viewByIdUtils = ":utils:viewByIdUtils"
 
     const val searchScreen = ":search"
     const val descriptionScreen = ":description"
@@ -91,6 +98,7 @@ object Koin {
     const val koinCore = "io.insert-koin:koin-core:${Versions.koinCore}"
     const val koinAndroid = "io.insert-koin:koin-android:${Versions.androidKoin}"
     const val koinAndroidCompat = "io.insert-koin:koin-android-compat:${Versions.compatAndroidKoin}"
+    const val koinTest = "io.insert-koin:koin-test:${Versions.koinTest}"
 }
 
 object Coroutines {
@@ -98,6 +106,8 @@ object Coroutines {
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesCore}"
     const val coroutinesAndroid =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesAndroid}"
+    const val coroutinesTest =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
 }
 
 object Lifecycle {
@@ -131,4 +141,6 @@ object Tests {
     const val junit = "junit:junit:${Versions.junit}"
     const val extJunit = "androidx.test.ext:junit:${Versions.extJunit}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
+    const val googleTruth = "com.google.truth:truth:${Versions.googleTruth}"
+    const val mockito = "org.mockito:mockito-android:${Versions.mockito}"
 }

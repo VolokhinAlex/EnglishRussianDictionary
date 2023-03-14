@@ -1,6 +1,6 @@
 package com.volokhinaleksey.datasource.description
 
-import com.volokhinaleksey.datasource.ApiHolder
+import com.volokhinaleksey.network.networkHolder.ApiHolder
 
 /**
  * Implementation of the interface for receiving data from a remote data source.

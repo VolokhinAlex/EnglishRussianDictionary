@@ -10,9 +10,18 @@ import com.volokhinaleksey.mapperutils.mapSimilarTranslationDTOToSimilarTranslat
 import com.volokhinaleksey.models.remote.MeaningDTO
 import com.volokhinaleksey.models.ui.FavoriteWord
 
+/**
+ * Implementation of the interface for receiving data from a local data source.
+ */
+
 class LocalDescriptionDataSourceImpl(
     private val database: DictionaryDatabase
 ) : LocalDescriptionDataSource {
+
+    /**
+     * Method for saving a word to a local database
+     * @param meaningDTO - Data class for the meanings of a word to be saved
+     */
 
     override suspend fun saveWordToDB(meaningDTO: List<MeaningDTO>) {
         database.meaningDao().insert(mapMeaningsListToMeaningsEntity(meaningDTO))
@@ -36,11 +45,21 @@ class LocalDescriptionDataSourceImpl(
         database.exampleDao().insert(examples)
     }
 
+    /**
+     * A method for saving a favorite word to a local database
+     * @param favoriteWord - Data class for the favorite word to be saved
+     */
+
     override suspend fun saveFavoriteWord(favoriteWord: FavoriteWord) {
         database.favoriteDao().insert(mapFavoriteWordToFavoriteEntity(favoriteWord))
     }
 
-    override suspend fun getFavoriteWordFlag(wordId: Long): FavoriteWord? {
+    /**
+     * Method for getting a favorite word by word id
+     * @param wordId - Word id for getting a favorite word
+     */
+
+    override suspend fun getFavoriteWord(wordId: Long): FavoriteWord? {
         val favoriteWord = database.favoriteDao().getFavoriteWord(wordId = wordId)
         val meanings =
             database.meaningDao().getWordMeaningByWordId(wordId = favoriteWord?.wordId ?: 0)

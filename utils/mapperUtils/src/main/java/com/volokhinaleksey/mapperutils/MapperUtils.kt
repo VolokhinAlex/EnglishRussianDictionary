@@ -63,7 +63,6 @@ fun mapMeaningsListToMeaningsEntity(meaningDTO: List<MeaningDTO>): List<MeaningE
         )
     }
 
-
 fun mapWordDTOToHistoryEntity(wordDTO: WordDTO): HistoryEntity =
     HistoryEntity(
         word = wordDTO.text.orEmpty(),

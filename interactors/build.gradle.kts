@@ -27,9 +27,9 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":models")))
-    implementation(project(mapOf("path" to ":utils:mapperUtils")))
-    implementation(project(mapOf("path" to ":repositories")))
+    implementation(project(mapOf("path" to Modules.models)))
+    implementation(project(mapOf("path" to Modules.mapperUtils)))
+    implementation(project(mapOf("path" to Modules.repositories)))
     implementation(Android.androidCore)
     testImplementation(Tests.junit)
     androidTestImplementation(Tests.extJunit)

@@ -6,6 +6,11 @@ import com.volokhinaleksey.models.states.FavoriteState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
+/**
+ * ViewModel for the screen of favorite words
+ */
+
 class FavoriteViewModel(
     private val favoriteInteractor: FavoriteInteractor
 ) : BaseViewModel<FavoriteState>() {
@@ -13,6 +18,10 @@ class FavoriteViewModel(
     init {
         getFavorites()
     }
+
+    /**
+     * Method for getting a list of all the favorite words
+     */
 
     private fun getFavorites() {
         viewModelScope.launch {
@@ -28,6 +37,10 @@ class FavoriteViewModel(
             }
         }
     }
+
+    /**
+     * Method for deleting a favorite word
+     */
 
     fun deleteFavoriteWord(favoriteState: FavoriteState) {
         viewModelScope.launch(Dispatchers.IO) {

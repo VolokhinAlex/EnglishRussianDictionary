@@ -11,6 +11,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface NetworkStatus {
 
+    /**
+     * A method for monitoring the state of the network, if there is a network, then the source is
+     * returned with true, otherwise the source is returned with false
+     */
+
     fun networkObserve(): Flow<Boolean>
 
 }

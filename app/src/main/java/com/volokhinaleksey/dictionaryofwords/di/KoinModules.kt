@@ -8,9 +8,6 @@ import com.google.gson.GsonBuilder
 import com.volokhinaleksey.core.ui.imageloader.CoilImageLoader
 import com.volokhinaleksey.core.ui.imageloader.ImageLoader
 import com.volokhinaleksey.database.database.DictionaryDatabase
-import com.volokhinaleksey.datasource.ApiHolder
-import com.volokhinaleksey.datasource.ApiService
-import com.volokhinaleksey.datasource.DictionaryApiHolder
 import com.volokhinaleksey.datasource.description.DescriptionDataSource
 import com.volokhinaleksey.datasource.description.LocalDescriptionDataSource
 import com.volokhinaleksey.datasource.description.LocalDescriptionDataSourceImpl
@@ -38,6 +35,9 @@ import com.volokhinaleksey.interactors.history.HistoryInteractorImpl
 import com.volokhinaleksey.interactors.search.SearchWordsInteractor
 import com.volokhinaleksey.interactors.search.SearchWordsInteractorImpl
 import com.volokhinaleksey.models.states.WordsState
+import com.volokhinaleksey.network.networkHolder.ApiHolder
+import com.volokhinaleksey.network.networkHolder.DictionaryApiHolder
+import com.volokhinaleksey.network.networkService.ApiService
 import com.volokhinaleksey.repositories.favorite.FavoriteRepository
 import com.volokhinaleksey.repositories.favorite.FavoriteRepositoryImpl
 import com.volokhinaleksey.repositories.history.HistoryRepository
@@ -57,6 +57,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 private const val DICTIONARY_DATABASE_NAME = "dictionary.db"
 
+/**
+ * A module for providing a dependency for a database
+ */
+
 val databaseModule = module {
     single {
         Room
@@ -72,7 +76,7 @@ val databaseModule = module {
 val repositoryModule = module {
 
     /**
-     * Dependency injection for SearchWordsRepositoryImpl()
+     * Providing a dependency for SearchWordsRepositoryImpl()
      */
 
     single<SearchWordsRepository> {
@@ -80,7 +84,7 @@ val repositoryModule = module {
     }
 
     /**
-     * Dependency injection for RemoteSearchDataSource()
+     * Providing a dependency for RemoteSearchDataSource()
      */
 
     single<SearchDataSource> {
@@ -88,44 +92,64 @@ val repositoryModule = module {
     }
 
     /**
-     * Dependency injection for LocalDictionaryDataSource()
+     * Providing a dependency for LocalSearchDataSourceImpl()
      */
 
     single<LocalSearchDataSource> {
         LocalSearchDataSourceImpl(get())
     }
 
+    /**
+     * Providing a dependency for LocalDescriptionDataSourceImpl()
+     */
+
     single<LocalDescriptionDataSource> {
         LocalDescriptionDataSourceImpl(get())
     }
+
+    /**
+     * Providing a dependency for RemoteDescriptionDataSource()
+     */
 
     single<DescriptionDataSource> {
         RemoteDescriptionDataSource(get())
     }
 
     /**
-     * Dependency injection for MeaningsRepository()
+     * Providing a dependency for MeaningsRepository()
      */
 
     single<MeaningsRepository> {
         MeaningsRepositoryImpl(get(), get())
     }
 
+    /**
+     * Providing a dependency for LocalHistoryDataSource()
+     */
+
     single<HistoryDataSource> {
         LocalHistoryDataSource(get())
     }
+
+    /**
+     * Providing a dependency for HistoryRepositoryImpl()
+     */
 
     single<HistoryRepository> {
         HistoryRepositoryImpl(get())
     }
 
     /**
-     * Favorite Screen
+     * Providing a dependency for LocalFavoriteDataSource()
      */
 
     single<FavoriteDataSource> {
         LocalFavoriteDataSource(get())
     }
+
+    /**
+     * Providing a dependency for FavoriteRepositoryImpl()
+     */
 
     single<FavoriteRepository> {
         FavoriteRepositoryImpl(get())
@@ -137,7 +161,16 @@ val repositoryModule = module {
  */
 
 val networkModule = module {
+
+    /**
+     * Providing a dependency for ApiHolder
+     */
+
     single<ApiHolder> { DictionaryApiHolder(get()) }
+
+    /**
+     * Providing a dependency for the gson converter
+     */
 
     single<Gson> {
         GsonBuilder()
@@ -145,11 +178,19 @@ val networkModule = module {
             .create()
     }
 
+    /**
+     * Providing a dependency for OkHttpClient with HttpLoggingInterceptor
+     */
+
     single {
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
     }
+
+    /**
+     * Providing a dependency to work with retrofit
+     */
 
     single<ApiService> {
         Retrofit.Builder()
@@ -166,13 +207,33 @@ val networkModule = module {
  */
 
 val dictionaryOfWordsScreen = module {
+
+    /**
+     * The Scope that lives while the DictionaryOfWordsFragment screen lives
+     */
+
     scope<DictionaryOfWordsFragment> {
+
+        /**
+         * Providing a dependency for SearchWordsInteractorImpl
+         */
+
         scoped<SearchWordsInteractor<WordsState>> {
             SearchWordsInteractorImpl(
                 get()
             )
         }
+
+        /**
+         * Providing a dependency for DictionaryOfWordsViewModel
+         */
+
         viewModel { DictionaryOfWordsViewModel(get()) }
+
+        /**
+         * Providing a dependency for ImageLoader
+         */
+
         scoped<ImageLoader<ImageView>> { CoilImageLoader() }
     }
 }
@@ -182,30 +243,80 @@ val dictionaryOfWordsScreen = module {
  */
 
 val wordDescriptionScreen = module {
+
+    /**
+     * The Scope that lives while the WordDescriptionFragment screen lives
+     */
+
     scope<WordDescriptionFragment> {
+
+        /**
+         * Providing a dependency for WordDescriptionInteractorImpl
+         */
+
         scoped<WordDescriptionInteractor> {
             WordDescriptionInteractorImpl(get())
         }
+
+        /**
+         * Providing a dependency for WordDescriptionViewModel
+         */
+
         viewModel { WordDescriptionViewModel(get()) }
     }
 }
 
 
 val historyScreen = module {
+
+    /**
+     * The Scope that lives while the HistorySearchFragment screen lives
+     */
+
     scope<HistorySearchFragment> {
+
+        /**
+         * Providing a dependency for HistoryInteractorImpl
+         */
+
         scoped<HistoryInteractor<WordsState>> {
             HistoryInteractorImpl(get())
         }
+
+        /**
+         * Providing a dependency for CoilImageLoader
+         */
+
         scoped<ImageLoader<ImageView>> { CoilImageLoader() }
+
+        /**
+         * Providing a dependency for HistoryViewModel
+         */
+
         viewModel { HistoryViewModel(get()) }
     }
 }
 
 val favoriteScreen = module {
+
+    /**
+     * The Scope that lives while the FavoriteWordsFragment screen lives
+     */
+
     scope<FavoriteWordsFragment> {
+
+        /**
+         * Providing a dependency for FavoriteInteractorImpl
+         */
+
         scoped<FavoriteInteractor> {
             FavoriteInteractorImpl(get())
         }
+
+        /**
+         * Providing a dependency for FavoriteViewModel
+         */
+
         viewModel { FavoriteViewModel(get()) }
     }
 }

@@ -9,9 +9,17 @@ import com.volokhinaleksey.core.ui.base.BaseAdapter
 import com.volokhinaleksey.core.ui.base.BaseViewHolder
 import com.volokhinaleksey.models.ui.FavoriteWord
 
+/**
+ * Adapter class for a list of favorite words
+ */
+
 class FavoriteAdapter(
     private val onItemClickListener: (FavoriteWord) -> Unit
 ) : BaseAdapter<FavoriteWord, ItemWordBinding, FavoriteAdapter.ViewHolder>() {
+
+    /**
+     * ViewHolder for filling elements with data
+     */
 
     inner class ViewHolder(private val binding: ItemWordBinding) :
         BaseViewHolder<FavoriteWord, ItemWordBinding>(binding) {
@@ -23,10 +31,19 @@ class FavoriteAdapter(
 
     }
 
+    /**
+     * Method for removing an item from the list
+     * @param position - The position of the item in the list to be deleted
+     */
+
     fun removeItem(position: Int) {
         currentList.removeAt(index = position)
         notifyItemRemoved(position)
     }
+
+    /**
+     * Method for creating a ViewHolder
+     */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -44,8 +61,16 @@ class FavoriteAdapter(
 
 }
 
+/**
+ * CallBack for adding and processing swipes of items in the list
+ */
 
 abstract class SwipeToDeleteCallback : ItemTouchHelper.Callback() {
+
+    /**
+     * Method of setting up motion tracking
+     */
+
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
