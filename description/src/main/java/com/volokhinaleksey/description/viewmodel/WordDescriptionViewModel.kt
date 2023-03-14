@@ -30,14 +30,12 @@ class WordDescriptionViewModel(
 
     fun getMeanings(meaningId: Long, isOnline: Boolean) {
         viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
-            viewModelScope.launch {
-                currentMutableData.emit(MeaningsState.Error(throwable))
-            }
+            currentMutableData.postValue(MeaningsState.Error(throwable))
         }) {
-            currentMutableData.emit(MeaningsState.Loading)
+            currentMutableData.postValue(MeaningsState.Loading)
             val responseRequest =
                 interactor.getMeaningsData(meaningId = meaningId, isRemoteSource = isOnline)
-            currentMutableData.emit(responseRequest)
+            currentMutableData.postValue(responseRequest)
         }
     }
 

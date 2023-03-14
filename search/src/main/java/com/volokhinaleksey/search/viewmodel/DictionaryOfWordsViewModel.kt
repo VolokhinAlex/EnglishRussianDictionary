@@ -23,13 +23,11 @@ class DictionaryOfWordsViewModel(
 
     fun getWordMeanings(word: String, isOnline: Boolean) {
         viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
-            viewModelScope.launch {
-                currentMutableData.emit(WordsState.Error(throwable))
-            }
+            currentMutableData.postValue(WordsState.Error(throwable))
         }) {
-            currentMutableData.emit(WordsState.Loading)
+            currentMutableData.postValue(WordsState.Loading)
             val requestResponse = interactor.getWordsData(word = word, isRemoteSource = isOnline)
-            currentMutableData.emit(requestResponse)
+            currentMutableData.postValue(requestResponse)
         }
     }
 

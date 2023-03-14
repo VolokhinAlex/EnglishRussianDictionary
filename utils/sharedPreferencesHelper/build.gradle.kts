@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.sharedpreferenceshelper"
+    namespace = "com.volokhinaleksey.sharedpreferenceshelper"
     compileSdk = 33
 
     defaultConfig {
