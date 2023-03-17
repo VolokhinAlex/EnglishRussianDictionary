@@ -46,7 +46,10 @@ object Versions {
     const val extJunit = "1.1.5"
     const val espressoCore = "3.5.1"
     const val googleTruth = "1.1.3"
-    const val mockito = "5.1.1"
+    const val mockito = "5.2.0"
+    const val archCore = "2.2.0"
+    const val fragmentTesting = "1.5.5"
+    const val espressoContrib = "3.5.1"
 }
 
 object Config {
@@ -142,5 +145,8 @@ object Tests {
     const val extJunit = "androidx.test.ext:junit:${Versions.extJunit}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
     const val googleTruth = "com.google.truth:truth:${Versions.googleTruth}"
-    const val mockito = "org.mockito:mockito-android:${Versions.mockito}"
+    const val mockito = "org.mockito:mockito-core:${Versions.mockito}"
+    const val archCore = "androidx.arch.core:core-testing:${Versions.archCore}"
+    const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragmentTesting}"
+    const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espressoContrib}"
 }

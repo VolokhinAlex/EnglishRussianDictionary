@@ -3,6 +3,7 @@ package com.volokhinaleksey.favorite.viewmodel
 import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
 import com.volokhinaleksey.models.states.FavoriteState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,18 +24,13 @@ class FavoriteViewModel(
      * Method for getting a list of all the favorite words
      */
 
-    private fun getFavorites() {
-        viewModelScope.launch {
-            currentMutableData.emit(FavoriteState.Loading)
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val requestResponse =
-                        favoriteInteractor.getFavorites()
-                    currentMutableData.emit(requestResponse)
-                } catch (exception: Exception) {
-                    currentMutableData.emit(FavoriteState.Error(exception))
-                }
-            }
+    fun getFavorites() {
+        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+            currentMutableData.postValue(FavoriteState.Error(throwable))
+        }) {
+            currentMutableData.postValue(FavoriteState.Loading)
+            val requestResponse = favoriteInteractor.getFavorites()
+            currentMutableData.postValue(requestResponse)
         }
     }
 

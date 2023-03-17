@@ -12,8 +12,8 @@ import com.volokhinaleksey.models.ui.Word
  * 3. [Loading] - If the request is still being executed.
  */
 
-sealed class WordsState {
-    data class Success(val wordData: List<Word>) : WordsState()
-    data class Error(val error: Throwable) : WordsState()
-    object Loading : WordsState()
+sealed interface WordsState {
+    data class Success(val wordData: List<Word>) : WordsState
+    data class Error(val error: Throwable) : WordsState
+    object Loading : WordsState
 }

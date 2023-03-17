@@ -41,7 +41,12 @@ dependencies {
     implementation(Android.androidCore)
     implementation(Design.appcompat)
     implementation(Design.material)
-    testImplementation(Tests.junit)
+    androidTestImplementation(Tests.espressoContrib)
+    androidTestImplementation(Tests.mockito)
+    androidTestImplementation(Tests.archCore)
+    androidTestImplementation(Tests.googleTruth)
+    androidTestImplementation(Koin.koinTest)
     androidTestImplementation(Tests.extJunit)
     androidTestImplementation(Tests.espressoCore)
+    debugImplementation(Tests.fragmentTesting)
 }

@@ -1,4 +1,4 @@
-package com.example.sharedpreferenceshelper
+package com.volokhinaleksey.sharedpreferenceshelper
 
 import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty
