@@ -50,6 +50,8 @@ object Versions {
     const val archCore = "2.2.0"
     const val fragmentTesting = "1.5.5"
     const val espressoContrib = "3.5.1"
+    const val mockitoInline = "5.2.0"
+    const val kotlinMockito = "4.1.0"
 }
 
 object Config {
@@ -146,6 +148,8 @@ object Tests {
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
     const val googleTruth = "com.google.truth:truth:${Versions.googleTruth}"
     const val mockito = "org.mockito:mockito-core:${Versions.mockito}"
+    const val mockitoInline = "org.mockito:mockito-inline:${Versions.mockitoInline}"
+    const val mockitoKotlin = "org.mockito.kotlin:mockito-kotlin:${Versions.kotlinMockito}"
     const val archCore = "androidx.arch.core:core-testing:${Versions.archCore}"
     const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragmentTesting}"
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espressoContrib}"

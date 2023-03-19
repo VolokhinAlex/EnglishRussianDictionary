@@ -39,6 +39,12 @@ dependencies {
     implementation(Retrofit.loggingOkHttp)
     implementation(Android.androidCore)
     testImplementation(Tests.junit)
+    testImplementation(Tests.googleTruth)
+    testImplementation(Tests.archCore)
+    testImplementation(Tests.mockito)
+    testImplementation(Tests.mockitoKotlin)
+    testImplementation(Tests.mockitoInline)
+    testImplementation(Coroutines.coroutinesTest)
     androidTestImplementation(Tests.extJunit)
     androidTestImplementation(Tests.espressoCore)
 }
