@@ -2,11 +2,21 @@ package com.volokhinaleksey.datasource.description
 
 import com.volokhinaleksey.models.remote.MeaningDTO
 import com.volokhinaleksey.models.ui.FavoriteWord
+import org.mockito.kotlin.mock
 
 class FakeLocalDescriptionDataSource : LocalDescriptionDataSource {
 
-    private val meanings = mutableListOf<MeaningDTO>()
-    private val favorites = mutableListOf<FavoriteWord>()
+    private val meanings = mutableListOf<MeaningDTO>(
+        mock(),
+        mock(),
+        mock(),
+    )
+    private val favorites = mutableListOf(
+        FavoriteWord(0, "", false, listOf()),
+        FavoriteWord(1, "", true, listOf()),
+        FavoriteWord(2, "", false, listOf()),
+        FavoriteWord(3, "", true, listOf())
+    )
 
     override suspend fun saveWordToDB(meaningDTO: List<MeaningDTO>) {
         meanings.addAll(meaningDTO)

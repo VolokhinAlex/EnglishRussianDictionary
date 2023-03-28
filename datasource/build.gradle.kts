@@ -38,6 +38,10 @@ dependencies {
     implementation(Room.roomRuntime)
     implementation(Android.androidCore)
     testImplementation(Tests.junit)
-    androidTestImplementation(Tests.extJunit)
-    androidTestImplementation(Tests.espressoCore)
+    testImplementation(Coroutines.coroutinesTest)
+    testImplementation(Tests.mockitoKotlin)
+    testImplementation(Tests.mockito)
+    testImplementation(Tests.mockitoInline)
+    testImplementation(Tests.archCore)
+    testImplementation(Tests.googleTruth)
 }
