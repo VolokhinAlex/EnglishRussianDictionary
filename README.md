@@ -23,4 +23,4 @@ The project uses the api to get data from skyeng
 * Android Architecture Components
 * The project is completely written in Kotlin
 * Modularity
-* Using Corutin
+* Using Coroutines

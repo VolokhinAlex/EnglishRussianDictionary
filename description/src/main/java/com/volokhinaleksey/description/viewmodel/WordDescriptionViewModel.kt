@@ -7,8 +7,8 @@ import com.volokhinaleksey.interactors.description.WordDescriptionInteractor
 import com.volokhinaleksey.models.states.FavoriteState
 import com.volokhinaleksey.models.states.MeaningsState
 import com.volokhinaleksey.models.ui.FavoriteWord
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
  */
 
 class WordDescriptionViewModel(
-    private val interactor: WordDescriptionInteractor
+    private val interactor: WordDescriptionInteractor,
+    private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel<MeaningsState>() {
 
     private val mutableFavoriteData: MutableLiveData<FavoriteState> = MutableLiveData()
@@ -29,10 +30,10 @@ class WordDescriptionViewModel(
      */
 
     fun getMeanings(meaningId: Long, isOnline: Boolean) {
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+        currentMutableData.value = MeaningsState.Loading
+        viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, throwable ->
             currentMutableData.postValue(MeaningsState.Error(throwable))
         }) {
-            currentMutableData.postValue(MeaningsState.Loading)
             val responseRequest =
                 interactor.getMeaningsData(meaningId = meaningId, isRemoteSource = isOnline)
             currentMutableData.postValue(responseRequest)
@@ -45,7 +46,7 @@ class WordDescriptionViewModel(
      */
 
     fun saveFavoriteWord(word: FavoriteWord) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             interactor.saveFavoriteWord(word = word)
         }
     }
@@ -56,7 +57,8 @@ class WordDescriptionViewModel(
      */
 
     fun getFavoriteWord(wordId: Long) {
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, _ ->
+        mutableFavoriteData.value = FavoriteState.Loading
+        viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, _ ->
             mutableFavoriteData.postValue(FavoriteState.Success(emptyList()))
         }) {
             mutableFavoriteData.postValue(interactor.getFavoriteWord(wordId = wordId))

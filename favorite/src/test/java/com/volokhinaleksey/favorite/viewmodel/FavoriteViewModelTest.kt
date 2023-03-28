@@ -5,96 +5,84 @@ import com.google.common.truth.Truth.assertThat
 import com.volokhinaleksey.favorite.getOrAwaitValueTest
 import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
 import com.volokhinaleksey.models.states.FavoriteState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.any
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FavoriteViewModelTest {
 
-    private val dispatcher = StandardTestDispatcher()
+    private lateinit var viewModel: FavoriteViewModel
 
     @Mock
-    lateinit var favoriteInteractor: FavoriteInteractor
+    private lateinit var interactor: FavoriteInteractor
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-    private lateinit var viewModel: FavoriteViewModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        Dispatchers.setMain(dispatcher)
-        viewModel = FavoriteViewModel(favoriteInteractor)
     }
 
     @Test
-    fun `when getFavorites() is called, interactor should return success state`() = runTest {
-        val state = FavoriteState.Success(emptyList())
-        Mockito.`when`(favoriteInteractor.getFavorites()).thenReturn(state)
-        viewModel.getFavorites()
-        dispatcher.scheduler.advanceUntilIdle()
-        val result = viewModel.currentData.getOrAwaitValueTest()
-        assertThat(result).isEqualTo(state)
+    fun `test calling getFavorites() method`() = runTest {
+        Mockito.`when`(interactor.getFavorites()).thenReturn(FavoriteState.Success(listOf()))
+        viewModel = FavoriteViewModel(interactor, UnconfinedTestDispatcher())
+        verify(interactor, atLeastOnce()).getFavorites()
     }
 
     @Test
-    fun `when getFavorites() is called, the interactor should return an error status`() = runTest {
-        Mockito.`when`(favoriteInteractor.getFavorites())
-            .thenReturn(FavoriteState.Error(RuntimeException("Something went wrong")))
-        viewModel.getFavorites()
-        dispatcher.scheduler.advanceUntilIdle()
-        val result = when (viewModel.currentData.getOrAwaitValueTest()) {
-            is FavoriteState.Error -> true
-            else -> false
-        }
-        assertThat(result).isTrue()
+    fun `test return data is not null return true`() = runTest {
+        Mockito.`when`(interactor.getFavorites()).thenReturn(FavoriteState.Success(listOf()))
+        viewModel = FavoriteViewModel(interactor, UnconfinedTestDispatcher())
+        assertThat(viewModel.currentData.getOrAwaitValueTest()).isNotNull()
     }
 
     @Test
-    fun `when getFavorites() is called, interactor should return loading state`() = runTest {
-        Mockito.`when`(favoriteInteractor.getFavorites())
-            .thenReturn(FavoriteState.Loading)
-        viewModel.getFavorites()
-        dispatcher.scheduler.advanceUntilIdle()
-        val result = when (viewModel.currentData.getOrAwaitValueTest()) {
-            is FavoriteState.Loading -> true
-            else -> false
-        }
-        assertThat(result).isTrue()
+    fun `check getting word state return loading`() = runTest {
+        Mockito.`when`(interactor.getFavorites()).thenReturn(FavoriteState.Loading)
+        viewModel = FavoriteViewModel(interactor, UnconfinedTestDispatcher())
+        assertThat(viewModel.currentData.getOrAwaitValueTest()).isEqualTo(FavoriteState.Loading)
     }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
+    @Test
+    fun `check getting word state return success`() = runTest {
+        Mockito.`when`(interactor.getFavorites()).thenReturn(FavoriteState.Success(listOf()))
+        viewModel = FavoriteViewModel(interactor, UnconfinedTestDispatcher())
+        assertThat(viewModel.currentData.getOrAwaitValueTest()).isEqualTo(
+            FavoriteState.Success(
+                listOf()
+            )
+        )
     }
 
-//    @Test
-//    fun deleteFavoriteWord_ReturnTrue() = runTest {
-//        val favoriteWord = FavoriteState.Success(
-//            listOf(
-//                FavoriteWord(
-//                    wordId = 0,
-//                    word = "book",
-//                    isFavorite = false,
-//                    meanings = listOf()
-//                )
-//            )
-//        )
-//        `when`(favoriteInteractor.getFavorites()).thenReturn(favoriteWord)
-//        viewModel.deleteFavoriteWord(favoriteWord)
-//        viewModel.getFavorites()
-//        assertThat(viewModel.data.getOrAwaitValueTest()).isNotEqualTo(favoriteWord)
-//    }
+    @Test
+    fun `check getting word state return error`() = runTest {
+        Mockito.`when`(interactor.getFavorites())
+            .thenReturn(FavoriteState.Error(Throwable("Test error")))
+        viewModel = FavoriteViewModel(interactor, UnconfinedTestDispatcher())
+        val value: FavoriteState.Error =
+            viewModel.currentData.getOrAwaitValueTest() as FavoriteState.Error
+        assertThat(value.error.message).isEqualTo(Throwable("Test error").message)
+    }
+
+    @Test
+    fun `check delete favorite word return true`() = runTest {
+        Mockito.`when`(interactor.deleteFavoriteWord(any())).thenReturn(any())
+        viewModel = FavoriteViewModel(interactor, UnconfinedTestDispatcher())
+        viewModel.deleteFavoriteWord(FavoriteState.Success(emptyList()))
+        verify(interactor, times(1)).deleteFavoriteWord(any())
+    }
 
 }

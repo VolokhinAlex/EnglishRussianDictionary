@@ -4,8 +4,8 @@ package com.volokhinaleksey.history.viewmodel
 import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.history.HistoryInteractor
 import com.volokhinaleksey.models.states.WordsState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
  */
 
 class HistoryViewModel(
-    private val interactor: HistoryInteractor<WordsState>
+    private val interactor: HistoryInteractor<WordsState>,
+    private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel<WordsState>() {
 
     init {
@@ -25,10 +26,10 @@ class HistoryViewModel(
      */
 
     private fun getHistory() {
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+        currentMutableData.value = WordsState.Loading
+        viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, throwable ->
             currentMutableData.postValue(WordsState.Error(throwable))
         }) {
-            currentMutableData.postValue(WordsState.Loading)
             val requestResponse = interactor.getHistoryData()
             currentMutableData.postValue(requestResponse)
         }

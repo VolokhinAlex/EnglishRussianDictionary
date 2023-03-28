@@ -48,10 +48,11 @@ object Versions {
     const val googleTruth = "1.1.3"
     const val mockito = "5.2.0"
     const val archCore = "2.2.0"
-    const val fragmentTesting = "1.5.5"
+    const val fragmentTesting = "1.6.0-alpha04"
     const val espressoContrib = "3.5.1"
     const val mockitoInline = "5.2.0"
     const val kotlinMockito = "4.1.0"
+    const val kaspresso = "1.5.1"
 }
 
 object Config {
@@ -153,4 +154,5 @@ object Tests {
     const val archCore = "androidx.arch.core:core-testing:${Versions.archCore}"
     const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragmentTesting}"
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espressoContrib}"
+    const val kaspresso = "com.kaspersky.android-components:kaspresso:${Versions.kaspresso}"
 }

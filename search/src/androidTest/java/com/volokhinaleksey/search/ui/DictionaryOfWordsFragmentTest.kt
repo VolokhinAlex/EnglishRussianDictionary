@@ -1,38 +1,158 @@
 package com.volokhinaleksey.search.ui
 
+import android.content.ActivityNotFoundException
+import android.os.Build
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.MediumTest
-import com.volokhinaleksey.search.R
-import com.volokhinaleksey.search.ui.adapter.DictionaryOfWordsAdapter
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers
+import com.google.common.truth.Truth.assertThat
+import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import com.volokhinaleksey.core.R
+import com.volokhinaleksey.search.di.databaseModuleTesting
+import com.volokhinaleksey.search.di.dictionaryOfWordsScreenTesting
+import com.volokhinaleksey.search.di.networkModuleTesting
+import com.volokhinaleksey.search.di.repositoryModuleTesting
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 
-@MediumTest
-@RunWith(AndroidJUnit4::class)
-class DictionaryOfWordsFragmentTest : KoinTest {
+class DictionaryOfWordsFragmentTest : TestCase(), KoinTest {
 
-    @Test
-    fun navigateToDescriptionFragment() {
-        val navController = mock(NavController::class.java)
+    private lateinit var scenario: FragmentScenario<DictionaryOfWordsFragment>
 
-        launchFragmentInContainer<DictionaryOfWordsFragment>().onFragment {
-            Navigation.setViewNavController(it.requireView(), navController)
+    @Before
+    fun setUp() {
+        startKoin {
+            androidContext(ApplicationProvider.getApplicationContext())
+            modules(
+                listOf(
+                    databaseModuleTesting,
+                    repositoryModuleTesting,
+                    networkModuleTesting,
+                    dictionaryOfWordsScreenTesting
+                )
+            )
         }
-
-        onView(withId(R.id.words_list))
-            .perform(actionOnItemAtPosition<DictionaryOfWordsAdapter.ViewHolder>(0, click()))
-
-        verify(navController).navigate(com.volokhinaleksey.core.R.id.description_nav_graph)
+        scenario = launchFragmentInContainer(themeResId = R.style.Theme_DictionaryOfWords)
     }
 
+    @Test
+    fun check_Fragment_NotNull_ReturnTrue() {
+        scenario.onFragment {
+            assertThat(it).isNotNull()
+        }
+    }
+
+    @Test
+    fun check_SearchInput_IsVisible_ReturnTrue() = run {
+        SearchScreen {
+            searchInput {
+                isVisible()
+            }
+        }
+    }
+
+    @Test
+    fun check_TypeTextInSearchField_ReturnTrue() = run {
+        SearchScreen {
+            searchInput {
+                edit {
+                    clearText()
+                    typeText("dictionary")
+                    hasText("dictionary")
+                }
+            }
+        }
+    }
+
+    @Test
+    fun check_SearchingDataInSearchField_ReturnTrue() = run {
+        SearchScreen {
+            searchInput {
+                edit {
+                    typeText("words")
+                    pressImeAction()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun check_wordsList_scrollTo_ReturnTrue() = run {
+        SearchScreen {
+            searchInput {
+                edit {
+                    typeText("dictionary")
+                    pressImeAction()
+                }
+            }
+            wordsList {
+                scrollTo(
+                    ViewMatchers.hasDescendant(
+                        ViewMatchers.withText("dictionary")
+                    )
+                )
+            }
+        }
+    }
+
+
+
+    @Test
+    fun check_wordsList_IsVisible_ReturnTrue() = run {
+        SearchScreen {
+            wordsList {
+                isVisible()
+            }
+        }
+    }
+
+    @Test
+    fun check_OfflineMessage_IsGone_ReturnTrue() = run {
+        SearchScreen {
+            offlineMessageView {
+                isGone()
+            }
+        }
+    }
+
+    @Test
+    fun check_OfflineMessage_IsVisible_ReturnTrue() {
+        before {
+            tryToggleNetwork(shouldEnable = true)
+        }.after {
+            tryToggleNetwork(shouldEnable = true)
+        }.run {
+            tryToggleNetwork(false)
+            SearchScreen {
+                offlineMessageView {
+                    isVisible()
+                }
+            }
+        }
+    }
+
+    private fun tryToggleNetwork(shouldEnable: Boolean) {
+        try {
+            if (shouldEnable) {
+                device.network.enable()
+            } else {
+                device.network.disable()
+            }
+        } catch (ex: ActivityNotFoundException) { // There's no WIFI activity on AVD with API < 25
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) return
+            throw ex
+        }
+    }
+
+    @After
+    fun tearDown() {
+        //scenario.close()
+        stopKoin()
+    }
 }
