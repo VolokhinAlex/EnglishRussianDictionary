@@ -2,6 +2,7 @@ package com.volokhinaleksey.description.ui
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -122,7 +123,11 @@ class WordDescriptionFragment : BaseFragment<MeaningsState>(), TextToSpeech.OnIn
 
     override fun renderData(state: MeaningsState) {
         when (state) {
-            is MeaningsState.Error -> showViewOnError(error = state.error.localizedMessage.orEmpty())
+            is MeaningsState.Error -> {
+                showViewOnError(error = state.error.localizedMessage.orEmpty())
+                Log.e("MeaningsState", "", state.error)
+            }
+
             MeaningsState.Loading -> showViewOnLoading()
             is MeaningsState.Success -> {
                 val meaningsData = state.wordData[0]

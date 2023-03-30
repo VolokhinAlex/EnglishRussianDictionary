@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_favorite_words">
         <action
             android:id="@+id/action_favoriteWordsFragment_to_wordDescriptionFragment"
-            app:destination="@id/wordDescriptionFragment" />
+            app:destination="@id/description_nav_graph" />
     </fragment>
 
 </navigation>
