@@ -3,8 +3,8 @@ package com.volokhinaleksey.favorite.viewmodel
 import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.favorite.FavoriteInteractor
 import com.volokhinaleksey.models.states.FavoriteState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
  */
 
 class FavoriteViewModel(
-    private val favoriteInteractor: FavoriteInteractor
+    private val favoriteInteractor: FavoriteInteractor,
+    private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel<FavoriteState>() {
 
     init {
@@ -24,8 +25,8 @@ class FavoriteViewModel(
      * Method for getting a list of all the favorite words
      */
 
-    fun getFavorites() {
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+    private fun getFavorites() {
+        viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, throwable ->
             currentMutableData.postValue(FavoriteState.Error(throwable))
         }) {
             currentMutableData.postValue(FavoriteState.Loading)
@@ -39,7 +40,7 @@ class FavoriteViewModel(
      */
 
     fun deleteFavoriteWord(favoriteState: FavoriteState) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             favoriteInteractor.deleteFavoriteWord(state = favoriteState)
         }
     }

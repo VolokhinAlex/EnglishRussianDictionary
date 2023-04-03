@@ -48,6 +48,7 @@ import com.volokhinaleksey.repositories.search.SearchWordsRepository
 import com.volokhinaleksey.repositories.search.SearchWordsRepositoryImpl
 import com.volokhinaleksey.search.ui.DictionaryOfWordsFragment
 import com.volokhinaleksey.search.viewmodel.DictionaryOfWordsViewModel
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -192,7 +193,7 @@ val networkModule = module {
      * Providing a dependency to work with retrofit
      */
 
-    single<ApiService> {
+    single {
         Retrofit.Builder()
             .baseUrl("https://dictionary.skyeng.ru/api/public/v1/")
             .addConverterFactory(GsonConverterFactory.create(get()))
@@ -224,11 +225,13 @@ val dictionaryOfWordsScreen = module {
             )
         }
 
+        scoped { Dispatchers.IO }
+
         /**
          * Providing a dependency for DictionaryOfWordsViewModel
          */
 
-        viewModel { DictionaryOfWordsViewModel(get()) }
+        viewModel { DictionaryOfWordsViewModel(get(), get()) }
 
         /**
          * Providing a dependency for ImageLoader
@@ -258,11 +261,13 @@ val wordDescriptionScreen = module {
             WordDescriptionInteractorImpl(get())
         }
 
+        scoped { Dispatchers.IO }
+
         /**
          * Providing a dependency for WordDescriptionViewModel
          */
 
-        viewModel { WordDescriptionViewModel(get()) }
+        viewModel { WordDescriptionViewModel(get(), get()) }
     }
 }
 
@@ -283,6 +288,8 @@ val historyScreen = module {
             HistoryInteractorImpl(get())
         }
 
+        scoped { Dispatchers.IO }
+
         /**
          * Providing a dependency for CoilImageLoader
          */
@@ -293,7 +300,7 @@ val historyScreen = module {
          * Providing a dependency for HistoryViewModel
          */
 
-        viewModel { HistoryViewModel(get()) }
+        viewModel { HistoryViewModel(get(), get()) }
     }
 }
 
@@ -313,10 +320,12 @@ val favoriteScreen = module {
             FavoriteInteractorImpl(get())
         }
 
+        scoped { Dispatchers.IO }
+
         /**
          * Providing a dependency for FavoriteViewModel
          */
 
-        viewModel { FavoriteViewModel(get()) }
+        viewModel { FavoriteViewModel(get(), get()) }
     }
 }

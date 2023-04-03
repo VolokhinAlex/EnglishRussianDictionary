@@ -3,8 +3,8 @@ package com.volokhinaleksey.search.viewmodel
 import com.volokhinaleksey.core.viewmodel.BaseViewModel
 import com.volokhinaleksey.interactors.search.SearchWordsInteractor
 import com.volokhinaleksey.models.states.WordsState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
  */
 
 class DictionaryOfWordsViewModel(
-    private val interactor: SearchWordsInteractor<WordsState>
+    private val interactor: SearchWordsInteractor<WordsState>,
+    private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel<WordsState>() {
 
     /**
@@ -22,10 +23,10 @@ class DictionaryOfWordsViewModel(
      */
 
     fun getWordMeanings(word: String, isOnline: Boolean) {
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+        currentMutableData.value = WordsState.Loading
+        viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, throwable ->
             currentMutableData.postValue(WordsState.Error(throwable))
         }) {
-            currentMutableData.postValue(WordsState.Loading)
             val requestResponse = interactor.getWordsData(word = word, isRemoteSource = isOnline)
             currentMutableData.postValue(requestResponse)
         }
